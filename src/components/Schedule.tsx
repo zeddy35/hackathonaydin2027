@@ -1,21 +1,37 @@
+import type { ScheduleItem, ScheduleKey } from "@/data/types";
 import type { Dict } from "@/lib/dict";
-import Reveal from "./Reveal";
+import type { Locale } from "@/lib/i18n";
 
-export default function Schedule({ d }: { d: Dict["schedule"] }) {
+/** Milestones shown with emphasis. */
+const KEY_POINTS: ScheduleKey[] = ["hackStart", "submit", "finals"];
+
+export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; lang: Locale; d: Dict["schedule"] }) {
   return (
-    <div className="grid gap-10 sm:grid-cols-2">
-      {d.days.map((day, k) => (
-        <Reveal key={day.d} delay={k * 0.08} className="min-w-0">
-          <h3 className="mb-3 text-[17px] font-semibold">{day.d}</h3>
-          <ol>
-            {day.items.map(([time, what]) => (
-              <li key={time} className="grid grid-cols-[64px_minmax(0,1fr)] border-t border-rule py-3 text-[16px]">
-                <time className="font-mono text-[14px] tabular-nums text-muted">{time}</time>
-                <span>{what}</span>
-              </li>
-            ))}
+    <div className="grid gap-10 md:grid-cols-2 md:gap-8">
+      {(["sat", "sun"] as const).map((day) => (
+        <div key={day} className="min-w-0">
+          <h3 className="mb-3 text-[18px] font-semibold">{d.days[day]}</h3>
+          <ol className="border-t border-rule">
+            {items
+              .filter((i) => i.day === day)
+              .map((i) => {
+                const strong = KEY_POINTS.includes(i.key);
+                return (
+                  <li
+                    key={i.key}
+                    className={`grid grid-cols-[64px_minmax(0,1fr)] items-baseline gap-3 border-b border-rule py-3.5 ${
+                      strong ? "font-semibold" : ""
+                    }`}
+                  >
+                    <time className={`font-mono text-[14px] tabular-nums ${strong ? "text-accent" : "text-muted"}`}>{i.time}</time>
+                    <span className="text-[16px]">
+                      {i[lang]}
+                    </span>
+                  </li>
+                );
+              })}
           </ol>
-        </Reveal>
+        </div>
       ))}
     </div>
   );
