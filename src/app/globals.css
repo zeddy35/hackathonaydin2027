@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/* Hackathon Aydın 2027 design tokens (Red Pen). Values mirror the design system. */
+:root {
+  --paper: #ffffff;
+  --paper-raised: #f7f6f3;
+  --ink: #141210;
+  --ink-muted: #5e5850;
+  --rule: #e7e3db;
+  --red: #8a0303;
+  --on-red: #ffffff;
+  --red-tint: #f3dcd7;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-red: var(--red);
+  --color-on-red: var(--on-red);
+  --color-red-tint: var(--red-tint);
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --radius-sm: 2px;
+  --radius-md: 6px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  ::selection { background: var(--red); color: var(--on-red); }
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 2px; }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-optical-sizing: auto;
+    letter-spacing: -0.025em;
+  }
+  .gutter {
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .redacted {
+    display: inline-block;
+    height: 0.8em;
+    vertical-align: -0.06em;
+    border-radius: 1px;
+    background: linear-gradient(100deg, var(--ink) 40%, var(--ink-muted) 50%, var(--ink) 60%);
+    background-size: 300% 100%;
+    animation: shimmer 4.5s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  60%, 100% { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .redacted { animation: none; }
+}
