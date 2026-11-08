@@ -124,26 +124,28 @@ export default function Header({
   const spring = reduce ? { duration: 0 } : { type: "spring" as const, stiffness: 420, damping: 36 };
 
   const langSwitch = (where: string) => (
-    <Link
-      href={otherHref}
-      onClick={remember}
-      hrefLang={other}
-      lang={other}
-      className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2 font-mono text-[13px] font-medium text-muted transition-colors hover:text-ink"
-    >
-      {(["tr", "en"] as const).map((l, i) => (
-        <span key={l} className="relative inline-flex items-center">
-          {i === 1 && <span className="px-1 text-rule">/</span>}
-          <span className={`relative ${lang === l ? "text-ink" : ""}`}>
+    <span className="inline-flex items-center rounded-full border border-rule bg-surface p-0.5 font-mono text-[13px] font-medium">
+      {(["tr", "en"] as const).map((l) =>
+        lang === l ? (
+          <span key={l} className="relative z-10 inline-flex h-8 min-w-9 items-center justify-center rounded-full px-2.5 text-on-accent">
             {l.toUpperCase()}
-            {lang === l && (
-              <motion.span layoutId={`lang-underline-${where}`} transition={spring} aria-hidden="true" className="absolute inset-x-0 -bottom-1 h-px bg-accent" />
-            )}
+            <motion.span layoutId={`lang-pill-${where}`} transition={spring} aria-hidden="true" className="absolute inset-0 -z-10 rounded-full bg-accent" />
           </span>
-        </span>
-      ))}
-      <span className="sr-only">, {labels.switchTo}</span>
-    </Link>
+        ) : (
+          <Link
+            key={l}
+            href={otherHref}
+            onClick={remember}
+            hrefLang={l}
+            lang={l}
+            className="relative z-10 inline-flex h-8 min-w-9 items-center justify-center rounded-full px-2.5 text-muted transition-colors hover:text-ink"
+          >
+            {l.toUpperCase()}
+            <span className="sr-only">, {labels.switchTo}</span>
+          </Link>
+        )
+      )}
+    </span>
   );
 
   const joinButton = (extra: string) => (
@@ -156,11 +158,11 @@ export default function Header({
   );
 
   return (
-    <header className="sticky top-0 z-40 h-[var(--header-h)]">
+    <header className="sticky top-0 z-40 flex h-[var(--header-h)] flex-col">
       <div
         className={`relative mx-auto flex items-center gap-2 transition-[max-width,margin,padding,height,background-color,border-color,box-shadow,border-radius] duration-300 ease-out md:gap-4 ${
           capsule
-            ? "mt-2 h-14 w-[calc(100%-16px)] max-w-[1080px] rounded-full border border-rule bg-bg/80 px-2 shadow-[0_8px_24px_-12px_rgb(23_23_23/0.18)] backdrop-blur-md sm:px-3 md:px-4"
+            ? "mt-4 h-14 w-[calc(100%-16px)] max-w-[1080px] rounded-full border border-rule bg-bg/80 px-2 shadow-[0_8px_24px_-12px_rgb(23_23_23/0.18)] backdrop-blur-md sm:px-3 md:px-4"
             : `h-[var(--header-h)] w-full max-w-[1200px] rounded-none border border-transparent px-[max(16px,env(safe-area-inset-left))] md:px-8 ${open ? "bg-bg" : "bg-bg/0"}`
         }`}
       >

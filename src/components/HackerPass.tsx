@@ -75,7 +75,7 @@ export default function HackerPass({
 
   return (
     <div className="ha-pass-enter flex justify-center lg:justify-end">
-      <div className="relative w-[min(80vw,340px)] rotate-[-3deg] pt-14 lg:rotate-[-5deg]" style={{ perspective: 900 }}>
+      <div className="relative w-[min(80vw,340px)] rotate-[-3deg] pt-8 lg:rotate-[-5deg] lg:pt-14" style={{ perspective: 900 }}>
         {/* lanyard */}
         <span aria-hidden="true" className="absolute left-1/2 top-0 h-[68px] w-px -translate-x-1/2 bg-ink/25" />
         <motion.div
@@ -101,7 +101,7 @@ export default function HackerPass({
           {/* lanyard slot */}
           <span aria-hidden="true" className="mx-auto mt-4 block h-2.5 w-14 rounded-full border border-rule bg-bg" />
 
-          <div className="grid gap-5 px-5 pb-5 pt-4 sm:px-6">
+          <div className="grid gap-3 px-5 pb-4 pt-4 sm:px-6 lg:gap-5 lg:pb-5">
             <p className="label text-accent">{t.label}</p>
 
             {phase === "before" ? (
@@ -122,7 +122,7 @@ export default function HackerPass({
               <p className="display text-[32px] leading-tight text-ink">{phase === "live" ? t.live : t.done}</p>
             )}
 
-            <ul className="grid gap-1.5 font-mono text-[13px]">
+            <ul className="hidden gap-1.5 font-mono text-[13px] lg:grid">
               {t.facts.map((f) => (
                 <li key={f} className="flex items-center gap-2">
                   <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
@@ -138,8 +138,8 @@ export default function HackerPass({
             <span className="absolute -right-3 -top-3 h-6 w-6 rounded-full border border-rule bg-bg" />
           </div>
 
-          <div className="flex items-end justify-between gap-4 px-5 pb-6 pt-5 sm:px-6">
-            <div aria-hidden="true" className="grid h-[72px] w-[72px] shrink-0 grid-cols-9 gap-px">
+          <div className="flex items-end justify-end gap-4 px-5 pb-5 pt-4 sm:px-6 lg:justify-between lg:pb-6 lg:pt-5">
+            <div aria-hidden="true" className="hidden h-[72px] w-[72px] shrink-0 grid-cols-9 gap-px lg:grid">
               {QR.map((on, i) => (
                 <span key={i} className={on ? "bg-accent" : "bg-bg"} />
               ))}

@@ -22,12 +22,15 @@ export default function Hero({
   const passLink = action.status === "open" ? { href: action.href, label: d.cta.apply } : { href: "#join", label: d.nav.join };
 
   return (
-    <section id="top" aria-labelledby="hero-h" className="relative isolate [overflow-x:clip]">
+    <section
+      id="top"
+      aria-labelledby="hero-h"
+      className="relative isolate flex min-h-[calc(100dvh-var(--header-h))] items-center [overflow-x:clip]"
+    >
       <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0 -z-10" />
-      <div className="wrap grid items-center gap-12 pb-16 pt-12 md:pb-24 md:pt-16 lg:grid-cols-12 lg:gap-8">
-        <div className="grid min-w-0 gap-8 lg:col-span-7">
-          <p className="label">{h.eyebrow}</p>
-          <h1 id="hero-h" className="display text-[clamp(36px,11vw,56px)] leading-[1.02] md:text-[72px] lg:text-[76px] xl:text-[88px]">
+      <div className="wrap grid items-center gap-6 py-6 sm:py-8 lg:grid-cols-12 lg:gap-8 lg:py-12">
+        <div className="grid min-w-0 gap-4 sm:gap-6 lg:col-span-7 lg:gap-8">
+          <h1 id="hero-h" className="display text-[clamp(28px,9vw,56px)] leading-[1.03] md:text-[72px] lg:text-[76px] xl:text-[88px]">
             <span className="ha-line">
               <span style={{ ["--i" as string]: 0 }}>{h.title[0]}</span>
             </span>
@@ -35,15 +38,15 @@ export default function Hero({
               <span style={{ ["--i" as string]: 1 }}>{h.title[1]}</span>
             </span>
           </h1>
-          <p className="max-w-[44ch] text-[19px] leading-[1.5] text-ink md:text-[21px]">{h.lead}</p>
+          <p className="max-w-[44ch] text-[16px] leading-[1.45] text-ink sm:text-[19px] md:text-[21px] md:leading-[1.5]">{h.lead}</p>
 
-          <p className="flex flex-col gap-1 font-mono text-[14px] text-ink sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">
+          <p className="flex flex-col gap-1 font-mono text-[13px] text-ink sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:text-[14px]">
             <span>{h.when}</span>
             <span aria-hidden="true" className="hidden text-muted sm:inline">·</span>
             <span>{h.where}</span>
           </p>
 
-          <div className="grid gap-4">
+          <div className="grid gap-3 sm:gap-4">
             <div className="flex flex-wrap gap-3">
               {action.status === "closed" ? (
                 <>

@@ -23,12 +23,12 @@ if(reduce)return;d.classList.add('ha-anim');
 var seen=null;try{seen=sessionStorage.getItem('${LOADER_KEY}')}catch(e){}
 if(!seen){d.classList.add('ha-loader');try{sessionStorage.setItem('${LOADER_KEY}','1')}catch(e){}}
 else{d.classList.add('ha-go')}
-setTimeout(function(){d.classList.remove('ha-loader');d.classList.add('ha-go')},3000);
+setTimeout(function(){d.classList.remove('ha-loader');d.classList.add('ha-go')},4500);
 }catch(e){}})();`;
 
-const FLIP_MS = 350;
-const WORD_MS = 300;
-const SPREAD_MS = 750; // last ring starts this long after the first one
+const FLIP_MS = 400;
+const WORD_MS = 500;
+const SPREAD_MS = 1400; // last ring starts this long after the first one
 const MAX_SQUARES = 400;
 
 type Square = { x: number; y: number; d: number };

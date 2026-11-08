@@ -146,7 +146,7 @@ html.ha-loader body { overflow: hidden; }
 .ha-sq {
   position: absolute;
   transform-style: preserve-3d;
-  animation: ha-flip 350ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation: ha-flip 400ms cubic-bezier(0.65, 0, 0.35, 1) both;
   animation-delay: var(--d);
 }
 .ha-sq > i {
@@ -170,7 +170,7 @@ html.ha-loader body { overflow: hidden; }
   font-size: 13px;
   letter-spacing: 0.2em;
   color: var(--on-accent);
-  animation: ha-fade 160ms ease-out 300ms both;
+  animation: ha-fade 270ms ease-out 500ms both;
 }
 @keyframes ha-fade { to { opacity: 0; } }
 .ha-loader-root.ha-out { opacity: 0; transition: opacity 200ms ease-out; }

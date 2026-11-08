@@ -3,6 +3,7 @@ import type { Block, DocPage as Doc } from "@/content/types";
 import type { Dict } from "@/lib/dict";
 import type { Locale } from "@/lib/i18n";
 import CopyEmail from "./CopyEmail";
+import DocNav from "./DocNav";
 import Packages from "./Packages";
 
 function History({ d }: { d: Dict }) {
@@ -99,17 +100,7 @@ export default function DocPage({ doc, lang, d, email }: { doc: Doc; lang: Local
       </header>
 
       <div className="grid gap-10 pt-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16">
-        <nav aria-label={doc.title} className="hidden lg:block">
-          <ul className="sticky top-[calc(var(--header-h)+24px)] grid gap-1 text-[14px]">
-            {doc.sections.map((s) => (
-              <li key={s.id}>
-                <a href={`#${s.id}`} className="block py-1 text-muted transition-colors hover:text-ink">
-                  {s.h}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <DocNav title={doc.title} sections={doc.sections} />
         <div className="grid min-w-0 gap-12">
           {doc.sections.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="grid gap-4">
