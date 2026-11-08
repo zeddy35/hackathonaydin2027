@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -11,6 +12,9 @@ const SECTIONS = ["event", "schedule", "sponsors", "faq"] as const;
 type SectionId = (typeof SECTIONS)[number];
 
 export type HeaderLabels = Record<SectionId | "label" | "join" | "menu" | "close" | "switchTo" | "home", string>;
+
+/** Past this many pixels the bar turns into a floating capsule. It never hides. */
+const COMPACT_AT = 24;
 
 export default function Header({
   lang,
@@ -25,11 +29,14 @@ export default function Header({
 }) {
   const pathname = usePathname() ?? `/${lang}`;
   const isHome = pathname === `/${lang}` || pathname === `/${lang}/`;
-  const [scrolled, setScrolled] = useState(false);
+  const [compact, setCompact] = useState(false);
   const [active, setActive] = useState<SectionId | null>(null);
+  const [hovered, setHovered] = useState<SectionId | null>(null);
   const [open, setOpen] = useState(false);
   const menuBtn = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll();
 
   // Same page in the other language.
   const other: Locale = lang === "tr" ? "en" : "tr";
@@ -43,18 +50,18 @@ export default function Header({
   const sectionHref = (id: SectionId) => (isHome ? `#${id}` : `/${lang}#${id}`);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
+    const onScroll = () => setCompact(window.scrollY > COMPACT_AT);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Scroll-spy. Watches every home section so the marker clears on sections that are not in the nav.
   useEffect(() => {
     if (!isHome) {
       setActive(null);
       return;
     }
-    // Watch every home section so the marker clears on sections that are not in the nav.
     const els = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
     const io = new IntersectionObserver(
       (entries) => {
@@ -80,8 +87,7 @@ export default function Header({
     if (!open) return;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const focusables = () =>
-      Array.from(panel.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? []);
+    const focusables = () => Array.from(panel.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? []);
     focusables()[0]?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -101,7 +107,7 @@ export default function Header({
         first.focus();
       }
     };
-    const onResize = () => window.innerWidth >= 1024 && close(false);
+    const onResize = () => window.innerWidth >= 768 && close(false);
     document.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
     return () => {
@@ -114,75 +120,99 @@ export default function Header({
   // Close the menu after navigation.
   useEffect(() => setOpen(false), [pathname]);
 
-  const solid = scrolled || open;
+  const capsule = compact && !open;
+  const spring = reduce ? { duration: 0 } : { type: "spring" as const, stiffness: 420, damping: 36 };
+
+  const langSwitch = (where: string) => (
+    <Link
+      href={otherHref}
+      onClick={remember}
+      hrefLang={other}
+      lang={other}
+      className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2 font-mono text-[13px] font-medium text-muted transition-colors hover:text-ink"
+    >
+      {(["tr", "en"] as const).map((l, i) => (
+        <span key={l} className="relative inline-flex items-center">
+          {i === 1 && <span className="px-1 text-rule">/</span>}
+          <span className={`relative ${lang === l ? "text-ink" : ""}`}>
+            {l.toUpperCase()}
+            {lang === l && (
+              <motion.span layoutId={`lang-underline-${where}`} transition={spring} aria-hidden="true" className="absolute inset-x-0 -bottom-1 h-px bg-accent" />
+            )}
+          </span>
+        </span>
+      ))}
+      <span className="sr-only">, {labels.switchTo}</span>
+    </Link>
+  );
+
+  const joinButton = (extra: string) => (
+    <Link href={joinHref} onClick={() => open && close(false)} className={`btn btn-primary group/join active:scale-[0.97] ${extra}`}>
+      {labels.join}
+      <span aria-hidden="true" className="hidden transition-transform duration-200 group-hover/join:translate-x-1 min-[380px]:inline">
+        →
+      </span>
+    </Link>
+  );
 
   return (
-    <header
-      className={`sticky top-0 z-40 border-b transition-colors duration-200 ${
-        solid ? "border-rule bg-bg" : "border-transparent bg-bg"
-      }`}
-    >
-      <div className="wrap flex h-[var(--header-h)] items-center gap-4">
-        <Link href={`/${lang}`} className="-mx-1 flex min-h-11 min-w-0 items-center rounded-md px-1">
+    <header className="sticky top-0 z-40 h-[var(--header-h)]">
+      <div
+        className={`relative mx-auto flex items-center gap-2 transition-[max-width,margin,padding,height,background-color,border-color,box-shadow,border-radius] duration-300 ease-out md:gap-4 ${
+          capsule
+            ? "mt-2 h-14 w-[calc(100%-16px)] max-w-[1080px] rounded-full border border-rule bg-bg/80 px-2 shadow-[0_8px_24px_-12px_rgb(23_23_23/0.18)] backdrop-blur-md sm:px-3 md:px-4"
+            : `h-[var(--header-h)] w-full max-w-[1200px] rounded-none border border-transparent px-[max(16px,env(safe-area-inset-left))] md:px-8 ${open ? "bg-bg" : "bg-bg/0"}`
+        }`}
+      >
+        <Link href={`/${lang}`} className="group/logo -mx-1 flex min-h-11 min-w-0 shrink items-center rounded-full px-1 max-[359px]:[&_.logo-year]:hidden">
           <Logo />
           <span className="sr-only">, {labels.home}</span>
         </Link>
 
         {mlh && (
-          <a href={mlh.href} target="_blank" rel="noopener noreferrer" className="hidden shrink-0 sm:block">
+          <a href={mlh.href} target="_blank" rel="noopener noreferrer" className="hidden shrink-0 md:block">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={mlh.image} alt="Major League Hacking 2027 Hackathon Season" className="h-10 w-auto" />
           </a>
         )}
 
-        <nav aria-label={labels.label} className="ml-auto hidden lg:block">
-          <ul className="flex items-center gap-1">
+        <nav aria-label={labels.label} className="ml-auto hidden md:block">
+          <ul className="flex items-center" onMouseLeave={() => setHovered(null)}>
             {SECTIONS.map((id) => (
               <li key={id}>
                 <a
                   href={sectionHref(id)}
-                  aria-current={active === id ? "true" : undefined}
-                  className={`relative inline-flex min-h-11 items-center rounded-md px-3 text-[15px] transition-colors ${
-                    active === id ? "text-ink" : "text-muted hover:text-ink"
+                  aria-current={active === id ? "location" : undefined}
+                  onMouseEnter={() => setHovered(id)}
+                  onFocus={() => setHovered(id)}
+                  onBlur={() => setHovered(null)}
+                  className={`relative isolate inline-flex min-h-11 items-center rounded-full px-3 text-[15px] transition-colors lg:px-4 ${
+                    active === id ? "text-accent" : "text-muted hover:text-ink"
                   }`}
                 >
+                  {hovered === id && hovered !== active && (
+                    <motion.span layoutId="nav-hover" transition={spring} aria-hidden="true" className="absolute inset-x-0 inset-y-1.5 -z-10 rounded-full bg-ink/[0.06]" />
+                  )}
+                  {active === id && (
+                    <motion.span layoutId="nav-active" transition={spring} aria-hidden="true" className="absolute inset-x-0 inset-y-1.5 -z-10 rounded-full bg-accent-tint" />
+                  )}
                   {labels[id]}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute inset-x-3 bottom-1.5 h-px bg-accent transition-opacity ${active === id ? "opacity-100" : "opacity-0"}`}
-                  />
                 </a>
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2 lg:ml-4">
-          <Link
-            href={otherHref}
-            onClick={remember}
-            hrefLang={other}
-            lang={other}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-2 font-mono text-[13px] font-medium text-muted transition-colors hover:text-ink"
-          >
-            {/* Small screens: only the language you can switch to. */}
-            <span className="sm:hidden">{other.toUpperCase()}</span>
-            <span className="hidden sm:inline">
-              <span className={lang === "tr" ? "text-ink" : ""}>TR</span>
-              <span className="px-1 text-rule">/</span>
-              <span className={lang === "en" ? "text-ink" : ""}>EN</span>
-            </span>
-            <span className="sr-only">, {labels.switchTo}</span>
-          </Link>
-          <Link href={joinHref} className="btn btn-primary hidden lg:inline-flex">
-            {labels.join}
-          </Link>
+        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2 md:ml-0">
+          <span className="hidden md:inline-flex">{langSwitch("bar")}</span>
+          {joinButton("min-h-11 rounded-full px-3 py-2 text-[14px] sm:px-4 md:text-[15px]")}
           <button
             ref={menuBtn}
             type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md border border-rule bg-surface px-3 text-[15px] font-medium lg:hidden"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-rule bg-surface md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
+            aria-label={open ? labels.close : labels.menu}
             onClick={() => (open ? close() : setOpen(true))}
           >
             <span aria-hidden="true" className="relative block h-3 w-4">
@@ -190,34 +220,57 @@ export default function Header({
               <span className={`absolute left-0 top-1.5 h-px w-4 bg-ink transition-opacity ${open ? "opacity-0" : ""}`} />
               <span className={`absolute left-0 h-px w-4 bg-ink transition-transform ${open ? "top-1.5 -rotate-45" : "top-3"}`} />
             </span>
-            <span className="sr-only sm:not-sr-only">{open ? labels.close : labels.menu}</span>
           </button>
         </div>
+
+        {/* Scroll progress along the bottom edge. */}
+        <motion.span
+          aria-hidden="true"
+          style={{ scaleX: scrollYProgress }}
+          className={`absolute bottom-0 h-[2px] origin-left bg-accent ${capsule ? "inset-x-6" : "inset-x-0"} ${open ? "opacity-0" : ""}`}
+        />
       </div>
 
       <div
         ref={panel}
         id="mobile-menu"
         hidden={!open}
-        className="fixed inset-x-0 bottom-0 top-[var(--header-h)] overflow-y-auto border-t border-rule bg-bg lg:hidden"
+        className="fixed inset-0 -z-10 overflow-y-auto bg-bg pt-[calc(var(--header-h)+16px)] md:hidden"
       >
-        <nav aria-label={labels.label} className="wrap py-6">
+        <nav aria-label={labels.label} className="wrap grid gap-10 pb-[max(32px,env(safe-area-inset-bottom))]">
           <ul className="grid">
-            {SECTIONS.map((id) => (
-              <li key={id} className="border-b border-rule">
+            {SECTIONS.map((id, i) => (
+              <motion.li
+                key={`${id}-${open}`}
+                initial={reduce ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: reduce ? 0 : 0.04 + i * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="border-b border-rule"
+              >
                 <a
                   href={sectionHref(id)}
-                  onClick={() => close(false)}
-                  className="flex min-h-14 items-center text-[22px] font-medium tracking-[-0.01em]"
+                  onClick={(e) => {
+                    // Unlock scrolling first, then jump, so the anchor scroll is not cut short.
+                    if (!isHome) return close(false);
+                    e.preventDefault();
+                    close(false);
+                    requestAnimationFrame(() => {
+                      document.getElementById(id)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+                      history.replaceState(null, "", `#${id}`);
+                    });
+                  }}
+                  aria-current={active === id ? "location" : undefined}
+                  className={`display flex min-h-16 items-center text-[40px] leading-none ${active === id ? "text-accent" : "text-ink"}`}
                 >
                   {labels[id]}
                 </a>
-              </li>
+              </motion.li>
             ))}
           </ul>
-          <Link href={joinHref} onClick={() => close(false)} className="btn btn-primary mt-8 w-full">
-            {labels.join}
-          </Link>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {langSwitch("menu")}
+            {joinButton("min-h-12 flex-1 rounded-full")}
+          </div>
         </nav>
       </div>
     </header>

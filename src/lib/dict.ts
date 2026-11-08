@@ -42,6 +42,17 @@ const tr = {
     live: "Etkinlik devam ediyor",
     done: "Hackathon Aydın 2027 tamamlandı",
   },
+  loader: "HACKATHON AYDIN 2027",
+  pass: {
+    label: "HACKER PASS · 2027",
+    countdownLabel: "Açılış törenine kalan süre",
+    units: { d: "GÜN", h: "SAAT", m: "DAK", s: "SN" },
+    facts: ["3. edisyon", "28 saat", "100+ öğrenci (hedef)"],
+    live: "Şu an sürüyor",
+    // TODO(organizatör): 2028 edisyonu henüz duyurulmadı; doğrulanınca bu metni koru ya da değiştir.
+    done: "Görüşmek üzere: 2028",
+    stamp: "17-18.04.2027 · ADÜ",
+  },
   hero: {
     eyebrow: "Hackathon Aydın 2027",
     title: ["Bir fikirle gel.", "Çalışan bir ürünle çık."],
@@ -219,6 +230,17 @@ const en: Dict = {
     minutes: "min",
     live: "The event is happening now",
     done: "Hackathon Aydın 2027 has ended",
+  },
+  loader: "HACKATHON AYDIN 2027",
+  pass: {
+    label: "HACKER PASS · 2027",
+    countdownLabel: "Time until the opening ceremony",
+    units: { d: "DAYS", h: "HRS", m: "MIN", s: "SEC" },
+    facts: ["3rd edition", "28 hours", "100+ students (target)"],
+    live: "Happening now",
+    // TODO(organizer): a 2028 edition has not been announced yet; confirm this line.
+    done: "See you in 2028",
+    stamp: "17-18.04.2027 · ADÜ",
   },
   hero: {
     eyebrow: "Hackathon Aydın 2027",

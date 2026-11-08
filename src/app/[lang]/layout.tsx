@@ -7,6 +7,7 @@ import "@fontsource/jetbrains-mono/500.css";
 import "../globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import Loader, { LOADER_SCRIPT } from "@/components/Loader";
 import { getSiteConfig } from "@/data";
 import { primaryAction } from "@/lib/cta";
 import { getDict, isLocale, locales } from "@/lib/dict";
@@ -45,8 +46,13 @@ export default async function RootLayout({
   const mlh = site.mlh.badge && site.mlh.badgeImage && site.mlh.badgeHref ? { href: site.mlh.badgeHref, image: site.mlh.badgeImage } : null;
 
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
+      <head>
+        {/* Decides before first paint whether the opening loader runs (see Loader.tsx). */}
+        <script dangerouslySetInnerHTML={{ __html: LOADER_SCRIPT }} />
+      </head>
       <body>
+        <Loader word={d.loader} />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-3 focus:text-white"

@@ -11,6 +11,9 @@
   --on-accent: #ffffff;
   --accent-tint: #f6ecea;
   --header-h: 72px;
+  /* Hero grid cell. The loader squares use the same size so they line up with it. */
+  --grid: 48px;
+  --grid-line: rgb(23 23 23 / 0.045);
   color-scheme: light;
 }
 
@@ -31,7 +34,6 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-h) + 16px);
     -webkit-text-size-adjust: 100%;
   }
   body {
@@ -118,16 +120,74 @@
   }
   .hero-grid {
     background-image:
-      linear-gradient(to right, rgb(23 23 23 / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(23 23 23 / 0.045) 1px, transparent 1px);
-    background-size: 48px 48px;
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--grid) var(--grid);
     mask-image: linear-gradient(to bottom, transparent, #000 20%, #000 60%, transparent);
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * Opening loader. Shown only when the inline head script adds html.ha-loader
+ * (JavaScript on, first visit in this session, no reduced motion).
+ * ------------------------------------------------------------------------- */
+.ha-loader-root { display: none; }
+html.ha-loader .ha-loader-root {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  perspective: 1200px;
+  background: var(--accent);
+}
+html.ha-loader .ha-loader-root[data-ready] { background: var(--bg); }
+html.ha-loader body { overflow: hidden; }
+.ha-sq {
+  position: absolute;
+  transform-style: preserve-3d;
+  animation: ha-flip 350ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation-delay: var(--d);
+}
+.ha-sq > i {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.ha-sq > i:first-child { background: var(--accent); }
+.ha-sq > i:last-child {
+  background: var(--bg);
+  box-shadow: inset 1px 1px 0 var(--grid-line);
+  transform: rotateY(180deg);
+}
+@keyframes ha-flip { to { transform: rotateY(180deg); } }
+.ha-loader-word {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--on-accent);
+  animation: ha-fade 160ms ease-out 300ms both;
+}
+@keyframes ha-fade { to { opacity: 0; } }
+.ha-loader-root.ha-out { opacity: 0; transition: opacity 200ms ease-out; }
+
+/* Hero entrance. Hidden states apply only while html.ha-anim is set by the head
+ * script, and end when html.ha-go is added (loader done, or a 3 s fallback),
+ * so without JavaScript nothing ever waits invisible. */
+html.ha-anim:not(.ha-go) .ha-line > span { transform: translateY(105%); }
+.ha-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+.ha-line > span { display: block; transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 80ms); }
+html.ha-anim:not(.ha-go) .ha-pass-enter { opacity: 0; transform: translateX(48px) rotate(6deg); }
+.ha-pass-enter { transition: opacity 600ms ease-out 200ms, transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  .ha-loader-root { display: none !important; }
 }
 
 /* Admin: let wide tables scroll inside their box instead of widening the page. */
