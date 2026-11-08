@@ -48,6 +48,7 @@ const DB_CODES = [
   "not_in_team",
   "application_not_accepted",
   "participants_only",
+  "under_18",
 ] as const;
 
 const fail = (code: string, errors?: Record<string, string>): ActionResult => ({ ok: false, code, errors });
@@ -100,7 +101,8 @@ export async function saveApplication(
   } else {
     consents = mergeConsents((existing?.consents ?? {}) as Consents, consentInput, visibleConsents(mlh));
     if (submit) {
-      if (settings.application_status !== "open") return fail("applications_not_open");
+      const deadline = typeof settings.application_deadline === "string" ? Date.parse(settings.application_deadline) : NaN;
+      if (settings.application_status !== "open" || (!Number.isNaN(deadline) && Date.now() >= deadline)) return fail("applications_not_open");
       const strict = submitSchema.safeParse(draft.data, { reportInput: true });
       const errors = strict.success ? {} : fieldErrors(strict.error.issues);
       for (const k of requiredConsents(mlh)) if (!consents[k]?.accepted) errors[`consent_${k}`] = "consent";

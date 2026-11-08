@@ -25,6 +25,7 @@ export default async function Content() {
             application_status: (st.application_status as "upcoming" | "open" | "closed") ?? "upcoming",
             opens_tr: label.tr ?? "",
             opens_en: label.en ?? "",
+            application_deadline: local(st.application_deadline),
             hack_start: local(st.hack_start),
             submission_deadline: local(st.submission_deadline),
             confirm_deadline: local(st.confirm_deadline),

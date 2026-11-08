@@ -107,15 +107,34 @@ begin
                          'rules', jsonb_build_object('accepted', true, 'at', now()),
                          'marketing', jsonb_build_object('accepted', i % 4 = 0, 'at', now()))
     );
+    if i = 25 then
+      begin
+        update public.applications set status = 'submitted' where user_id = auth.uid();
+        raise exception 'FAIL: under-18 application was submitted';
+      exception when others then
+        if position('under_18' in sqlerrm) = 0 then raise; end if;
+        raise notice 'ok   under-18 cannot submit';
+      end;
+      update public.applications set answers = answers || '{"age":"19"}' where user_id = auth.uid();
+    end if;
     update public.applications set status = 'submitted' where user_id = auth.uid();
     perform tests.logout();
   end loop;
 end $$;
 
 select tests.count($q$select count(*) from public.applications where status = 'submitted' and submitted_at is not null$q$, 25, '25 applications submitted');
-select tests.count($q$select count(*) from public.applications where is_minor$q$, 1, 'under-18 application is flagged');
+select tests.count($q$select count(*) from public.applications where is_minor$q$, 0, 'no under-18 application is submitted');
 select tests.count($q$select count(*) from public.applications where consents ? 'kvkk' and consents ? 'coc' and consents ? 'rules'$q$, 25, 'each consent is its own record');
 select tests.count($q$select count(*) from public.applications where (consents -> 'marketing' ->> 'accepted')::boolean$q$, 6, 'marketing list holds only people who opted in');
+
+-- Application deadline ---------------------------------------------------------
+
+update public.settings set value = to_jsonb(now() - interval '1 minute') where key = 'application_deadline';
+insert into auth.users (id, email) values ('00000000-0000-4000-9000-000000000099', 'late@test.invalid');
+select tests.login('00000000-0000-4000-9000-000000000099');
+select tests.throws($q$insert into public.applications (user_id, status) values (auth.uid(), 'submitted')$q$, 'applications_not_open');
+select tests.logout();
+update public.settings set value = '"2027-03-31T23:59:00+03:00"' where key = 'application_deadline';
 
 -- Participant edits after submitting: logistics yes, answers no --------------
 

@@ -348,6 +348,7 @@ export type SettingsInput = {
   application_status: "upcoming" | "open" | "closed";
   opens_tr: string;
   opens_en: string;
+  application_deadline: string;
   hack_start: string;
   submission_deadline: string;
   confirm_deadline: string;
@@ -365,12 +366,13 @@ export async function saveSettings(input: SettingsInput) {
   return guard(STAFF, async ({ supabase, profile }) => {
     if (!["upcoming", "open", "closed"].includes(input.application_status)) return { ok: false, code: "invalid" };
     const times = {
+      application_deadline: istanbul(input.application_deadline),
       hack_start: istanbul(input.hack_start),
       submission_deadline: istanbul(input.submission_deadline),
       confirm_deadline: istanbul(input.confirm_deadline),
       teams_lock_at: istanbul(input.teams_lock_at),
     };
-    if (Object.values(times).some((v) => v === null) || !times.hack_start || !times.submission_deadline) return { ok: false, code: "invalid_date" };
+    if (Object.values(times).some((v) => v === null) || !times.hack_start || !times.submission_deadline || !times.application_deadline) return { ok: false, code: "invalid_date" };
     const urlOk = (u: string) => u === "" || /^https:\/\/\S+$/.test(u);
     if (!urlOk(input.mlh_badge_href) || !urlOk(input.mlh_badge_image)) return { ok: false, code: "invalid_url" };
     if (input.mlh_badge && (!input.mlh_badge_href || !input.mlh_badge_image)) return { ok: false, code: "mlh_badge_incomplete" };
@@ -378,6 +380,7 @@ export async function saveSettings(input: SettingsInput) {
     const values: Record<string, unknown> = {
       application_status: input.application_status,
       applications_open_label: { tr: input.opens_tr.trim().slice(0, 40), en: input.opens_en.trim().slice(0, 40) },
+      application_deadline: times.application_deadline,
       hack_start: times.hack_start,
       submission_deadline: times.submission_deadline,
       confirm_deadline: times.confirm_deadline || null,

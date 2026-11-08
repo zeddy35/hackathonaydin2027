@@ -13,6 +13,8 @@ export type SiteConfig = {
     formPage: "panel";
     /** When applications open. Only the month is confirmed, so this is display copy, not a date. */
     opensLabel: { tr: string; en: string };
+    /** Applications close at this time (Europe/Istanbul ISO). After it the status counts as closed. */
+    deadline: string;
   };
   event: {
     /** Opening ceremony, Europe/Istanbul. */

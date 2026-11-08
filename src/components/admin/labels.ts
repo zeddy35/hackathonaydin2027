@@ -50,7 +50,7 @@ export const ROLE_INTEREST_LABEL: Record<string, string> = {
 export const CODE_MESSAGE: Record<string, string> = {
   forbidden: "Bu işlem için yetkin yok.",
   invalid: "Geçersiz giriş. Alanları kontrol et.",
-  invalid_date: "Tarih alanlarından biri geçersiz. Geliştirme başlangıcı ve teslim son saati zorunlu.",
+  invalid_date: "Tarih alanlarından biri geçersiz. Başvuru son tarihi, geliştirme başlangıcı ve teslim son saati zorunlu.",
   invalid_url: "Linkler https:// ile başlamalı.",
   mlh_badge_incomplete: "Rozeti açmak için MLH'nin verdiği link ve görsel adresi gerekli.",
   nothing_selected: "Önce en az bir satır seç.",

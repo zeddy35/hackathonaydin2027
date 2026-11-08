@@ -168,7 +168,7 @@ export default function CheckinScanner() {
               <dt className="text-muted">Acil durum</dt>
               <dd>{p.hasEmergency ? "Kişi kayıtlı" : "Eksik, sor ve not al"}</dd>
             </dl>
-            {p.minor && <p className="rounded-lg bg-accent-tint px-3 py-2 text-[14px] font-medium text-accent">18 yaş altı. Organizatör kararına göre veli iznini kontrol et.</p>}
+            {p.minor && <p className="rounded-lg bg-accent-tint px-3 py-2 text-[14px] font-medium text-accent">18 yaş altı görünüyor; katılım 18 yaş ve üstüne açık. Kimliği kontrol et ve organizatöre haber ver.</p>}
             {p.status === "checked_in" ? (
               <p className="rounded-lg bg-amber-50 px-3 py-2 text-[15px] font-medium">
                 Zaten check-in yaptı

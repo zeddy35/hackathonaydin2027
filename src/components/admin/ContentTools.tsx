@@ -39,7 +39,7 @@ export function SettingsForm({ initial }: { initial: SettingsInput }) {
   const [v, setV] = useState(initial);
   const { run, pending, view } = useSaver();
   const set = <K extends keyof SettingsInput>(k: K, val: SettingsInput[K]) => setV((p) => ({ ...p, [k]: val }));
-  const date = (k: "hack_start" | "submission_deadline" | "confirm_deadline" | "teams_lock_at", label: string, hint?: string) => (
+  const date = (k: "application_deadline" | "hack_start" | "submission_deadline" | "confirm_deadline" | "teams_lock_at", label: string, hint?: string) => (
     <label className={lbl}>
       {label}
       <input type="datetime-local" value={v[k]} onChange={(e) => set(k, e.target.value)} className={field} />
@@ -86,6 +86,7 @@ export function SettingsForm({ initial }: { initial: SettingsInput }) {
       </div>
       <p className="text-[13px] text-muted">Tüm saatler Türkiye saati.</p>
       <div className="grid gap-4 sm:grid-cols-2">
+        {date("application_deadline", "Başvuru son tarihi", "Bu saatten sonra başvuru gönderilemez; site kendiliğinden \"kapandı\" gösterir. Değiştirirsen sitedeki metinlerde geçen tarihi de güncelle.")}
         {date("hack_start", "Geliştirme başlangıcı (teslim açılır)")}
         {date("submission_deadline", "Teslim son saati")}
         {date("confirm_deadline", "Katılım onayı son tarihi", "Boş bırakılabilir")}

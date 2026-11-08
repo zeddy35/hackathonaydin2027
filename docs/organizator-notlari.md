@@ -6,7 +6,7 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 
 - [ ] Salon adı ve açık adres (Tıp Fakültesi içinde). Gelince `src/lib/dict.ts` → `venue` ve `src/content/guide.ts`.
 - [ ] Ulaşım ve erişilebilirlik bilgileri (otobüs, otopark, asansör, engelli erişimi).
-- [ ] Uygunluk koşulları: sadece önlisans/lisans/lisansüstü öğrenciler mi, yeni mezunlar kabul ediliyor mu, yaş sınırı var mı? Eski sitede "son 12 ayda mezun olanlar" yazıyordu; doğrulanmadığı için kaldırıldı.
+- [ ] Uygunluk koşulları: sadece önlisans/lisans/lisansüstü öğrenciler mi, yeni mezunlar kabul ediliyor mu? (Yaş sınırı karara bağlandı: 18+.) Eski sitede "son 12 ayda mezun olanlar" yazıyordu; doğrulanmadığı için kaldırıldı.
 - [ ] Seçim süreci: başvuruların hepsi kabul mü, kontenjan ve sıralama ölçütü ne?
 - [ ] Getirilecekler listesi (kimlik, öğrenci belgesi, uyku eşyası vb.).
 - [ ] Önceden yazılmış kod kuralı (kurallar sayfasında "organizatör onayı bekliyor").
@@ -16,8 +16,9 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 - [ ] Ödüller. Kesinleşmeden sitede ödül veya nakit vaadi yok.
 - [ ] Sponsorlar. Onaylananları `src/data/sponsors.ts` içine ekle, logoları `public/sponsors/` altına koy.
 - [ ] Davranış kuralları ihlali için bildirim kanalı: şu an geçici e-posta. Ayrı bir adres (ör. kurumsal e-posta) ve etkinlikte sorumlu kişi(ler) belirlenmeli.
-- [ ] **Gizlilik metni (KVKK aydınlatma metni):** `/tr/gizlilik` ve `/en/privacy` sayfası taslak olarak yayında (footer'da linkli, sayfada "organizatör ve hukuk onayı bekliyor" uyarısı var). Veri sorumlusunun resmî unvanı, iletişim adresi ve saklama süresi eksik. Metin: `src/content/privacy.ts`.
-- [ ] **Yaş sınırı ve veli izni kararı:** Form 18 yaş altını engellemiyor; bu başvurular veritabanında `is_minor` ile işaretleniyor ve admin panelinde görünüyor. 18 yaş altı kabul edilecek mi, edilirse veli izni nasıl alınacak? Gece boyu süren etkinlik için ayrıca önemli.
+- [ ] **Gizlilik metni (KVKK aydınlatma metni):** `/tr/gizlilik` ve `/en/privacy`. Veri sorumlusu: TeknoFest ADÜ (organizatör kararı, 8 Kasım 2026). Saklama: KVKK md. 4 ilkesine göre amaç için gereken süre ve mevzuatın öngördüğü süreler; sonra silme/yok etme/anonimleştirme yönetmeliğine göre. KVKK tek bir sabit süre vermiyor; pratikte bir tarih seçilmeli (ör. etkinlikten sonra başvuru verilerinin ne zaman silineceği) ve takvime yazılmalı. Sayfada hâlâ "hukuki gözden geçirme bekliyor" uyarısı var. Metin: `src/content/privacy.ts`.
+- [x] **Yaş sınırı:** 18 yaş ve üstü (karar: 8 Kasım 2026). Form ve veritabanı 18 yaş altının başvuru göndermesini engelliyor; rehber, SSS ve gizlilik metninde yazıyor.
+- [x] **Başvuru takvimi:** Ocak 2027'de açılır (gün belli değil; admin panelinden "Açık" yapılır), 31 Mart 2027 23:59'da kapanır. Son tarih `settings.application_deadline` ile veritabanında zorunlu; geçince site "kapandı" gösterir. Tarih değişirse `src/lib/dict.ts` ve `src/content/guide.ts` içindeki metinleri de güncelle.
 - [ ] **Katılım onayı son tarihi:** Kabul edilenlerin onay vermesi gereken tarih admin panelinden (İçerik) girilir. Boşken son tarih gösterilmez.
 - [ ] **Takım kilitleme tarihi:** Takımların hangi saatte kilitleneceği (ör. Cumartesi eşleştirmesinden sonra) admin panelinden girilir.
 - [ ] **Başvurudan sonra değiştirilebilen alanlar:** Şu an telefon, tişört, beslenme, acil durum kişisi, linkler, CV ve duyuru izinleri. Değişiklik gerekirse `settings.application_editable_after_submit`.

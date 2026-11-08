@@ -38,10 +38,13 @@ export default async function PanelPage({ params }: { params: Promise<{ lang: st
   // Fresh settings on every request (the public site caches them; the panel must not).
   const { data: settingRows } = await supabase.from("settings").select("key, value");
   const st = Object.fromEntries((settingRows ?? []).map((r) => [r.key as string, r.value as unknown]));
-  const appStatus = (["upcoming", "open", "closed"].includes(st.application_status as string) ? st.application_status : "upcoming") as
+  const appDeadline = typeof st.application_deadline === "string" ? st.application_deadline : "2027-03-31T23:59:00+03:00";
+  const rawStatus = (["upcoming", "open", "closed"].includes(st.application_status as string) ? st.application_status : "upcoming") as
     | "upcoming"
     | "open"
     | "closed";
+  // Past the application deadline counts as closed, whatever the switch says (the database enforces it too).
+  const appStatus = rawStatus === "open" && Date.now() >= Date.parse(appDeadline) ? "closed" : rawStatus;
   const opensLabel = (st.applications_open_label as { tr?: string; en?: string } | undefined)?.[lang] ?? (lang === "tr" ? "Ocak 2027" : "January 2027");
   const mlhEnabled = st.mlh_enabled === true;
   const confirmDeadline = typeof st.confirm_deadline === "string" ? st.confirm_deadline : null;
@@ -99,10 +102,12 @@ export default async function PanelPage({ params }: { params: Promise<{ lang: st
   const nextStep = !status
     ? appStatus === "upcoming"
       ? t.next.none.upcoming(opensLabel)
-      : t.next.none[appStatus]
+      : appStatus === "open"
+        ? t.next.none.open(formatDate(appDeadline, lang))
+        : t.next.none.closed
     : status === "draft"
       ? appStatus === "open"
-        ? t.next.draft
+        ? t.next.draft(formatDate(appDeadline, lang))
         : t.next.draftClosed
       : status === "accepted"
         ? confirmLate

@@ -47,12 +47,15 @@ export const getSiteConfig = cache(async (): Promise<SiteConfig> => {
     ? (s.application_status as ApplicationStatus)
     : defaults.application.status;
   const label = s.applications_open_label as { tr?: string; en?: string } | undefined;
+  const deadline = str(s.application_deadline) ?? defaults.application.deadline;
 
   return {
     ...defaults,
     application: {
       ...defaults.application,
-      status,
+      // Past the deadline counts as closed. Cached pages refresh within 5 minutes.
+      status: status === "open" && Date.now() >= Date.parse(deadline) ? "closed" : status,
+      deadline,
       opensLabel: { tr: label?.tr || defaults.application.opensLabel.tr, en: label?.en || defaults.application.opensLabel.en },
     },
     deadlines: {

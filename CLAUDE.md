@@ -34,6 +34,7 @@ Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
 - Başvuru durumu (`upcoming` | `open` | `closed`), açılış yazısı, geliştirme başlangıcı, teslim son saati, onay son tarihi, takım kilidi.
 - Sponsorlar ve jüri/mentorlar (yayında olmayan görünmez; jüri/mentor boşsa bölüm render edilmez).
 - MLH bayrakları: `mlh_enabled` (form alanları), `mlh_badge` (header rozeti). Onay gelmeden açılmaz.
+- Başvuru son tarihi (31 Mart 2027 23:59): `/admin/icerik`. Değişirse `dict.ts` ve `guide.ts` metinlerindeki tarihi de güncelle.
 - Program taslağı: `src/data/schedule.ts`.
 
 ## Kurallar

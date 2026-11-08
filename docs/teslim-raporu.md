@@ -72,6 +72,14 @@ Panel ve admin için Supabase projesinde migration'lar uygulanmış olmalı (bkz
 
 `/admin/icerik`: başvuru durumu, açılış yazısı, tarihler, MLH bayrakları, sponsorlar, jüri ve mentorlar. Program taslağı: `src/data/schedule.ts`. Metinler: `src/lib/dict.ts`, `src/content/`.
 
+## Organizatör kararları (8 Kasım 2026, sonradan eklendi)
+
+- Yaş sınırı 18+: formda ve veritabanında zorunlu.
+- Başvurular Ocak 2027'de açılır, 31 Mart 2027 23:59'da kapanır: `application_deadline` ayarı, veritabanında zorunlu, site metinlerinde yazıyor.
+- Veri sorumlusu TeknoFest ADÜ; saklama süresi KVKK md. 4 ve silme/yok etme/anonimleştirme yönetmeliğine göre.
+- Jüri ölçütleri: bekliyor.
+- Ek migration: `supabase/migrations/20261108120000_deadline_age.sql` (SQL editöründe çalıştırılmalı).
+
 ## 7. Yayına almadan önce
 
 1. Supabase SQL editöründe sırayla çalıştır: `supabase/migrations/20261107120000_init.sql`, `20261108090000_panel_admin.sql`, `20261108090100_storage.sql`.

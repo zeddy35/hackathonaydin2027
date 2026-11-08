@@ -11,13 +11,13 @@ export const privacy: Record<Locale, DocPage> = {
     description: "Hackathon Aydın 2027 başvurusunda toplanan kişisel veriler, işlenme amaçları ve hakların. Taslak.",
     eyebrow: "Hackathon Aydın 2027",
     lead: "Başvuru ve katılım sırasında hangi bilgileri neden topladığımızı ve bu bilgiler üzerindeki haklarını anlatır.",
-    banner: "Bu metin taslaktır; organizatör ve hukuk onayı bekliyor. Onaylanan metin başvurular açılmadan önce burada yayınlanacak.",
+    banner: "Bu metin taslaktır; hukuki gözden geçirme bekliyor. Son hali başvurular açılmadan önce burada yayınlanacak.",
     sections: [
       {
         id: "sorumlu",
         h: "Veri sorumlusu",
         blocks: [
-          { p: "Hackathon Aydın, Aydın Adnan Menderes Üniversitesi bünyesindeki TEKNOFEST Kulübü ADÜ tarafından düzenlenir. Veri sorumlusunun resmî unvanı ve iletişim bilgileri onaylanan metinde yer alacak." },
+          { p: "Veri sorumlusu: TeknoFest ADÜ (Aydın Adnan Menderes Üniversitesi öğrenci kulübü). Hackathon Aydın'ı TeknoFest ADÜ düzenler. Başvuru ve talepler için iletişim adresi:" },
           { email: true },
         ],
       },
@@ -27,7 +27,7 @@ export const privacy: Record<Locale, DocPage> = {
         blocks: [
           {
             ul: [
-              "Kimlik ve iletişim: ad, soyad, e-posta, telefon, yaş.",
+              "Kimlik ve iletişim: ad, soyad, e-posta, telefon, yaş (katılım 18 yaş ve üstüne açık).",
               "Eğitim: üniversite, bölüm, öğrenim düzeyi, mezuniyet yılı.",
               "Konum: yaşadığın ülke ve şehir.",
               "Katılım: takım durumu, deneyim, motivasyon metni, tişört bedeni, beslenme tercihi veya alerji bilgisi (isteğe bağlı), acil durum kişisinin adı ve telefonu.",
@@ -65,7 +65,10 @@ export const privacy: Record<Locale, DocPage> = {
       {
         id: "sure",
         h: "Saklama süresi",
-        blocks: [{ note: "Saklama süresi organizatör ve hukuk onayıyla belirlenecek." }],
+        blocks: [
+          { p: "Kişisel verilerin, KVKK'nın 4. maddesindeki ilkeye uygun olarak yalnızca işlendikleri amaç için gerekli olan süre ve ilgili mevzuatın öngördüğü süreler boyunca saklanır." },
+          { p: "Bu süre sona erdiğinde veriler, Kişisel Verilerin Silinmesi, Yok Edilmesi veya Anonim Hale Getirilmesi Hakkında Yönetmelik'e uygun olarak silinir, yok edilir ya da anonim hale getirilir." },
+        ],
       },
       {
         id: "haklar",
@@ -82,13 +85,13 @@ export const privacy: Record<Locale, DocPage> = {
     description: "What personal data Hackathon Aydın 2027 collects when you apply, why, and your rights. Draft.",
     eyebrow: "Hackathon Aydın 2027",
     lead: "Which information we collect when you apply and attend, why we need it, and your rights over it.",
-    banner: "This notice is a draft awaiting organizer and legal review. The approved text will be published here before applications open.",
+    banner: "This notice is a draft awaiting legal review. The final text will be published here before applications open.",
     sections: [
       {
         id: "controller",
         h: "Data controller",
         blocks: [
-          { p: "Hackathon Aydın is organized by TEKNOFEST Kulübü ADÜ, a student club at Aydın Adnan Menderes University. The controller's official name and contact details will be in the approved notice." },
+          { p: "Data controller: TeknoFest ADÜ (a student club at Aydın Adnan Menderes University), which organizes Hackathon Aydın. Contact for questions and requests:" },
           { email: true },
         ],
       },
@@ -98,7 +101,7 @@ export const privacy: Record<Locale, DocPage> = {
         blocks: [
           {
             ul: [
-              "Identity and contact: first and last name, email, phone, age.",
+              "Identity and contact: first and last name, email, phone, age (participants must be 18 or older).",
               "Education: university, field of study, level of study, graduation year.",
               "Location: country and city of residence.",
               "Attendance: team status, experience, motivation, T-shirt size, dietary needs or allergies (optional), emergency contact name and phone.",
@@ -136,7 +139,10 @@ export const privacy: Record<Locale, DocPage> = {
       {
         id: "retention",
         h: "Retention",
-        blocks: [{ note: "The retention period will be set with organizer and legal approval." }],
+        blocks: [
+          { p: "In line with Article 4 of KVKK, personal data is kept only as long as needed for the purpose it was collected for and for any period required by applicable law." },
+          { p: "When that period ends, the data is deleted, destroyed or anonymised as set out in the Turkish Regulation on the Deletion, Destruction or Anonymisation of Personal Data." },
+        ],
       },
       {
         id: "rights",

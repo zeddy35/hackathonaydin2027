@@ -32,7 +32,7 @@ const tr = {
     apply: "Başvur",
     closed: "Başvurular kapandı",
     sponsor: "Sponsor ol",
-    opensIn: (label: string) => `Başvurular ${label}'da açılacak.`,
+    opensIn: (label: string) => `Başvurular ${label}'da açılacak, 31 Mart 2027 23:59'da kapanacak.`,
   },
   countdown: {
     label: "Açılış törenine",
@@ -62,7 +62,7 @@ const tr = {
   how: {
     title: "Nasıl katılırım?",
     steps: [
-      { h: "Başvuru", p: "Başvurular Ocak 2027'de bu sitede açılacak." },
+      { h: "Başvuru", p: "Başvurular Ocak 2027'de bu sitede açılacak, 31 Mart 2027 23:59'da kapanacak." },
       { h: "Takım oluşturma", p: "Takımlar 3-5 kişi. Tek başvuranları Cumartesi sabahı takımlarla eşleştiriyoruz." },
       { h: "28 saat geliştirme", p: "Cumartesi 11:00'de başlar, Pazar 15:00'te teslimle biter." },
       { h: "Proje sunumu", p: "Tüm takımlar masasında demo yapar. Jüri finale 10 takım seçer." },
@@ -137,7 +137,7 @@ const tr = {
     items: [
       {
         q: "Kimler katılabilir?",
-        a: "Etkinlik üniversite öğrencilerine yönelik. Uygunluk koşullarının ayrıntıları Ocak'ta başvurularla birlikte açıklanacak.",
+        a: "Etkinlik üniversite öğrencilerine yönelik ve 18 yaş ve üstüne açık. Diğer uygunluk koşullarının ayrıntıları Ocak'ta başvurularla birlikte açıklanacak.",
       },
       { q: "Ücret var mı?", a: "Hayır. Katılım ücretsiz, etkinlik boyunca yemek ve içecek dahil." },
       {
@@ -158,7 +158,7 @@ const tr = {
       },
       {
         q: "Başvuru ve seçim süreci nasıl işliyor?",
-        a: "Başvurular Ocak 2027'de bu sitede açılacak. Seçim sürecinin ayrıntıları Ocak'ta başvurularla birlikte açıklanacak.",
+        a: "Başvurular Ocak 2027'de bu sitede açılacak ve 31 Mart 2027 saat 23:59'da (Türkiye saati) kapanacak. Seçim sürecinin ayrıntıları Ocak'ta başvurularla birlikte açıklanacak.",
       },
     ],
   },
@@ -210,7 +210,7 @@ const en: Dict = {
     apply: "Apply",
     closed: "Applications closed",
     sponsor: "Become a sponsor",
-    opensIn: (label: string) => `Applications open in ${label}.`,
+    opensIn: (label: string) => `Applications open in ${label} and close on 31 March 2027 at 23:59.`,
   },
   countdown: {
     label: "Until the opening ceremony",
@@ -240,7 +240,7 @@ const en: Dict = {
   how: {
     title: "How to join",
     steps: [
-      { h: "Apply", p: "Applications open on this site in January 2027." },
+      { h: "Apply", p: "Applications open on this site in January 2027 and close on 31 March 2027 at 23:59." },
       { h: "Form a team", p: "Teams have 3 to 5 people. If you apply alone, we match you with a team on Saturday morning." },
       { h: "Build for 28 hours", p: "Starts Saturday 11:00, ends with submissions on Sunday 15:00." },
       { h: "Present", p: "Every team demos at their table. The jury picks 10 teams for the final stage." },
@@ -315,7 +315,7 @@ const en: Dict = {
     items: [
       {
         q: "Who can join?",
-        a: "The event is for university students. Full eligibility details will be published with applications in January.",
+        a: "The event is for university students aged 18 and over. Other eligibility details will be published with applications in January.",
       },
       { q: "Is there a fee?", a: "No. Participation is free, and food and drinks are included throughout the event." },
       {
@@ -336,7 +336,7 @@ const en: Dict = {
       },
       {
         q: "How do applications and selection work?",
-        a: "Applications open on this site in January 2027. Details of the selection process will be published with applications in January.",
+        a: "Applications open on this site in January 2027 and close on 31 March 2027 at 23:59 (Türkiye time). Details of the selection process will be published with applications in January.",
       },
     ],
   },

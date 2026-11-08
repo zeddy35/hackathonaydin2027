@@ -28,7 +28,7 @@ export default async function Overview() {
     ["Takım", teams ?? 0],
     ["Takım arayan", lookingCount],
     ["Teslim", subs ?? 0],
-    ["18 yaş altı", list.filter((a) => a.is_minor).length, "Karar bekleyen konu, notlara bak"],
+    ["18 yaş altı", list.filter((a) => a.is_minor).length, "Katılım 18+; gönderim veritabanında engelli"],
   ];
 
   const group = (key: string, labels?: Record<string, string>) => {

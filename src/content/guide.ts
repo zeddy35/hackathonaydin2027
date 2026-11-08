@@ -14,15 +14,15 @@ export const guide: Record<Locale, DocPage> = {
         id: "kimler",
         h: "Kimler katılabilir?",
         blocks: [
-          { p: "Etkinlik üniversite öğrencilerine yönelik. Katılım ücretsiz." },
-          { note: "Uygunluk koşullarının ayrıntıları Ocak 2027'de başvurularla birlikte açıklanacak." },
+          { p: "Etkinlik üniversite öğrencilerine yönelik. Katılmak için 18 yaşında ya da daha büyük olmalısın. Katılım ücretsiz." },
+          { note: "Diğer uygunluk koşullarının ayrıntıları Ocak 2027'de başvurularla birlikte açıklanacak." },
         ],
       },
       {
         id: "basvuru",
         h: "Başvuru ve takım eşleştirme",
         blocks: [
-          { p: "Başvurular Ocak 2027'de bu sitede açılacak. Şu an başvuru alınmıyor." },
+          { p: "Başvurular Ocak 2027'de bu sitede açılacak ve 31 Mart 2027 saat 23:59'da (Türkiye saati) kapanacak. Şu an başvuru alınmıyor." },
           {
             ul: [
               "Takımlar 3-5 kişiden oluşur.",
@@ -112,15 +112,15 @@ export const guide: Record<Locale, DocPage> = {
         id: "who",
         h: "Who can join?",
         blocks: [
-          { p: "The event is for university students. Participation is free." },
-          { note: "Full eligibility details will be published with applications in January 2027." },
+          { p: "The event is for university students. You must be 18 or older to take part. Participation is free." },
+          { note: "Other eligibility details will be published with applications in January 2027." },
         ],
       },
       {
         id: "apply",
         h: "Applications and team matching",
         blocks: [
-          { p: "Applications open on this site in January 2027. We are not taking applications yet." },
+          { p: "Applications open on this site in January 2027 and close on 31 March 2027 at 23:59 (Türkiye time). We are not taking applications yet." },
           {
             ul: [
               "Teams have 3 to 5 people.",

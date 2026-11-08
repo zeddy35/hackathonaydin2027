@@ -27,6 +27,8 @@ export const MLH_LEVEL: Record<(typeof LEVELS)[number], string> = {
 };
 
 export const MOTIVATION_MAX = 500;
+/** Organizer decision: participants must be 18 or older (also enforced in the database). */
+export const MIN_AGE = 18;
 export const CV_MAX_BYTES = 5 * 1024 * 1024;
 
 const text = (max: number) => z.string().trim().max(max);
@@ -50,7 +52,8 @@ export const submitSchema = z.object({
   age: z
     .string()
     .trim()
-    .refine((v) => /^[0-9]{1,3}$/.test(v) && +v >= 10 && +v <= 99, "age"),
+    .refine((v) => /^[0-9]{1,3}$/.test(v) && +v >= 10 && +v <= 99, "age")
+    .refine((v) => !/^[0-9]{1,3}$/.test(v) || +v >= MIN_AGE, "age_min"),
   university: required(120),
   department: required(120),
   level: z.enum(LEVELS),

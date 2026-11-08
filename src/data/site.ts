@@ -9,6 +9,7 @@ export const site: SiteConfig = {
     status: "upcoming",
     formPage: "panel",
     opensLabel: { tr: "Ocak 2027", en: "January 2027" },
+    deadline: "2027-03-31T23:59:00+03:00",
   },
   event: {
     kickoff: "2027-04-17T10:00:00+03:00",
