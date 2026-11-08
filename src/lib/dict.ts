@@ -179,6 +179,7 @@ const tr = {
     rules: "Kurallar ve değerlendirme",
     coc: "Davranış kuralları",
     partners: "Partner bilgileri",
+    privacy: "Gizlilik (KVKK)",
     instagram: "Instagram",
   },
 };
@@ -356,6 +357,7 @@ const en: Dict = {
     rules: "Rules and judging",
     coc: "Code of conduct",
     partners: "Partner information",
+    privacy: "Privacy",
     instagram: "Instagram",
   },
 };

@@ -218,12 +218,22 @@ select tests.count('select count(*) from public.submissions', 0, 'C cannot see a
 select tests.logout();
 
 select tests.login('00000000-0000-4000-8000-0000000000a1');
-select tests.count('select count(*) from public.submissions', 1, 'judge sees submissions');
+select tests.count('select count(*) from public.submissions', 0, 'judge sees no unassigned submission');
+select tests.logout();
+
+insert into public.judge_assignments (submission_id, judge_id)
+  select id, '00000000-0000-4000-8000-0000000000a1' from public.submissions;
+
+select tests.login('00000000-0000-4000-8000-0000000000a1');
+select tests.count('select count(*) from public.submissions', 1, 'judge sees assigned submission');
+select tests.throws($q$insert into public.scores (submission_id, round, criteria) select id, 'final', '{"impact":4}' from public.submissions$q$, 'row-level security');
+select tests.throws($q$insert into public.scores (submission_id, round, criteria) select id, 'finalist_selection', '{"impact":11}' from public.submissions$q$, 'invalid_score');
 select tests.affects($q$insert into public.scores (submission_id, round, criteria) select id, 'finalist_selection', '{"impact":4}' from public.submissions$q$, 1, 'judge scores');
 select tests.throws($q$insert into public.scores (submission_id, round, criteria) select id, 'finalist_selection', '{}' from public.submissions$q$, 'duplicate key');
 select tests.logout();
 
 select tests.login('00000000-0000-4000-8000-0000000000a2');
+select tests.count('select count(*) from public.submissions', 0, 'unassigned judge sees no submission');
 select tests.count('select count(*) from public.scores', 0, 'second judge cannot see first judge''s score');
 select tests.affects($q$update public.scores set comment = 'x'$q$, 0, 'second judge cannot edit first judge''s score');
 select tests.logout();

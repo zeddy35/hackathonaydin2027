@@ -21,6 +21,7 @@ export default function Footer({
     { href: pagePath(lang, "guide"), label: f.guide },
     { href: pagePath(lang, "rules"), label: f.rules },
     { href: pagePath(lang, "partners"), label: f.partners },
+    { href: pagePath(lang, "privacy"), label: f.privacy },
   ];
   const external = [
     { href: COC_URL, label: f.coc },

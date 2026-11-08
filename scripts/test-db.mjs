@@ -31,6 +31,19 @@ grant execute on function auth.uid() to anon, authenticated, service_role;
 alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
 alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
 alter default privileges in schema public grant all on functions to anon, authenticated, service_role;
+create schema storage;
+create table storage.buckets (
+  id text primary key, name text, public boolean, file_size_limit bigint, allowed_mime_types text[]
+);
+create table storage.objects (
+  id uuid primary key default gen_random_uuid(), bucket_id text, name text, owner uuid default auth.uid()
+);
+alter table storage.objects enable row level security;
+create function storage.foldername(name text) returns text[] language sql immutable as $$
+  select (string_to_array(name, '/'))[1:array_length(string_to_array(name, '/'), 1) - 1]
+$$;
+grant usage on schema storage to anon, authenticated, service_role;
+grant all on storage.objects to anon, authenticated, service_role;
 `;
 
 const db = new PGlite();
@@ -51,15 +64,21 @@ for (const f of readdirSync(join(root, "migrations")).filter((f) => f.endsWith("
   await run(`migration ${f}`, readFileSync(join(root, "migrations", f), "utf8"));
 }
 
-const res = await db
-  .exec(readFileSync(join(root, "tests", "rls_test.sql"), "utf8"), { onNotice: (n) => notices.push(n.message) })
-  .catch((e) => {
-    console.error(`\n✗ rls tests\n  ${e.message}`);
-    process.exit(1);
-  });
-
-const passed = notices.filter((m) => m.startsWith("ok")).length;
-for (const m of notices) console.log("  " + m);
-const final = res?.flatMap((r) => r.rows ?? []).find((r) => r.result);
-console.log(`\n${final?.result ?? "tests finished"} (${passed} checks)`);
+let total = 0;
+for (const f of readdirSync(join(root, "tests")).filter((f) => f.endsWith(".sql")).sort()) {
+  notices.length = 0;
+  const res = await db
+    .exec(readFileSync(join(root, "tests", f), "utf8"), { onNotice: (n) => notices.push(n.message) })
+    .catch((e) => {
+      for (const m of notices) console.log("  " + m);
+      console.error(`\n✗ ${f}\n  ${e.message}`);
+      process.exit(1);
+    });
+  const passed = notices.filter((m) => m.startsWith("ok")).length;
+  total += passed;
+  if (process.argv.includes("--verbose")) for (const m of notices) console.log("  " + m);
+  const final = res?.flatMap((r) => r.rows ?? []).find((r) => r.result);
+  console.log(`✓ ${f}: ${final?.result ?? "finished"} (${passed} checks)`);
+}
+console.log(`\nAll test files passed (${total} checks)`);
 await db.close();

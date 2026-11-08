@@ -16,7 +16,11 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 - [ ] Ödüller. Kesinleşmeden sitede ödül veya nakit vaadi yok.
 - [ ] Sponsorlar. Onaylananları `src/data/sponsors.ts` içine ekle, logoları `public/sponsors/` altına koy.
 - [ ] Davranış kuralları ihlali için bildirim kanalı: şu an geçici e-posta. Ayrı bir adres (ör. kurumsal e-posta) ve etkinlikte sorumlu kişi(ler) belirlenmeli.
-- [ ] Gizlilik metni (KVKK aydınlatma metni). Başvuru formundan (görev 3) önce gerekli. Hazır olunca footer'a link eklenecek.
+- [ ] **Gizlilik metni (KVKK aydınlatma metni):** `/tr/gizlilik` ve `/en/privacy` sayfası taslak olarak yayında (footer'da linkli, sayfada "organizatör ve hukuk onayı bekliyor" uyarısı var). Veri sorumlusunun resmî unvanı, iletişim adresi ve saklama süresi eksik. Metin: `src/content/privacy.ts`.
+- [ ] **Yaş sınırı ve veli izni kararı:** Form 18 yaş altını engellemiyor; bu başvurular veritabanında `is_minor` ile işaretleniyor ve admin panelinde görünüyor. 18 yaş altı kabul edilecek mi, edilirse veli izni nasıl alınacak? Gece boyu süren etkinlik için ayrıca önemli.
+- [ ] **Katılım onayı son tarihi:** Kabul edilenlerin onay vermesi gereken tarih admin panelinden (İçerik) girilir. Boşken son tarih gösterilmez.
+- [ ] **Takım kilitleme tarihi:** Takımların hangi saatte kilitleneceği (ör. Cumartesi eşleştirmesinden sonra) admin panelinden girilir.
+- [ ] **Başvurudan sonra değiştirilebilen alanlar:** Şu an telefon, tişört, beslenme, acil durum kişisi, linkler, CV ve duyuru izinleri. Değişiklik gerekirse `settings.application_editable_after_submit`.
 - [ ] Domain. Alınınca Vercel'de `NEXT_PUBLIC_SITE_URL` ayarla.
 - [ ] 2025 ve 2026 fotoğraflarının orijinalleri (şu an `stage.jpg`, `winners.jpg`, `builder.jpg` 480 px genişliğinde).
 - [ ] Program taslağı: atölye, mentorluk saatleri, gece etkinlikleri, Pazar kahvaltısı ve öğle yemeği eklenecekse onaylanmalı.
@@ -52,6 +56,7 @@ Kaynak: <https://github.com/MLH/mlh-policies/blob/main/member-event-guidelines.m
   2. Başvuru bilgilerimin etkinlik yönetimi için MLH ile paylaşılmasına izin veriyorum; MLH Contest Terms and Conditions ve MLH Privacy Policy'yi kabul ediyorum.
   3. (İsteğe bağlı) MLH'den e-posta almayı kabul ediyorum.
   Metinler MLH'nin belgesindeki İngilizce haliyle birebir kullanılmalı; Türkçe çeviri yanında verilebilir.
+  **Durum:** Form hazır. Üç kutu `member-event-guidelines.md` içindeki İngilizce metinlerle birebir ekli (TR formda altında çeviri). Admin panelinde `mlh_enabled` açılana kadar hiçbiri görünmez. Form MLH'nin zorunlu alanlarını topluyor (ad, soyad, yaş, e-posta, okul, telefon, ülke, öğrenim düzeyi). MLH formu açıldığında başvurular zaten açıksa, MLH'nin önerdiği "We have applied to be a Major League Hacking (MLH) Member Event..." uyarısını eklemek gerekebilir.
 - [ ] **Marka:** Üyelik onaylanınca header'da MLH Season Trust Badge ve partnerler bölümünde MLH logosu zorunlu. Kod hazır: `src/data/site.ts` → `mlh.badge = true`, `badgeHref` ve `badgeImage` (MLH brand guidelines sayfasındaki resmi rozet). Onay gelmeden açma; "Official MLH Event" yazma.
 
 ## OpenAI

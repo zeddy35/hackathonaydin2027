@@ -21,7 +21,14 @@ export async function createClient() {
 }
 
 export type Role = "participant" | "judge" | "admin" | "owner";
-export type Profile = { id: string; email: string; full_name: string | null; role: Role; locale: "tr" | "en" };
+export type Profile = {
+  id: string;
+  email: string;
+  full_name: string | null;
+  role: Role;
+  locale: "tr" | "en";
+  disabled_at: string | null;
+};
 
 /** Signed-in user and profile, or null. Role always comes from the database. */
 export async function getSession() {
@@ -32,7 +39,7 @@ export async function getSession() {
   if (!user) return null;
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, email, full_name, role, locale")
+    .select("id, email, full_name, role, locale, disabled_at")
     .eq("id", user.id)
     .single<Profile>();
   return { user, profile, supabase };

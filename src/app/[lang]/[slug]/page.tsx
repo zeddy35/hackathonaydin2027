@@ -3,6 +3,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import DocPage from "@/components/DocPage";
 import { guide } from "@/content/guide";
 import { partners } from "@/content/partners";
+import { privacy } from "@/content/privacy";
 import { rules } from "@/content/rules";
 import type { DocPage as Doc } from "@/content/types";
 import { getSiteConfig } from "@/data";
@@ -10,7 +11,7 @@ import { getDict, isLocale, locales, type Locale } from "@/lib/dict";
 import { livePages, pagePath, pageSlugs, resolveSlug, type PageKey } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
-const docs: Partial<Record<PageKey, Record<Locale, Doc>>> = { guide, rules, partners };
+const docs: Partial<Record<PageKey, Record<Locale, Doc>>> = { guide, rules, partners, privacy };
 
 /** Every live page in its own language, plus the other language's slug so it can redirect. */
 export function generateStaticParams() {

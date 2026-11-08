@@ -1,7 +1,7 @@
 /**
- * Content models. Task 4 moves these into the database, so keep the shapes
- * flat and serialisable. Components never import the data files directly;
- * they call the getters in `src/data/index.ts`.
+ * Content models. Stored in Supabase (settings, sponsors, people) and read
+ * through the getters in `src/data/index.ts`. The files in this folder are the
+ * defaults used when the database is not configured.
  */
 
 export type ApplicationStatus = "upcoming" | "open" | "closed";
@@ -10,7 +10,7 @@ export type SiteConfig = {
   application: {
     status: ApplicationStatus;
     /** Page key of the application form (resolved per language in src/lib/routes.ts). */
-    formPage: "apply";
+    formPage: "panel";
     /** When applications open. Only the month is confirmed, so this is display copy, not a date. */
     opensLabel: { tr: string; en: string };
   };
@@ -20,7 +20,16 @@ export type SiteConfig = {
     /** Awards, Europe/Istanbul. After this the event counts as finished. */
     end: string;
   };
+  /** Europe/Istanbul ISO times, enforced again in the database. */
+  deadlines: {
+    hackStart: string;
+    submission: string;
+    /** Accepted participants confirm attendance by this time. Null: not set yet. */
+    confirm: string | null;
+  };
   mlh: {
+    /** Show the MLH fields on the application form. Keep false until MLH confirms membership. */
+    enabled: boolean;
     /** Render the MLH Season Trust Badge. Keep false until MLH confirms membership. */
     badge: boolean;
     badgeHref: string;

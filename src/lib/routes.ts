@@ -5,8 +5,7 @@ export const pageSlugs = {
   guide: { tr: "rehber", en: "guide" },
   rules: { tr: "kurallar", en: "rules" },
   partners: { tr: "partner", en: "partners" },
-  /** Application form, added in task 3. Not rendered yet. */
-  apply: { tr: "basvuru", en: "apply" },
+  privacy: { tr: "gizlilik", en: "privacy" },
   login: { tr: "giris", en: "login" },
   panel: { tr: "panel", en: "panel" },
 } as const;
@@ -14,7 +13,7 @@ export const pageSlugs = {
 export type PageKey = keyof typeof pageSlugs;
 
 /** Pages that exist today (used for static params and the sitemap). */
-export const livePages: PageKey[] = ["guide", "rules", "partners"];
+export const livePages: PageKey[] = ["guide", "rules", "partners", "privacy"];
 
 export const pagePath = (lang: Locale, key: PageKey) => `/${lang}/${pageSlugs[key][lang]}`;
 
