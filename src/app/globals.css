@@ -129,3 +129,6 @@
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Admin: let wide tables scroll inside their box instead of widening the page. */
+.admin-main .grid > * { min-width: 0; }

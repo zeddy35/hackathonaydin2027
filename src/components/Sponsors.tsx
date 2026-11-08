@@ -81,7 +81,7 @@ export default function Sponsors({
           </Link>
           <CopyEmail email={email} copy={d.footer.copy} copied={d.footer.copied} />
         </div>
-        <Link href={packagesHref} className="link w-fit text-[15px]">
+        <Link href={packagesHref} className="link inline-flex min-h-11 w-fit items-center text-[15px]">
           {t.compare}
         </Link>
       </div>

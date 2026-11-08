@@ -132,7 +132,7 @@ export default function ApplicationsTable({ rows }: { rows: AppRow[] }) {
                   </label>
                 </td>
                 <td className="border-b border-rule px-3 py-2">
-                  <Link href={`/admin/basvurular/${r.id}`} className="link font-medium">
+                  <Link href={`/admin/basvurular/${r.id}`} className="link inline-flex min-h-11 items-center font-medium">
                     {r.name}
                   </Link>
                   <div className="text-[12px] text-muted">{r.email}</div>

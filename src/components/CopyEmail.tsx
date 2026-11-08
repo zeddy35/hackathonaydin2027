@@ -17,7 +17,7 @@ export default function CopyEmail({ email, copy, copied }: { email: string; copy
 
   return (
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
-      <a href={`mailto:${email}`} className="link select-all break-all font-mono text-[15px] text-ink">
+      <a href={`mailto:${email}`} className="link inline-flex min-h-11 select-all items-center break-all font-mono text-[15px] text-ink">
         {email}
       </a>
       <button

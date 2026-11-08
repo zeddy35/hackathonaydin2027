@@ -123,8 +123,9 @@ export default function Header({
       }`}
     >
       <div className="wrap flex h-[var(--header-h)] items-center gap-4">
-        <Link href={`/${lang}`} className="-mx-1 flex min-h-11 min-w-0 items-center rounded-md px-1" aria-label={`Hackathon Aydın 2027, ${labels.home}`}>
+        <Link href={`/${lang}`} className="-mx-1 flex min-h-11 min-w-0 items-center rounded-md px-1">
           <Logo />
+          <span className="sr-only">, {labels.home}</span>
         </Link>
 
         {mlh && (
@@ -162,16 +163,16 @@ export default function Header({
             onClick={remember}
             hrefLang={other}
             lang={other}
-            aria-label={labels.switchTo}
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-2 font-mono text-[13px] font-medium text-muted transition-colors hover:text-ink"
           >
             {/* Small screens: only the language you can switch to. */}
-            <span aria-hidden="true" className="sm:hidden">{other.toUpperCase()}</span>
-            <span aria-hidden="true" className="hidden sm:inline">
+            <span className="sm:hidden">{other.toUpperCase()}</span>
+            <span className="hidden sm:inline">
               <span className={lang === "tr" ? "text-ink" : ""}>TR</span>
               <span className="px-1 text-rule">/</span>
               <span className={lang === "en" ? "text-ink" : ""}>EN</span>
             </span>
+            <span className="sr-only">, {labels.switchTo}</span>
           </Link>
           <Link href={joinHref} className="btn btn-primary hidden lg:inline-flex">
             {labels.join}

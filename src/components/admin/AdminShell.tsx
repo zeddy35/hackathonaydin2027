@@ -77,7 +77,7 @@ export default function AdminShell({
           </ul>
         </nav>
       </header>
-      <main id="main" className="mx-auto grid max-w-[1400px] gap-6 px-4 py-6 md:px-6 md:py-8">
+      <main id="main" className="admin-main mx-auto grid max-w-[1400px] grid-cols-[minmax(0,1fr)] gap-6 px-4 py-6 md:px-6 md:py-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-[26px] font-semibold tracking-[-0.02em] md:text-[30px]">{title}</h1>
           {actions}
