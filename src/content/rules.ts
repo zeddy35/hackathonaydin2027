@@ -67,10 +67,11 @@ export const rules: Record<Locale, DocPage> = {
           { p: "Jüri ölçütleri (taslak):" },
           {
             ul: [
-              "Problem ve etki",
               "Teknik uygulama",
-              "Ürün ve kullanıcı deneyimi",
-              "Sunum ve demo",
+              "Etki ve problem",
+              "Yenilik",
+              "Demo ve sunum",
+              "Tamamlanmışlık ve kullanıcı deneyimi",
             ],
           },
           { note: "Ölçütler ve ağırlıkları başvurular açılmadan önce kesinleşecek. Jüri isimleri henüz açıklanmadı." },
@@ -152,10 +153,11 @@ export const rules: Record<Locale, DocPage> = {
           { p: "Judging criteria (draft):" },
           {
             ul: [
-              "Problem and impact",
               "Technical execution",
-              "Product and user experience",
-              "Presentation and demo",
+              "Impact and problem",
+              "Innovation",
+              "Demo and presentation",
+              "Completeness and user experience",
             ],
           },
           { note: "Criteria and weights will be final before applications open. Judges have not been announced yet." },

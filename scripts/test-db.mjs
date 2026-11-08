@@ -18,6 +18,8 @@ create schema auth;
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
   email text,
+  aud text,
+  role text,
   raw_user_meta_data jsonb not null default '{}'
 );
 create function auth.uid() returns uuid language sql stable as $$
@@ -82,3 +84,19 @@ for (const f of readdirSync(join(root, "tests")).filter((f) => f.endsWith(".sql"
 }
 console.log(`\nAll test files passed (${total} checks)`);
 await db.close();
+
+// The dev seed must apply cleanly on a fresh database.
+const fresh = new PGlite();
+await fresh.exec(supabaseStub);
+for (const f of readdirSync(join(root, "migrations")).filter((f) => f.endsWith(".sql")).sort()) {
+  await fresh.exec(readFileSync(join(root, "migrations", f), "utf8"));
+}
+try {
+  await fresh.exec(readFileSync(join(root, "seed.dev.sql"), "utf8"));
+  const { rows } = await fresh.query("select status, count(*)::int as n from public.applications group by status order by status");
+  console.log(`✓ seed.dev.sql applies (${rows.map((r) => `${r.status}: ${r.n}`).join(", ")})`);
+} catch (e) {
+  console.error(`✗ seed.dev.sql\n  ${e.message}`);
+  process.exit(1);
+}
+await fresh.close();

@@ -28,16 +28,20 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 
 ## Önerilen jüri ölçütleri (onay bekliyor)
 
-Sitede sadece ölçüt adları "taslak" etiketiyle yayınlanıyor; ağırlıklar yayınlanmıyor.
+Admin panelinde (Puanlama → Ölçütler) değiştirilebilir. Her ölçüt 1-10 puanlanır; sonuç ağırlıklı ortalamadır. Sitede (kurallar sayfası) ağırlıklar yayınlanmıyor.
 
 | Ölçüt | Önerilen ağırlık | Ne bakılır |
 | --- | --- | --- |
-| Problem ve etki | %25 | Problem gerçek mi, çözüm kime ne kazandırıyor? |
-| Teknik uygulama | %30 | Çalışıyor mu, 28 saatte ne kadar zor bir iş yapılmış? |
-| Ürün ve kullanıcı deneyimi | %25 | Kullanılabilir mi, akış anlaşılır mı? |
-| Sunum ve demo | %20 | Canlı demo, net anlatım, süreye uyum |
+| Teknik uygulama | %20 | Çalışıyor mu, 28 saatte ne kadar zor bir iş yapılmış? |
+| Etki ve problem | %20 | Problem gerçek mi, çözüm kime ne kazandırıyor? |
+| Yenilik | %20 | Fikir ya da yaklaşım yeni mi? |
+| Demo ve sunum | %20 | Canlı demo, net anlatım, süreye uyum |
+| Tamamlanmışlık ve kullanıcı deneyimi | %20 | Kullanılabilir mi, akış anlaşılır mı? |
 
-Finalist seçimi (masalarda demo) için aynı ölçütlerle kısa bir puanlama formu önerilir. Kimse etkinlikten gönderilmez; bu cümle kurallar sayfasında açıkça var.
+İki tur var: finalist seçimi (masalarda; her takıma en az 2 jüri atanır) ve final (sahnedeki ilk 10, online jüri). Kimse etkinlikten gönderilmez; bu cümle kurallar sayfasında açıkça var. Kurallar sayfasındaki ölçüt listesi bu tabloyla aynı değilse, onaydan sonra ikisini eşitle.
+
+- [ ] Ölçütler ve ağırlıklar onayı.
+- [ ] Online final jürisinin puanlarını aynı akşam girmesi (MLH için de gerekli).
 
 ## MLH
 

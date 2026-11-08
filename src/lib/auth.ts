@@ -15,6 +15,7 @@ export async function requireRole(roles: Role[], next = "/admin") {
   const session = await getSession();
   if (!session) redirect(`/tr/giris?next=${encodeURIComponent(next)}`);
   const { profile } = session;
+  if (profile?.role === "judge" && !profile.disabled_at && !roles.includes("judge")) redirect("/admin/juri");
   if (!profile || profile.disabled_at || !roles.includes(profile.role)) redirect("/admin/yetki-yok");
   return { ...session, profile };
 }

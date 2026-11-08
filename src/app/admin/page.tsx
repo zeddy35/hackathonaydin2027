@@ -1,52 +1,89 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import Logo from "@/components/Logo";
-import { supabaseConfigured } from "@/lib/supabase/env";
-import { getSession } from "@/lib/supabase/server";
+import AdminShell, { Panel, td, th } from "@/components/admin/AdminShell";
+import { LEVEL_LABEL, STATUS_LABEL } from "@/components/admin/labels";
+import { requireRole, STAFF } from "@/lib/auth";
 
-/** Protected skeleton. The admin panel itself arrives in task 4. Role is read from the database. */
-export default async function AdminPage() {
-  if (!supabaseConfigured) redirect("/tr/giris?next=/admin");
-  const session = await getSession();
-  if (!session) redirect("/tr/giris?next=/admin");
-  const role = session.profile?.role;
-  const allowed = role === "admin" || role === "owner" || role === "judge";
+export const dynamic = "force-dynamic";
+
+export default async function Overview() {
+  const { profile, supabase } = await requireRole(STAFF, "/admin");
+  const [{ data: apps }, { count: teams }, { count: subs }] = await Promise.all([
+    supabase.from("applications").select("status, answers, is_minor, wants_match"),
+    supabase.from("teams").select("id", { count: "exact", head: true }),
+    supabase.from("submissions").select("id", { count: "exact", head: true }).not("submitted_at", "is", null),
+  ]);
+  const list = (apps ?? []).filter((a) => a.status !== "draft");
+  const by = (s: string) => list.filter((a) => a.status === s).length;
+  const answer = (a: { answers: unknown }, k: string) => ((a.answers ?? {}) as Record<string, string>)[k] ?? "";
+  const lookingCount = list.filter((a) => answer(a, "team_status") === "looking" || a.wants_match).length;
+
+  const stats: [string, number, string?][] = [
+    ["Toplam başvuru", list.length, "Gönderilmiş (taslaklar hariç)"],
+    ["İnceleniyor", by("submitted")],
+    ["Kabul (onay bekliyor)", by("accepted")],
+    ["Onaylayan", by("confirmed") + by("checked_in"), "Check-in yapanlar dahil"],
+    ["Yedek", by("waitlisted")],
+    ["Ret", by("rejected")],
+    ["Katılmıyor", by("declined")],
+    ["Check-in", by("checked_in")],
+    ["Takım", teams ?? 0],
+    ["Takım arayan", lookingCount],
+    ["Teslim", subs ?? 0],
+    ["18 yaş altı", list.filter((a) => a.is_minor).length, "Karar bekleyen konu, notlara bak"],
+  ];
+
+  const group = (key: string, labels?: Record<string, string>) => {
+    const m = new Map<string, number>();
+    for (const a of list) {
+      const v = answer(a, key).trim() || "(boş)";
+      const label = labels?.[v] ?? v;
+      m.set(label, (m.get(label) ?? 0) + 1);
+    }
+    return [...m.entries()].sort((a, b) => b[1] - a[1]);
+  };
 
   return (
-    <div className="wrap grid gap-8 py-12">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-6">
-        <Link href="/tr" className="min-h-11 content-center">
-          <Logo />
-        </Link>
-        <form action="/auth/signout" method="post">
-          <input type="hidden" name="lang" value="tr" />
-          <button type="submit" className="btn btn-secondary">
-            Çıkış yap
-          </button>
-        </form>
-      </header>
+    <AdminShell profile={profile} current="/admin" title="Genel bakış">
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {stats.map(([label, n, hint]) => (
+          <li key={label} className="grid gap-1 rounded-xl border border-rule bg-surface p-4">
+            <span className="text-[13px] text-muted">{label}</span>
+            <span className="font-mono text-[28px] font-medium">{n}</span>
+            {hint && <span className="text-[12px] text-muted">{hint}</span>}
+          </li>
+        ))}
+      </ul>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Panel title="Üniversiteye göre">
+          <Dist rows={group("university")} />
+        </Panel>
+        <Panel title="Öğrenim düzeyine göre">
+          <Dist rows={group("level", LEVEL_LABEL)} />
+        </Panel>
+      </div>
+    </AdminShell>
+  );
+}
 
-      {allowed ? (
-        <section className="grid gap-3">
-          <h1 className="text-[32px] font-semibold tracking-[-0.02em]">Yönetim paneli</h1>
-          <p className="text-muted">
-            {session.user.email} · rol: <strong className="text-ink">{role}</strong>
-          </p>
-          <p className="max-w-[60ch] text-muted">
-            Başvuru yönetimi, e-postalar, check-in, jüri puanlama ve içerik yönetimi 4. görevde eklenecek.
-          </p>
-        </section>
-      ) : (
-        <section className="grid gap-3">
-          <h1 className="text-[32px] font-semibold tracking-[-0.02em]">Erişim yok</h1>
-          <p className="max-w-[60ch] text-muted">
-            Bu sayfa organizasyon ekibi ve jüri içindir. Hesabının yetkilendirilmesi gerekiyorsa organizatöre yaz.
-          </p>
-          <Link href="/tr/panel" className="link w-fit">
-            Katılımcı paneline dön
-          </Link>
-        </section>
-      )}
+function Dist({ rows }: { rows: [string, number][] }) {
+  if (!rows.length) return <p className="text-muted">Henüz başvuru yok.</p>;
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr>
+            <th className={th}>Değer</th>
+            <th className={`${th} text-right`}>Sayı</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([k, n]) => (
+            <tr key={k}>
+              <td className={td}>{k}</td>
+              <td className={`${td} text-right font-mono`}>{n}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -9,6 +9,7 @@ npm run dev            # http://localhost:3000 → /tr veya /en
 npx tsc --noEmit       # tip kontrolü
 npm run build          # üretim build'i
 SPONSORS_EXAMPLE=1 npm run dev   # sponsor yerleşimini örnek veriyle dene (sadece dev)
+npm run test:db        # migration'lar + RLS ve uçtan uca SQL testleri (PGlite, Docker gerekmez)
 ```
 
 `npm run lint` şu an yapılandırılmamış (ESLint kurulu değil, `next lint` etkileşimli kurulum soruyor).
@@ -17,26 +18,32 @@ SPONSORS_EXAMPLE=1 npm run dev   # sponsor yerleşimini örnek veriyle dene (sad
 
 - `src/middleware.ts`: dil seçimi (cookie → ülke → tarayıcı dili) ve `/` → `/tr|/en` yönlendirmesi.
 - `src/app/[lang]/layout.tsx`: header, footer, metadata. `src/app/[lang]/page.tsx`: ana sayfa (9 bölüm).
-- `src/app/[lang]/[slug]/page.tsx`: yardımcı sayfalar. Slug eşlemesi `src/lib/routes.ts` (`rehber/guide`, `kurallar/rules`, `partner/partners`, görev 3 için `basvuru/apply`). Diğer dilin slug'ı doğru olana yönlendirilir.
+- `src/app/[lang]/[slug]/page.tsx`: yardımcı sayfalar. Slug eşlemesi `src/lib/routes.ts` (`rehber/guide`, `kurallar/rules`, `partner/partners`, `gizlilik/privacy`). Diğer dilin slug'ı doğru olana yönlendirilir.
+- `src/app/[lang]/panel/`: katılımcı paneli (başvuru, onay, QR, takım, teslim) ve server action'ları. `src/app/[lang]/giris|login`: giriş.
+- `src/app/admin/`: yönetim paneli (TR). Her sayfa `requireRole`, her action `assertRole` (`src/lib/auth.ts`) ile rolü sunucuda kontrol eder. Kılavuz: `docs/admin-kilavuzu.md`.
+- `supabase/migrations/`: şema, RLS, tetikleyiciler. `supabase/tests/`: SQL testleri. `supabase/seed.dev.sql`: sadece yerel sahte veri.
+- `src/emails/`: e-posta şablonları (TR/EN). `src/lib/email.ts`: Resend; anahtar yoksa gönderim atlanır ve loglanır.
 - `src/lib/dict.ts`: ortak ve ana sayfa metinleri, sponsorluk paketleri. `src/content/*.ts`: yardımcı sayfa metinleri.
-- `src/data/`: tipli içerik (`site.ts`, `sponsors.ts`, `people.ts`, `schedule.ts`). Bileşenler veriyi sadece `src/data/index.ts` içindeki async getter'lardan alır; görev 4'te bunlar veritabanına bağlanacak.
+- `src/data/`: içerik getter'ları (`src/data/index.ts`). Ayarlar, sponsorlar ve jüri/mentorlar Supabase'den okunur (`revalidateTag("content")` ile yenilenir). `site.ts`, `sponsors.ts`, `people.ts` veritabanı yokken kullanılan varsayılanlar; `schedule.ts` hâlâ dosyada.
 - `src/lib/seo.ts`: canonical/hreflang. Site adresi `NEXT_PUBLIC_SITE_URL`, yoksa `https://hackathonaydin.vercel.app`.
 - `docs/organizator-notlari.md`: eksik bilgiler, kararlar, MLH/OpenAI hazırlığı.
 
 ## Sık güncellenenler
 
-- Başvuru durumu: `src/data/site.ts` → `application.status` (`upcoming` | `open` | `closed`).
-- Sponsorlar: `src/data/sponsors.ts` (`published: true` olmayan görünmez), logolar `public/sponsors/`.
-- Jüri/mentor: `src/data/people.ts`. Boşsa bölüm render edilmez.
-- MLH rozeti: `src/data/site.ts` → `mlh` (onay gelmeden `badge: false`).
+Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
+- Başvuru durumu (`upcoming` | `open` | `closed`), açılış yazısı, geliştirme başlangıcı, teslim son saati, onay son tarihi, takım kilidi.
+- Sponsorlar ve jüri/mentorlar (yayında olmayan görünmez; jüri/mentor boşsa bölüm render edilmez).
+- MLH bayrakları: `mlh_enabled` (form alanları), `mlh_badge` (header rozeti). Onay gelmeden açılmaz.
+- Program taslağı: `src/data/schedule.ts`.
 
 ## Kurallar
 
 - Doğrulanmamış bilgi yazma. Bilinmeyen için "yakında" / "Ocak'ta açıklanacak" de. Hedefleri "hedeflenen", taslakları "taslak" diye etiketle.
 - Temayı hiçbir dosyaya, koda veya commit mesajına yazma, tahmin etme, ipucu verme.
 - Em dash (—) kullanma.
-- Her görünür metin iki dilde olmalı.
+- Her görünür metin iki dilde olmalı (admin paneli hariç: sadece Türkçe).
 - Sahte sponsor, jüri, ödül, proje veya "Official MLH Event" / "Powered by OpenAI" yok.
 - Fotoğraflar `public/img/` altında; `stage.jpg`, `winners.jpg`, `builder.jpg` 480 px, büyütme.
 - İçerik animasyona bağlı olmasın (opacity 0'da bekleyen içerik yok); `prefers-reduced-motion` desteklenir.
-- `.env.local` commit'lenmez.
+- `.env.local` commit'lenmez. `SUPABASE_SERVICE_ROLE_KEY` sadece sunucuda (`src/lib/supabase/admin.ts`, `server-only`).
+- Yetki kontrolü veritabanında (RLS + tetikleyiciler) ve sunucuda; arayüzde gizlemek yetmez. Yeni tablo eklersen RLS'i aç ve `supabase/tests/`'e test ekle.
