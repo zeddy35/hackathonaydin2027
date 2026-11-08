@@ -7,6 +7,8 @@ export const pageSlugs = {
   partners: { tr: "partner", en: "partners" },
   /** Application form, added in task 3. Not rendered yet. */
   apply: { tr: "basvuru", en: "apply" },
+  login: { tr: "giris", en: "login" },
+  panel: { tr: "panel", en: "panel" },
 } as const;
 
 export type PageKey = keyof typeof pageSlugs;
