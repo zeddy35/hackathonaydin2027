@@ -151,7 +151,7 @@ html.ha-loader body { overflow: hidden; }
   font-size: 13px;
   letter-spacing: 0.2em;
   color: var(--on-accent);
-  animation: ha-fade 160ms ease-out 300ms both;
+  animation: ha-fade 270ms ease-out 500ms both;
 }
 @keyframes ha-fade { to { opacity: 0; } }
 .ha-loader-root.ha-out { opacity: 0; transition: opacity 200ms ease-out; }
