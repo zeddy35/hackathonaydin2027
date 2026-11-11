@@ -121,7 +121,7 @@ export default async function PanelPage({ params }: { params: Promise<{ lang: st
   const showForm = !staff && (status !== null || appStatus === "open");
 
   return (
-    <div className="wrap grid max-w-[880px] gap-10 py-12 md:py-20">
+    <div className="wrap grid max-w-[880px] gap-10 pb-16 pt-6 md:pb-20 md:pt-10">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="grid gap-3">
           <p className="label">Hackathon Aydın 2027</p>

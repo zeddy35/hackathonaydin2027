@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { saveSubmission } from "@/app/[lang]/panel/actions";
+import { saveSubmission } from "@/app/[lang]/(app)/panel/actions";
 import { panelDict } from "@/content/panel";
 import type { Locale } from "@/lib/i18n";
 import { fieldErrors, submissionSchema, type SubmissionInput } from "@/lib/submission";

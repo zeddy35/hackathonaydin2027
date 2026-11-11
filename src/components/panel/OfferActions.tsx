@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { respondToOffer } from "@/app/[lang]/panel/actions";
+import { respondToOffer } from "@/app/[lang]/(app)/panel/actions";
 import { panelDict } from "@/content/panel";
 import type { Locale } from "@/lib/i18n";
 import { Notice } from "./fields";

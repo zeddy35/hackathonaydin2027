@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import "../fonts.css";
-import "../globals.css";
+import "../../fonts.css";
+import "../../globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Loader, { LOADER_SCRIPT } from "@/components/Loader";

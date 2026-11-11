@@ -17,9 +17,9 @@ npm run test:db        # migration'lar + RLS ve uçtan uca SQL testleri (PGlite,
 ## Yapı
 
 - `src/middleware.ts`: dil seçimi (cookie → ülke → tarayıcı dili) ve `/` → `/tr|/en` yönlendirmesi.
-- `src/app/[lang]/layout.tsx`: header, footer, metadata. `src/app/[lang]/page.tsx`: ana sayfa (9 bölüm).
-- `src/app/[lang]/[slug]/page.tsx`: yardımcı sayfalar. Slug eşlemesi `src/lib/routes.ts` (`rehber/guide`, `kurallar/rules`, `partner/partners`, `gizlilik/privacy`). Diğer dilin slug'ı doğru olana yönlendirilir.
-- `src/app/[lang]/panel/`: katılımcı paneli (başvuru, onay, QR, takım, teslim) ve server action'ları. `src/app/[lang]/giris|login`: giriş.
+- `src/app/[lang]/(site)/`: herkese açık site. `layout.tsx` header, footer, açılış animasyonu, metadata; `page.tsx` ana sayfa (9 bölüm).
+- `src/app/[lang]/(site)/[slug]/page.tsx`: yardımcı sayfalar. Slug eşlemesi `src/lib/routes.ts` (`rehber/guide`, `kurallar/rules`, `partner/partners`, `gizlilik/privacy`). Diğer dilin slug'ı doğru olana yönlendirilir.
+- `src/app/[lang]/(app)/`: ayrı kök layout, site header/footer'ı yok (sadece logo). `panel/`: katılımcı paneli (başvuru, onay, QR, takım, teslim) ve server action'ları. `giris|login`: giriş. URL'ler değişmedi (`/tr/panel`, `/tr/giris`).
 - `src/app/admin/`: yönetim paneli (TR). Her sayfa `requireRole`, her action `assertRole` (`src/lib/auth.ts`) ile rolü sunucuda kontrol eder. Kılavuz: `docs/admin-kilavuzu.md`.
 - `supabase/migrations/`: şema, RLS, tetikleyiciler. `supabase/tests/`: SQL testleri. `supabase/seed.dev.sql`: sadece yerel sahte veri.
 - `src/emails/`: e-posta şablonları (TR/EN). `src/lib/email.ts`: Resend; anahtar yoksa gönderim atlanır ve loglanır.
