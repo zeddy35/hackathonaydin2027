@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import QRCode from "qrcode";
 import ApplicationForm from "@/components/panel/ApplicationForm";
+import Countdown from "@/components/panel/Countdown";
 import OfferActions from "@/components/panel/OfferActions";
+import Stepper, { type Step, type StepState } from "@/components/panel/Stepper";
 import SubmissionForm from "@/components/panel/SubmissionForm";
 import TeamCard, { type TeamView } from "@/components/panel/TeamCard";
 import { panelDict } from "@/content/panel";
@@ -119,23 +121,148 @@ export default async function PanelPage({ params }: { params: Promise<{ lang: st
     Object.entries((app?.consents ?? {}) as Consents).map(([k, v]) => [k, Boolean(v?.accepted)])
   ) as Partial<Record<ConsentKey, boolean>>;
   const showForm = !staff && (status !== null || appStatus === "open");
+  const submitted = Boolean(submission?.submitted_at);
+
+  // Progress steps: apply, review, confirm, check-in, submit.
+  const short = (iso: string) =>
+    new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", { day: "numeric", month: "long", timeZone: "Europe/Istanbul" }).format(new Date(iso));
+  const reached = (
+    { draft: 0, submitted: 1, waitlisted: 1, rejected: 1, accepted: 2, declined: 2, confirmed: 3, checked_in: 4 } as Record<AppStatus, number>
+  )[status ?? "draft"];
+  const stoppedAt = status === "waitlisted" || status === "rejected" || status === "declined" ? reached : -1;
+  const stepState = (i: number): StepState =>
+    i === stoppedAt ? "stopped" : i < reached || (i === 4 && submitted) ? "done" : i === reached && stoppedAt === -1 ? "current" : "todo";
+  const steps: Step[] = [
+    { label: t.steps.apply, note: reached === 0 && appStatus === "open" ? short(appDeadline) : undefined },
+    { label: t.steps.review, note: stoppedAt === 1 ? statusTitle : undefined },
+    { label: t.steps.confirm, note: stoppedAt === 2 ? statusTitle : reached === 2 && confirmDeadline ? short(confirmDeadline) : undefined },
+    { label: t.steps.checkin, note: short(hackStart) },
+    { label: t.steps.submit, note: reached === 4 && !submitted ? short(deadline) : undefined },
+  ].map((s, i) => ({ ...s, state: stepState(i) }));
+
+  // One deadline and one action for the "next step" card.
+  const open = appStatus === "open";
+  const countdown: { target: string; label: string } | null =
+    (!status || status === "draft") && open
+      ? { target: appDeadline, label: t.left.apply }
+      : status === "accepted" && !confirmLate && confirmDeadline
+        ? { target: confirmDeadline, label: t.left.confirm }
+        : status === "confirmed" || (status === "checked_in" && now < Date.parse(hackStart))
+          ? { target: hackStart, label: t.left.event }
+          : status === "checked_in" && windowOpen
+            ? { target: deadline, label: t.left.submit }
+            : null;
+  const cta: { href: string; label: string } | null =
+    !status && open
+      ? { href: "#form", label: t.go.form }
+      : status === "draft" && open
+        ? { href: "#form", label: t.go.draft }
+        : status === "confirmed" && qrSvg
+          ? { href: "#qr", label: t.go.qr }
+          : status === "checked_in"
+            ? team
+              ? { href: "#submission", label: t.go.submit }
+              : { href: "#team", label: t.go.team }
+            : null;
+
+  const qrCard = qrSvg && (
+    <Card key="qr" id="qr" title={t.qr.title}>
+      <p className="text-muted">{t.qr.body}</p>
+      <div
+        role="img"
+        aria-label={t.qr.alt}
+        className="w-full max-w-[280px] rounded-lg border border-rule bg-white p-3 [&>svg]:h-auto [&>svg]:w-full"
+        dangerouslySetInnerHTML={{ __html: qrSvg }}
+      />
+    </Card>
+  );
+  const teamCard = (canTeam || status === "submitted") && (
+    <Card key="team" id="team" title={t.team.title}>
+      <TeamCard lang={lang} userId={user.id} team={team} canTeam={canTeam} wantsMatch={Boolean(app?.wants_match)} />
+    </Card>
+  );
+  const submissionCard = status === "checked_in" && (
+    <Card key="submission" id="submission" title={t.submission.title}>
+      {!team ? (
+        <p className="text-muted">{t.submission.needTeam}</p>
+      ) : (
+        <>
+          <p className="text-[15px] text-muted">
+            {now < Date.parse(hackStart)
+              ? t.submission.notYet(formatDate(hackStart, lang))
+              : windowOpen
+                ? t.submission.window(formatDate(hackStart, lang), formatDate(deadline, lang))
+                : t.submission.closed}
+          </p>
+          {submitted ? (
+            <div className="grid gap-1 rounded-lg border border-emerald-700/30 bg-emerald-50 px-4 py-3 text-[15px]">
+              <p className="font-semibold">{t.submission.received(formatDate(submission!.submitted_at as string, lang))}</p>
+              <p className="text-muted">{t.submission.lastEdit(editorName, formatDate(submission!.updated_at as string, lang))}</p>
+            </div>
+          ) : null}
+          {(windowOpen || submission) && (
+            <SubmissionForm
+              lang={lang}
+              exists={Boolean(submission)}
+              open={windowOpen}
+              initial={
+                submission
+                  ? {
+                      title: (submission.title as string) ?? "",
+                      problem: (submission.problem as string) ?? "",
+                      description: (submission.description as string) ?? "",
+                      repo_url: (submission.repo_url as string) ?? "",
+                      ai_tools: (submission.ai_tools as string) ?? "",
+                      demo_url: (submission.demo_url as string) ?? "",
+                      demo_is_local: Boolean(submission.demo_is_local),
+                      slides_url: (submission.slides_url as string) ?? "",
+                    }
+                  : emptySubmission
+              }
+            />
+          )}
+        </>
+      )}
+    </Card>
+  );
+  const formCard = showForm && (
+    <Card key="form" id="form" title={status && status !== "draft" ? t.form.viewTitle : t.form.title}>
+      <ApplicationForm
+        lang={lang}
+        userId={user.id}
+        email={user.email ?? profile?.email ?? ""}
+        initial={answers}
+        initialConsents={consents}
+        locked={Boolean(status && status !== "draft")}
+        canSubmit={appStatus === "open" && (!status || status === "draft")}
+        mlhEnabled={mlhEnabled}
+      />
+    </Card>
+  );
+  // What matters most comes first: the QR code before the event, the submission during it.
+  const sections =
+    status === "confirmed"
+      ? [qrCard, teamCard, formCard]
+      : status === "checked_in"
+        ? [submissionCard, teamCard, qrCard, formCard]
+        : [teamCard, formCard];
 
   return (
-    <div className="wrap grid max-w-[880px] gap-10 pb-16 pt-6 md:pb-20 md:pt-10">
+    <div className="wrap grid max-w-[880px] gap-8 pb-16 pt-6 md:gap-10 md:pb-20 md:pt-10">
       <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="grid gap-3">
-          <p className="label">Hackathon Aydın 2027</p>
-          <h1 className="text-[32px] font-semibold leading-tight tracking-[-0.02em] [overflow-wrap:anywhere] md:text-[44px]">{t.hello(firstName)}</h1>
+        <div className="grid gap-2">
+          <p className="label">{t.title}</p>
+          <h1 className="text-[30px] font-semibold leading-tight tracking-[-0.02em] [overflow-wrap:anywhere] md:text-[40px]">{t.hello(firstName)}</h1>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           {staff && (
-            <Link href={role === "judge" ? "/admin/juri" : "/admin"} className="btn btn-secondary">
+            <Link href={role === "judge" ? "/admin/juri" : "/admin"} className="btn btn-secondary min-h-11 py-2 text-[14px]">
               {t.admin}
             </Link>
           )}
           <form action="/auth/signout" method="post">
             <input type="hidden" name="lang" value={lang} />
-            <button type="submit" className="btn btn-secondary">
+            <button type="submit" className="btn btn-secondary min-h-11 py-2 text-[14px]">
               {t.signOut}
             </button>
           </form>
@@ -156,108 +283,44 @@ export default async function PanelPage({ params }: { params: Promise<{ lang: st
         <p className="max-w-[60ch] text-muted">{t.staffNote}</p>
       ) : (
         <>
-          <Card>
-            <p className="label">{t.status.label}</p>
-            <p className="text-[24px] font-semibold">{statusTitle}</p>
-            <p className="max-w-[60ch]">{nextStep}</p>
-            {status === "accepted" && !confirmLate && (
-              <>
-                {confirmDeadline && (
-                  <p className="text-[14px] text-muted">
-                    {t.offer.deadline}: {formatDate(confirmDeadline, lang)}
-                  </p>
-                )}
-                <OfferActions lang={lang} />
-              </>
-            )}
-          </Card>
-
-          {qrSvg && (
-            <Card title={t.qr.title}>
-              <p className="text-muted">{t.qr.body}</p>
-              <div
-                role="img"
-                aria-label={t.qr.alt}
-                className="w-full max-w-[240px] rounded-lg border border-rule bg-white p-3 [&>svg]:h-auto [&>svg]:w-full"
-                dangerouslySetInnerHTML={{ __html: qrSvg }}
-              />
-            </Card>
-          )}
-
-          {(canTeam || status === "submitted") && (
-            <Card title={t.team.title}>
-              <TeamCard lang={lang} userId={user.id} team={team} canTeam={canTeam} wantsMatch={Boolean(app?.wants_match)} />
-            </Card>
-          )}
-
-          {status === "checked_in" && (
-            <Card title={t.submission.title}>
-              {!team ? (
-                <p className="text-muted">{t.submission.needTeam}</p>
-              ) : (
+          <section aria-labelledby="next-h" className="grid gap-6 rounded-2xl border border-rule bg-surface p-5 shadow-[0_24px_48px_-32px_rgb(23_23_23/0.25)] md:p-8">
+            {(status || open) && <Stepper steps={steps} label={t.steps.label} stateLabels={t.steps.state} />}
+            <div className={`grid gap-3 ${status || open ? "border-t border-dashed border-rule pt-6" : ""}`}>
+              <p className="label text-accent">{status === "rejected" || status === "declined" ? t.status.label : t.nextTitle}</p>
+              <h2 id="next-h" className="text-[24px] font-semibold leading-tight tracking-[-0.01em] md:text-[28px]">
+                {statusTitle}
+              </h2>
+              <p className="max-w-[60ch]">{nextStep}</p>
+              {countdown && <Countdown target={countdown.target} label={countdown.label} units={t.units} />}
+              {status === "accepted" && !confirmLate && (
                 <>
-                  <p className="text-[15px] text-muted">
-                    {now < Date.parse(hackStart)
-                      ? t.submission.notYet(formatDate(hackStart, lang))
-                      : windowOpen
-                        ? t.submission.window(formatDate(hackStart, lang), formatDate(deadline, lang))
-                        : t.submission.closed}
-                  </p>
-                  {submission?.submitted_at ? (
-                    <div className="grid gap-1 rounded-lg border border-emerald-700/30 bg-emerald-50 px-4 py-3 text-[15px]">
-                      <p className="font-semibold">{t.submission.received(formatDate(submission.submitted_at as string, lang))}</p>
-                      <p className="text-muted">{t.submission.lastEdit(editorName, formatDate(submission.updated_at as string, lang))}</p>
-                    </div>
-                  ) : null}
-                  {(windowOpen || submission) && (
-                    <SubmissionForm
-                      lang={lang}
-                      exists={Boolean(submission)}
-                      open={windowOpen}
-                      initial={
-                        submission
-                          ? {
-                              title: (submission.title as string) ?? "",
-                              problem: (submission.problem as string) ?? "",
-                              description: (submission.description as string) ?? "",
-                              repo_url: (submission.repo_url as string) ?? "",
-                              ai_tools: (submission.ai_tools as string) ?? "",
-                              demo_url: (submission.demo_url as string) ?? "",
-                              demo_is_local: Boolean(submission.demo_is_local),
-                              slides_url: (submission.slides_url as string) ?? "",
-                            }
-                          : emptySubmission
-                      }
-                    />
+                  {confirmDeadline && (
+                    <p className="text-[14px] text-muted">
+                      {t.offer.deadline}: {formatDate(confirmDeadline, lang)}
+                    </p>
                   )}
+                  <OfferActions lang={lang} />
                 </>
               )}
-            </Card>
-          )}
+              {cta && (
+                <a href={cta.href} className="btn btn-primary mt-1 w-full sm:w-fit">
+                  {cta.label}
+                  <span aria-hidden="true">↓</span>
+                </a>
+              )}
+            </div>
+          </section>
 
-          {showForm && (
-            <Card title={status && status !== "draft" ? t.form.viewTitle : t.form.title}>
-              <ApplicationForm
-                lang={lang}
-                userId={user.id}
-                email={user.email ?? profile?.email ?? ""}
-                initial={answers}
-                initialConsents={consents}
-                locked={Boolean(status && status !== "draft")}
-                canSubmit={appStatus === "open" && (!status || status === "draft")}
-                mlhEnabled={mlhEnabled}
-              />
-            </Card>
-          )}
+          {sections}
         </>
       )}
     </div>
   );
 }
 
-function Card({ title, children }: { title?: string; children: React.ReactNode }) {
+function Card({ id, title, children }: { id?: string; title?: string; children: React.ReactNode }) {
   return (
-    <section className="grid gap-4 rounded-xl border border-rule bg-surface p-5 md:p-8">
+    <section id={id} className="grid gap-4 rounded-xl border border-rule bg-surface p-5 md:p-8">
       {title && <h2 className="text-[22px] font-semibold tracking-[-0.01em]">{title}</h2>}
       {children}
     </section>
