@@ -18,16 +18,16 @@ export default function Hero({
   opensLabel: string;
 }) {
   const h = d.hero;
-  // "Apply" only when it leads to the form; otherwise the pass points to the join section.
-  const passLink = action.status === "open" ? { href: action.href, label: d.cta.apply } : { href: "#join", label: d.nav.join };
+  // Same target and label as the header button: form when open, participant guide otherwise.
+  const passLink = { href: action.href, label: action.join };
 
   return (
     <section id="top" aria-labelledby="hero-h" className="relative isolate [overflow-x:clip]">
       <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0 -z-10" />
-      <div className="wrap grid items-center gap-12 pb-16 pt-12 md:pb-24 md:pt-16 lg:grid-cols-12 lg:gap-8">
+      <div className="wrap grid items-center gap-6 pb-16 pt-12 md:gap-12 md:pb-24 md:pt-16 lg:grid-cols-12 lg:gap-8">
         <div className="grid min-w-0 gap-8 lg:col-span-7">
           <p className="label">{h.eyebrow}</p>
-          <h1 id="hero-h" className="display text-[clamp(36px,11vw,56px)] leading-[1.02] md:text-[72px] lg:text-[76px] xl:text-[88px]">
+          <h1 id="hero-h" className="display text-[clamp(44px,14vw,64px)] leading-[1.02] md:text-[72px] lg:text-[76px] xl:text-[88px]">
             <span className="ha-line">
               <span style={{ ["--i" as string]: 0 }}>{h.title[0]}</span>
             </span>

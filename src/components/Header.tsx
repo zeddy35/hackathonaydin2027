@@ -1,9 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import { alternatesFor, resolveSlug } from "@/lib/routes";
 import Logo from "./Logo";
@@ -11,7 +10,7 @@ import Logo from "./Logo";
 const SECTIONS = ["event", "schedule", "sponsors", "faq"] as const;
 type SectionId = (typeof SECTIONS)[number];
 
-export type HeaderLabels = Record<SectionId | "label" | "join" | "menu" | "close" | "switchTo" | "home", string>;
+export type HeaderLabels = Record<SectionId | "label" | "join" | "joinShort" | "joinShortSr" | "menu" | "close" | "switchTo" | "home", string>;
 
 /** Past this many pixels the bar turns into a floating capsule. It never hides. */
 const COMPACT_AT = 24;
@@ -35,8 +34,9 @@ export default function Header({
   const [open, setOpen] = useState(false);
   const menuBtn = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll();
+  const progress = useRef<HTMLSpanElement>(null);
+  const links = useRef<Partial<Record<SectionId, HTMLAnchorElement | null>>>({});
+  const [pills, setPills] = useState<Partial<Record<SectionId, { x: number; w: number }>>>({});
 
   // Same page in the other language.
   const other: Locale = lang === "tr" ? "en" : "tr";
@@ -49,12 +49,44 @@ export default function Header({
 
   const sectionHref = (id: SectionId) => (isHome ? `#${id}` : `/${lang}#${id}`);
 
+  // Compact state and scroll progress. Progress is written straight to the element (no re-render).
   useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > COMPACT_AT);
-    onScroll();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const y = window.scrollY;
+      setCompact(y > COMPACT_AT);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.current?.style.setProperty("transform", `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+
+  // Positions of the nav links, for the sliding hover/active pills (CSS transitions, no animation library).
+  useLayoutEffect(() => {
+    const measure = () => {
+      const next: Partial<Record<SectionId, { x: number; w: number }>> = {};
+      for (const id of SECTIONS) {
+        const a = links.current[id];
+        if (a) next[id] = { x: a.offsetLeft, w: a.offsetWidth };
+      }
+      setPills(next);
+    };
+    measure();
+    document.fonts?.ready.then(measure).catch(() => {});
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [lang]);
 
   // Scroll-spy. Watches every home section so the marker clears on sections that are not in the nav.
   useEffect(() => {
@@ -121,9 +153,11 @@ export default function Header({
   useEffect(() => setOpen(false), [pathname]);
 
   const capsule = compact && !open;
-  const spring = reduce ? { duration: 0 } : { type: "spring" as const, stiffness: 420, damping: 36 };
+  const hoverPill = hovered && hovered !== active ? pills[hovered] : undefined;
+  const activePill = active ? pills[active] : undefined;
+  const pillStyle = (p?: { x: number; w: number }) => (p ? { transform: `translateX(${p.x}px)`, width: p.w, opacity: 1 } : { opacity: 0 });
 
-  const langSwitch = (where: string) => (
+  const langSwitch = () => (
     <Link
       href={otherHref}
       onClick={remember}
@@ -136,9 +170,7 @@ export default function Header({
           {i === 1 && <span className="px-1 text-rule">/</span>}
           <span className={`relative ${lang === l ? "text-ink" : ""}`}>
             {l.toUpperCase()}
-            {lang === l && (
-              <motion.span layoutId={`lang-underline-${where}`} transition={spring} aria-hidden="true" className="absolute inset-x-0 -bottom-1 h-px bg-accent" />
-            )}
+            {lang === l && <span aria-hidden="true" className="absolute inset-x-0 -bottom-1 h-px bg-accent" />}
           </span>
         </span>
       ))}
@@ -146,9 +178,19 @@ export default function Header({
     </Link>
   );
 
-  const joinButton = (extra: string) => (
+  const joinButton = (extra: string, short = false) => (
     <Link href={joinHref} onClick={() => open && close(false)} className={`btn btn-primary group/join active:scale-[0.97] ${extra}`}>
-      {labels.join}
+      {short && labels.joinShort !== labels.join ? (
+        <>
+          <span className="lg:hidden">
+            {labels.joinShortSr && <span className="sr-only">{labels.joinShortSr} </span>}
+            {labels.joinShort}
+          </span>
+          <span className="max-lg:hidden">{labels.join}</span>
+        </>
+      ) : (
+        labels.join
+      )}
       <span aria-hidden="true" className="hidden transition-transform duration-200 group-hover/join:translate-x-1 min-[380px]:inline">
         →
       </span>
@@ -177,25 +219,24 @@ export default function Header({
         )}
 
         <nav aria-label={labels.label} className="ml-auto hidden md:block">
-          <ul className="flex items-center" onMouseLeave={() => setHovered(null)}>
+          <ul className="relative isolate flex items-center" onMouseLeave={() => setHovered(null)}>
+            <span aria-hidden="true" style={pillStyle(hoverPill)} className="ha-pill absolute inset-y-1.5 left-0 -z-10 rounded-full bg-ink/[0.06]" />
+            <span aria-hidden="true" style={pillStyle(activePill)} className="ha-pill absolute inset-y-1.5 left-0 -z-10 rounded-full bg-accent-tint" />
             {SECTIONS.map((id) => (
               <li key={id}>
                 <a
+                  ref={(el) => {
+                    links.current[id] = el;
+                  }}
                   href={sectionHref(id)}
                   aria-current={active === id ? "location" : undefined}
                   onMouseEnter={() => setHovered(id)}
                   onFocus={() => setHovered(id)}
                   onBlur={() => setHovered(null)}
-                  className={`relative isolate inline-flex min-h-11 items-center rounded-full px-3 text-[15px] transition-colors lg:px-4 ${
+                  className={`relative inline-flex min-h-11 items-center rounded-full px-3 text-[15px] transition-colors lg:px-4 ${
                     active === id ? "text-accent" : "text-muted hover:text-ink"
                   }`}
                 >
-                  {hovered === id && hovered !== active && (
-                    <motion.span layoutId="nav-hover" transition={spring} aria-hidden="true" className="absolute inset-x-0 inset-y-1.5 -z-10 rounded-full bg-ink/[0.06]" />
-                  )}
-                  {active === id && (
-                    <motion.span layoutId="nav-active" transition={spring} aria-hidden="true" className="absolute inset-x-0 inset-y-1.5 -z-10 rounded-full bg-accent-tint" />
-                  )}
                   {labels[id]}
                 </a>
               </li>
@@ -204,8 +245,8 @@ export default function Header({
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2 md:ml-0">
-          <span className="hidden md:inline-flex">{langSwitch("bar")}</span>
-          {joinButton("min-h-11 rounded-full px-3 py-2 text-[14px] sm:px-4 md:text-[15px]")}
+          <span className="hidden md:inline-flex">{langSwitch()}</span>
+          {joinButton("min-h-11 rounded-full px-3 py-2 text-[14px] sm:px-4 md:text-[15px]", true)}
           <button
             ref={menuBtn}
             type="button"
@@ -223,11 +264,13 @@ export default function Header({
           </button>
         </div>
 
-        {/* Scroll progress along the bottom edge. */}
-        <motion.span
+        {/* Scroll progress. In the capsule it fills the straight part of the bottom border
+            (inset = the capsule's 28 px corner radius), so it reads as the border filling up. */}
+        <span
+          ref={progress}
           aria-hidden="true"
-          style={{ scaleX: scrollYProgress }}
-          className={`absolute bottom-0 h-[2px] origin-left bg-accent ${capsule ? "inset-x-6" : "inset-x-0"} ${open ? "opacity-0" : ""}`}
+          style={{ transform: "scaleX(0)" }}
+          className={`absolute h-[2px] origin-left bg-accent ${capsule ? "inset-x-7 -bottom-px" : "inset-x-0 bottom-0"} ${open ? "opacity-0" : ""}`}
         />
       </div>
 
@@ -240,13 +283,7 @@ export default function Header({
         <nav aria-label={labels.label} className="wrap grid gap-10 pb-[max(32px,env(safe-area-inset-bottom))]">
           <ul className="grid">
             {SECTIONS.map((id, i) => (
-              <motion.li
-                key={`${id}-${open}`}
-                initial={reduce ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: reduce ? 0 : 0.04 + i * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="border-b border-rule"
-              >
+              <li key={`${id}-${open}`} style={{ ["--i" as string]: i }} className="ha-menu-item border-b border-rule">
                 <a
                   href={sectionHref(id)}
                   onClick={(e) => {
@@ -255,6 +292,7 @@ export default function Header({
                     e.preventDefault();
                     close(false);
                     requestAnimationFrame(() => {
+                      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
                       document.getElementById(id)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
                       history.replaceState(null, "", `#${id}`);
                     });
@@ -264,11 +302,11 @@ export default function Header({
                 >
                   {labels[id]}
                 </a>
-              </motion.li>
+              </li>
             ))}
           </ul>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            {langSwitch("menu")}
+            {langSwitch()}
             {joinButton("min-h-12 flex-1 rounded-full")}
           </div>
         </nav>

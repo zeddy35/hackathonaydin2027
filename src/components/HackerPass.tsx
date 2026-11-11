@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Dict } from "@/lib/dict";
@@ -45,10 +44,12 @@ export default function HackerPass({
   const [now, setNow] = useState<number | null>(null);
   const [canTilt, setCanTilt] = useState(false);
   const link = useRef<HTMLAnchorElement>(null);
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const sx = useSpring(rx, { stiffness: 220, damping: 18 });
-  const sy = useSpring(ry, { stiffness: 220, damping: 18 });
+  const card = useRef<HTMLDivElement>(null);
+  // Tilt is plain CSS: pointer position -> two custom properties, eased by a transition.
+  const tilt = (x: number, y: number) => {
+    card.current?.style.setProperty("--rx", `${x}deg`);
+    card.current?.style.setProperty("--ry", `${y}deg`);
+  };
 
   useEffect(() => {
     setNow(Date.now());
@@ -75,28 +76,24 @@ export default function HackerPass({
 
   return (
     <div className="ha-pass-enter flex justify-center lg:justify-end">
-      <div className="relative w-[min(80vw,340px)] rotate-[-3deg] pt-14 lg:rotate-[-5deg]" style={{ perspective: 900 }}>
+      <div className="relative w-[min(80vw,340px)] rotate-[-2deg] pt-10 max-md:[zoom:0.85] md:pt-14 md:rotate-[-3deg] lg:rotate-[-5deg]" style={{ perspective: 900 }}>
         {/* lanyard */}
-        <span aria-hidden="true" className="absolute left-1/2 top-0 h-[68px] w-px -translate-x-1/2 bg-ink/25" />
-        <motion.div
-          style={canTilt ? { rotateX: sx, rotateY: sy } : undefined}
+        <span aria-hidden="true" className="absolute left-1/2 top-0 h-[52px] w-px md:h-[68px] -translate-x-1/2 bg-ink/25" />
+        <div
+          ref={card}
           onPointerMove={(ev) => {
             if (!canTilt) return;
             const r = ev.currentTarget.getBoundingClientRect();
             const px = (ev.clientX - r.left) / r.width - 0.5;
             const py = (ev.clientY - r.top) / r.height - 0.5;
-            ry.set(px * 2 * MAX_TILT);
-            rx.set(-py * 2 * MAX_TILT);
+            tilt(-py * 2 * MAX_TILT, px * 2 * MAX_TILT);
           }}
-          onPointerLeave={() => {
-            rx.set(0);
-            ry.set(0);
-          }}
+          onPointerLeave={() => tilt(0, 0)}
           onClick={(ev) => {
             if ((ev.target as HTMLElement).closest("a, button")) return;
             link.current?.click();
           }}
-          className="relative cursor-pointer overflow-hidden rounded-2xl border border-rule bg-surface shadow-[0_24px_48px_-24px_rgb(23_23_23/0.28),0_2px_6px_rgb(23_23_23/0.06)]"
+          className="ha-tilt relative cursor-pointer overflow-hidden rounded-2xl border border-rule bg-surface shadow-[0_24px_48px_-24px_rgb(23_23_23/0.28),0_2px_6px_rgb(23_23_23/0.06)]"
         >
           {/* lanyard slot */}
           <span aria-hidden="true" className="mx-auto mt-4 block h-2.5 w-14 rounded-full border border-rule bg-bg" />
@@ -154,7 +151,7 @@ export default function HackerPass({
               </Link>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

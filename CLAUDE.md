@@ -35,7 +35,8 @@ Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
 - Sponsorlar ve jüri/mentorlar (yayında olmayan görünmez; jüri/mentor boşsa bölüm render edilmez).
 - MLH bayrakları: `mlh_enabled` (form alanları), `mlh_badge` (header rozeti). Onay gelmeden açılmaz.
 - Başvuru son tarihi (31 Mart 2027 23:59): `/admin/icerik`. Değişirse `dict.ts` ve `guide.ts` metinlerindeki tarihi de güncelle.
-- Program taslağı: `src/data/schedule.ts`.
+- Program taslağı: `src/data/schedule.ts` (yemek/gece kalemleri `kind: "break"`).
+- İletişim e-postası: `src/data/site.ts` → `contactEmail`.
 
 ## Kurallar
 
@@ -44,7 +45,7 @@ Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
 - Em dash (—) kullanma.
 - Her görünür metin iki dilde olmalı (admin paneli hariç: sadece Türkçe).
 - Sahte sponsor, jüri, ödül, proje veya "Official MLH Event" / "Powered by OpenAI" yok.
-- Fotoğraflar `public/img/` altında; `stage.jpg`, `winners.jpg`, `builder.jpg` 480 px, büyütme.
+- Fotoğraflar `public/img/` altında (`2025-*.jpg`, `2026-*.jpg`, 1600 px, EXIF silinmiş; `og.jpg` 1200x630). Listesi ve altyazıları `dict.ts` → `past`. Yeni fotoğrafı EXIF'siz ve döndürülmüş kaydet (sharp `.rotate()`), konum bilgisi repoya girmesin.
 - İçerik animasyona bağlı olmasın (opacity 0'da bekleyen içerik yok); `prefers-reduced-motion` desteklenir.
 - `.env.local` commit'lenmez. `SUPABASE_SERVICE_ROLE_KEY` sadece sunucuda (`src/lib/supabase/admin.ts`, `server-only`).
 - Yetki kontrolü veritabanında (RLS + tetikleyiciler) ve sunucuda; arayüzde gizlemek yetmez. Yeni tablo eklersen RLS'i aç ve `supabase/tests/`'e test ekle.

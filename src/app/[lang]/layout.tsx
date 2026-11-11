@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import "@fontsource-variable/fraunces/opsz.css";
-import "@fontsource-variable/inter";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/500.css";
+import "../fonts.css";
 import "../globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -67,7 +64,9 @@ export default async function RootLayout({
             schedule: d.nav.schedule,
             sponsors: d.nav.sponsors,
             faq: d.nav.faq,
-            join: d.nav.join,
+            join: action.join,
+            joinShort: d.cta.joinShort[action.status],
+            joinShortSr: d.cta.joinShortSr[action.status],
             menu: d.nav.menu,
             close: d.nav.close,
             switchTo: d.nav.switchTo,

@@ -69,7 +69,11 @@ export type ScheduleKey =
   | "checkin"
   | "opening"
   | "hackStart"
+  | "lunch"
   | "dinner"
+  | "tournament"
+  | "snack"
+  | "breakfast"
   | "submit"
   | "finalistDemos"
   | "finalistsAnnounced"
@@ -83,4 +87,6 @@ export type ScheduleItem = {
   en: string;
   key: ScheduleKey;
   draft: boolean;
+  /** Meals and night activities: shown muted with a "break" tag, apart from the build milestones. */
+  kind?: "break";
 };

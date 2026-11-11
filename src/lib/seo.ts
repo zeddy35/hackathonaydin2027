@@ -31,7 +31,7 @@ export function pageMetadata({
       url: alt[lang],
       siteName: "Hackathon Aydın",
       locale: lang === "tr" ? "tr_TR" : "en_US",
-      images: [{ url: "/img/team.jpg", width: 1280, height: 959 }],
+      images: [{ url: "/img/og.jpg", width: 1200, height: 630 }],
       type: "website",
     },
     twitter: { card: "summary_large_image", title, description },

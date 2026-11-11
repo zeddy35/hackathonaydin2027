@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import "@fontsource-variable/inter";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/500.css";
+import "../fonts.css";
 import "../globals.css";
 
 export const metadata: Metadata = { title: "Yönetim · Hackathon Aydın 2027", robots: { index: false, follow: false } };

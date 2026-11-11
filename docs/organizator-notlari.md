@@ -23,8 +23,10 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 - [ ] **Takım kilitleme tarihi:** Takımların hangi saatte kilitleneceği (ör. Cumartesi eşleştirmesinden sonra) admin panelinden girilir.
 - [ ] **Başvurudan sonra değiştirilebilen alanlar:** Şu an telefon, tişört, beslenme, acil durum kişisi, linkler, CV ve duyuru izinleri. Değişiklik gerekirse `settings.application_editable_after_submit`.
 - [ ] Domain. Alınınca Vercel'de `NEXT_PUBLIC_SITE_URL` ayarla.
-- [ ] 2025 ve 2026 fotoğraflarının orijinalleri (şu an `stage.jpg`, `winners.jpg`, `builder.jpg` 480 px genişliğinde).
-- [ ] Program taslağı: atölye, mentorluk saatleri, gece etkinlikleri, Pazar kahvaltısı ve öğle yemeği eklenecekse onaylanmalı.
+- [x] 2025 ve 2026 fotoğraflarının orijinalleri geldi (11 Kasım 2026). `public/img/2025-1..5.jpg` ve `2026-1..5.jpg`, uzun kenar 1600 px, EXIF/konum bilgisi silinmiş. Altyazılar ve alt metinler `src/lib/dict.ts` → `past`. Fotoğraf değiştirmek: dosyayı aynı adla değiştir veya `dict.ts`'teki `src`'yi güncelle.
+- [ ] Fotoğraflarda görünen kişilerin sitede yer almaya izni (özellikle yakın plan portreler: `2025-3.jpg`, `2026-4.jpg`, `2026-5.jpg`).
+- [ ] Program taslağı: şu kalemler "taslak" olarak eklendi, saatleri onaylanmalı: Cmt 13:00 öğle yemeği, Cmt 19:00 akşam yemeği, Cmt 23:00 gece mini oyun turnuvası, Paz 02:00 gece atıştırmalığı, Paz 08:00 kahvaltı (`src/data/schedule.ts`). Pazar öğle yemeği, atölye ve mentorluk saatleri hâlâ yok.
+- [ ] Domain e-postası (ör. iletisim@ alan adı) açılacak. Açılınca `src/data/site.ts` → `contactEmail` tek satır.
 - [ ] Sponsorluk paketleri için indirilebilir dosya (PDF) hazırlanırsa partner sayfasına indirme butonu eklenebilir.
 
 ## Önerilen jüri ölçütleri (onay bekliyor)

@@ -3,7 +3,8 @@ import type { Dict } from "./dict";
 import type { Locale } from "./i18n";
 import { pagePath } from "./routes";
 
-export type PrimaryAction = { href: string; label: string; status: SiteConfig["application"]["status"] };
+/** `join` is the short label for the header and Hacker Pass button (same target as `href`). */
+export type PrimaryAction = { href: string; label: string; join: string; status: SiteConfig["application"]["status"] };
 
 /**
  * The main call to action depends on the application status:
@@ -12,6 +13,7 @@ export type PrimaryAction = { href: string; label: string; status: SiteConfig["a
  */
 export function primaryAction(lang: Locale, site: SiteConfig, d: Dict): PrimaryAction {
   const status = site.application.status;
-  if (status === "open") return { href: pagePath(lang, site.application.formPage), label: d.cta.apply, status };
-  return { href: pagePath(lang, "guide"), label: d.cta.info, status };
+  const join = d.cta.join[status];
+  if (status === "open") return { href: pagePath(lang, site.application.formPage), label: d.cta.apply, join, status };
+  return { href: pagePath(lang, "guide"), label: d.cta.info, join, status };
 }

@@ -33,6 +33,11 @@ const tr = {
     closed: "Başvurular kapandı",
     sponsor: "Sponsor ol",
     opensIn: (label: string) => `Başvurular ${label}'da açılacak, 31 Mart 2027 23:59'da kapanacak.`,
+    /** Header and Hacker Pass button, by application status. */
+    join: { upcoming: "Başvurular Ocak'ta", open: "Başvur", closed: "Başvurular kapandı" },
+    /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
+    joinShort: { upcoming: "Ocak 2027", open: "Başvur", closed: "Kapandı" },
+    joinShortSr: { upcoming: "Başvurular", open: "", closed: "Başvurular" },
   },
   countdown: {
     label: "Açılış törenine",
@@ -68,6 +73,13 @@ const tr = {
       { value: "Ücretsiz", label: "yemek ve içecek dahil" },
       { value: "100+", label: "öğrenci", note: "hedeflenen" },
     ],
+    whyTitle: "Neden katılmalısın?",
+    why: [
+      "28 saatte fikirden çalışan ürüne",
+      "Masalarda demo, finalde sahne ve online jüri",
+      "Gece boyunca açık mekân, armut koltuklu dinlenme alanı",
+      "Yemek ve içecek dahil, ücretsiz",
+    ],
   },
   how: {
     title: "Nasıl katılırım?",
@@ -89,8 +101,11 @@ const tr = {
         students: 57,
         teams: 20,
         photos: [
-          { src: "/img/stage.jpg", w: 480, h: 640, alt: "2026'da birinci olan takım plaketleriyle sahnede", caption: "Birinci olan takım", pos: "50% 50%" },
-          { src: "/img/winners.jpg", w: 480, h: 640, alt: "2026'da ikinci olan iki kişilik takım plaketleriyle", caption: "İkinci olan takım", pos: "50% 40%" },
+          { src: "/img/2026-2.jpg", w: 1600, h: 1200, alt: "2026'da büyük salonda sahnede bir konuşmacı, sıralarda dinleyen öğrenciler", caption: "2026 · Salonda sunum", pos: "50% 55%" },
+          { src: "/img/2026-3.jpg", w: 1600, h: 1200, alt: "2026'da yaka kartlı katılımcılar bir masanın etrafında toplanmış konuşuyor", caption: "2026 · Etkinlik alanında", pos: "50% 40%" },
+          { src: "/img/2026-4.jpg", w: 1200, h: 1600, alt: "2026'da sahnede plaket tutan iki kişi, arkada Hackathon Aydın ve Game Jam Aydın bayrakları", caption: "2026 · Sahnede plaket", pos: "50% 55%" },
+          { src: "/img/2026-5.jpg", w: 1200, h: 1600, alt: "2026'da iki katılımcı Hackathon Aydın ve Game Jam Aydın afişlerini tutuyor", caption: "2026 · Afişlerle", pos: "50% 45%" },
+          { src: "/img/2026-1.jpg", w: 1200, h: 1600, alt: "2026'da salonun arka sıralarından sahneye bakış", caption: "2026 · Salondan", pos: "50% 60%" },
         ],
       },
       {
@@ -99,8 +114,11 @@ const tr = {
         students: 36,
         teams: 12,
         photos: [
-          { src: "/img/team.jpg", w: 1280, h: 959, alt: "Hackathon Aydın 2025 organizasyon ekibi etkinlik panosunun önünde", caption: "Organizasyon ekibi", pos: "50% 40%" },
-          { src: "/img/builder.jpg", w: 480, h: 320, alt: "Hackathon Aydın 2025'te bir katılımcı", caption: "Bir katılımcı", pos: "50% 30%" },
+          { src: "/img/2025-2.jpg", w: 1600, h: 1067, alt: "Hackathon Aydın 2025'te dizüstü bilgisayarların başında gülen iki katılımcı", caption: "2025 · Geliştirme sırasında", pos: "50% 40%" },
+          { src: "/img/2025-4.jpg", w: 1600, h: 1067, alt: "Hackathon Aydın 2025 organizasyon ekibi etkinlik afişinin iki yanında", caption: "2025 · Organizasyon ekibi", pos: "50% 45%" },
+          { src: "/img/2025-5.jpg", w: 1600, h: 1067, alt: "Hackathon Aydın 2025'te kulaklıklı iki katılımcı ekranlarına odaklanmış", caption: "2025 · Ekran başında", pos: "45% 40%" },
+          { src: "/img/2025-1.jpg", w: 1600, h: 1067, alt: "Hackathon Aydın 2025 ekibi masada, arkada etkinlik afişleri", caption: "2025 · Ekip masada", pos: "50% 50%" },
+          { src: "/img/2025-3.jpg", w: 1600, h: 1067, alt: "Hackathon Aydın 2025'te gülümseyen bir katılımcı, arkada çalışma alanı", caption: "2025 · Etkinlik alanında", pos: "50% 35%" },
         ],
       },
     ],
@@ -110,6 +128,7 @@ const tr = {
     draft: "Taslak program",
     note: "Geliştirme süresi Cumartesi 11:00 ile Pazar 15:00 arası, toplam 28 saat. Saatler Türkiye saatiyle.",
     days: { sat: "Cumartesi, 17 Nisan", sun: "Pazar, 18 Nisan" },
+    break: "MOLA",
   },
   people: {
     title: "Jüri ve mentorlar",
@@ -221,6 +240,11 @@ const en: Dict = {
     closed: "Applications closed",
     sponsor: "Become a sponsor",
     opensIn: (label: string) => `Applications open in ${label} and close on 31 March 2027 at 23:59.`,
+    /** Header and Hacker Pass button, by application status. */
+    join: { upcoming: "Applications open in January", open: "Apply", closed: "Applications closed" },
+    /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
+    joinShort: { upcoming: "Jan 2027", open: "Apply", closed: "Closed" },
+    joinShortSr: { upcoming: "Applications open", open: "", closed: "Applications" },
   },
   countdown: {
     label: "Until the opening ceremony",
@@ -256,6 +280,13 @@ const en: Dict = {
       { value: "Free", label: "food and drinks included" },
       { value: "100+", label: "students", note: "target" },
     ],
+    whyTitle: "Why join?",
+    why: [
+      "From idea to working product in 28 hours",
+      "Demos at the tables, then the stage and an online jury for the final",
+      "The venue stays open all night, with a bean bag rest area",
+      "Food and drinks included, free of charge",
+    ],
   },
   how: {
     title: "How to join",
@@ -277,8 +308,11 @@ const en: Dict = {
         students: 57,
         teams: 20,
         photos: [
-          { src: "/img/stage.jpg", w: 480, h: 640, alt: "The first-place team of 2026 on stage with their plaques", caption: "First place", pos: "50% 50%" },
-          { src: "/img/winners.jpg", w: 480, h: 640, alt: "The two-person team that placed second in 2026 with their plaque", caption: "Second place", pos: "50% 40%" },
+          { src: "/img/2026-2.jpg", w: 1600, h: 1200, alt: "A speaker on stage in the main hall in 2026, students listening from the seats", caption: "2026 · A talk in the hall", pos: "50% 55%" },
+          { src: "/img/2026-3.jpg", w: 1600, h: 1200, alt: "Participants with badges gathered around a table talking in 2026", caption: "2026 · On the event floor", pos: "50% 40%" },
+          { src: "/img/2026-4.jpg", w: 1200, h: 1600, alt: "Two people holding a plaque on stage in 2026, Hackathon Aydın and Game Jam Aydın flags behind them", caption: "2026 · A plaque on stage", pos: "50% 55%" },
+          { src: "/img/2026-5.jpg", w: 1200, h: 1600, alt: "Two participants holding Hackathon Aydın and Game Jam Aydın banners in 2026", caption: "2026 · With the banners", pos: "50% 45%" },
+          { src: "/img/2026-1.jpg", w: 1200, h: 1600, alt: "View of the stage from the back rows of the hall in 2026", caption: "2026 · From the hall", pos: "50% 60%" },
         ],
       },
       {
@@ -287,8 +321,11 @@ const en: Dict = {
         students: 36,
         teams: 12,
         photos: [
-          { src: "/img/team.jpg", w: 1280, h: 959, alt: "The Hackathon Aydın 2025 organizing team in front of the event backdrop", caption: "Organizing team", pos: "50% 40%" },
-          { src: "/img/builder.jpg", w: 480, h: 320, alt: "A participant at Hackathon Aydın 2025", caption: "A participant", pos: "50% 30%" },
+          { src: "/img/2025-2.jpg", w: 1600, h: 1067, alt: "Two participants laughing at their laptops at Hackathon Aydın 2025", caption: "2025 · While building", pos: "50% 40%" },
+          { src: "/img/2025-4.jpg", w: 1600, h: 1067, alt: "The Hackathon Aydın 2025 organizing team on both sides of the event banner", caption: "2025 · Organizing team", pos: "50% 45%" },
+          { src: "/img/2025-5.jpg", w: 1600, h: 1067, alt: "Two participants with headphones focused on their screens at Hackathon Aydın 2025", caption: "2025 · Heads down", pos: "45% 40%" },
+          { src: "/img/2025-1.jpg", w: 1600, h: 1067, alt: "The Hackathon Aydın 2025 team at a desk, event banners behind them", caption: "2025 · The team at the desk", pos: "50% 50%" },
+          { src: "/img/2025-3.jpg", w: 1600, h: 1067, alt: "A smiling participant at Hackathon Aydın 2025, the work area behind", caption: "2025 · On the event floor", pos: "50% 35%" },
         ],
       },
     ],
@@ -298,6 +335,7 @@ const en: Dict = {
     draft: "Draft schedule",
     note: "Building runs from Saturday 11:00 to Sunday 15:00, 28 hours in total. Times are Türkiye time (UTC+3).",
     days: { sat: "Saturday, 17 April", sun: "Sunday, 18 April" },
+    break: "BREAK",
   },
   people: {
     title: "Judges and mentors",
