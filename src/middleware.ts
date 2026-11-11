@@ -29,6 +29,15 @@ const loginPath = (lang: string) => (lang === "en" ? "/en/login" : "/tr/giris");
 
 export async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
+
+  // Supabase falls back to the Site URL when a redirect URL is not on its allow list,
+  // so a sign-in can land on "/" or "/tr" with ?code=. Finish it in the callback.
+  if (req.nextUrl.searchParams.has("code") && !pathname.startsWith("/auth/")) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    if (!url.searchParams.has("next")) url.searchParams.set("next", `/${LOCALES.find((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)) ?? pickLocale(req)}/panel`);
+    return NextResponse.redirect(url);
+  }
   const unlocalized = UNLOCALIZED.some((p) => pathname === p || pathname.startsWith(`${p}/`));
   const locale = LOCALES.find((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`));
 
