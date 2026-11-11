@@ -10,7 +10,9 @@ import Sponsors from "@/components/Sponsors";
 import { getPeople, getSchedule, getSiteConfig, getSponsors } from "@/data";
 import { primaryAction } from "@/lib/cta";
 import { MAPS_URL, getDict, isLocale } from "@/lib/dict";
+import { ROLES } from "@/lib/application";
 import { pagePath } from "@/lib/routes";
+import { panelDict } from "@/content/panel";
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -34,7 +36,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
   return (
     <>
-      <Hero d={d} action={action} site={site} partnersHref={partnersHref} opensLabel={site.application.opensLabel[lang]} />
+      <Hero
+        d={d}
+        action={action}
+        site={site}
+        partnersHref={partnersHref}
+        opensLabel={site.application.opensLabel[lang]}
+        roles={ROLES.filter((r) => r !== "other").map((key) => ({ key, label: panelDict[lang].form.options.roles[key] }))}
+        noTeamHref={`${pagePath(lang, "guide")}#${lang === "tr" ? "basvuru" : "apply"}`}
+      />
 
       {/* 2. Event summary */}
       <Section id="event" {...num("event")} title={d.event.title}>

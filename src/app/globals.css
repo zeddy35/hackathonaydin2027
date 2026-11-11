@@ -163,17 +163,42 @@ html.ha-anim:not(.ha-go) .ha-line > span { transform: translateY(130%); }
 /* Room below the baseline so descenders (g, y, ç, ş) are not clipped by the reveal mask. */
 .ha-line { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
 .ha-line > span { display: block; transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 80ms); }
-html.ha-anim:not(.ha-go) .ha-pass-enter { opacity: 0; transform: translateX(48px) rotate(6deg); }
+html.ha-anim:not(.ha-go) .ha-card-enter { opacity: 0; transform: translateY(24px); }
 .ha-pill { width: 0; transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), width 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 150ms ease-out; }
 .ha-menu-item { animation: ha-rise 350ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(40ms + var(--i, 0) * 50ms); }
 @keyframes ha-rise { from { opacity: 0; transform: translateY(16px); } }
-.ha-tilt { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1); }
-.ha-pass-enter { transition: opacity 600ms ease-out 200ms, transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
+.ha-card-enter { transition: opacity 600ms ease-out 200ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
+
+/* Red pen line (RedPen.tsx). Final state is the default: line drawn, line 2 faded,
+ * line 3 visible. Only the text fades, the pen stays full red. The draw-in only runs while html.ha-anim is set (JS on, motion ok):
+ * pen starts 800 ms after html.ha-go, takes 600 ms, then line 2 fades and line 3 rises. */
+.ha-l2 { color: rgb(98 98 98 / 0.55); }
+.ha-pen-host:not([data-ready]) { text-decoration: line-through var(--accent) 0.08em; }
+html.ha-anim .ha-pen-host:not([data-ready]) { text-decoration: none; }
+.ha-pen path { stroke: var(--accent); stroke-dasharray: 1; stroke-dashoffset: 0; }
+html.ha-anim:not(.ha-go) .ha-l2 { color: var(--ink-muted); }
+html.ha-anim:not(.ha-go) .ha-pen path { stroke-dashoffset: 1; }
+html.ha-anim:not(.ha-go) .ha-l3 > span { transform: translateY(130%); }
+html.ha-anim.ha-go .ha-pen path { animation: ha-draw var(--pdur, 600ms) ease-out calc(800ms + var(--pd, 0ms)) both; }
+html.ha-anim.ha-go .ha-l2 { animation: ha-dim 300ms ease-out 1400ms both; }
+html.ha-anim.ha-go .ha-l3 > span { animation: ha-up 700ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms both; }
+@keyframes ha-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes ha-dim { from { color: var(--ink-muted); } to { color: rgb(98 98 98 / 0.55); } }
+@keyframes ha-up { from { transform: translateY(130%); } to { transform: none; } }
+
+/* Countdown chip: slow pulse on the red dot. */
+.ha-pulse { animation: ha-pulse 2.4s ease-in-out infinite; }
+@keyframes ha-pulse { 50% { opacity: 0.25; } }
+
+/* Team card: a seat pops in when it fills. */
+.ha-seat { animation: ha-pop 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+@keyframes ha-pop { from { scale: 0.8; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   .ha-loader-root { display: none !important; }
+  .ha-pulse, .ha-seat { animation: none !important; }
 }
 
 /* Admin: let wide tables scroll inside their box instead of widening the page. */

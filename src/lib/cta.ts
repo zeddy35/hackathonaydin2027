@@ -3,7 +3,7 @@ import type { Dict } from "./dict";
 import type { Locale } from "./i18n";
 import { pagePath } from "./routes";
 
-/** `join` is the short label for the header and Hacker Pass button (same target as `href`). */
+/** `join` is the label for the header and team card button (same target as `href`). */
 export type PrimaryAction = { href: string; label: string; join: string; status: SiteConfig["application"]["status"] };
 
 /**

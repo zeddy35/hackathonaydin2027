@@ -21,7 +21,6 @@ const tr = {
     schedule: "Program",
     sponsors: "Sponsorlar",
     faq: "SSS",
-    join: "Katılım",
     menu: "Menü",
     close: "Kapat",
     switchTo: "English",
@@ -33,36 +32,45 @@ const tr = {
     closed: "Başvurular kapandı",
     sponsor: "Sponsor ol",
     opensIn: (label: string) => `Başvurular ${label}'da açılacak, 31 Mart 2027 23:59'da kapanacak.`,
-    /** Header and Hacker Pass button, by application status. */
+    /** Header and team card button, by application status. */
     join: { upcoming: "Başvurular Ocak'ta", open: "Başvur", closed: "Başvurular kapandı" },
     /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
     joinShort: { upcoming: "Ocak 2027", open: "Başvur", closed: "Kapandı" },
     joinShortSr: { upcoming: "Başvurular", open: "", closed: "Başvurular" },
   },
-  countdown: {
-    label: "Açılış törenine",
-    days: "gün",
-    hours: "sa",
-    minutes: "dk",
-    live: "Etkinlik devam ediyor",
-    done: "Hackathon Aydın 2027 tamamlandı",
-  },
   loader: "HACKATHON AYDIN 2027",
-  pass: {
-    label: "HACKER PASS · 2027",
-    countdownLabel: "Açılış törenine kalan süre",
-    units: { d: "GÜN", h: "SAAT", m: "DAK", s: "SN" },
-    facts: ["3. edisyon", "28 saat", "100+ öğrenci (hedef)"],
-    live: "Şu an sürüyor",
-    done: "Görüşmek üzere: 2028",
-    stamp: "17-18.04.2027 · ADÜ",
-  },
   hero: {
     eyebrow: "Hackathon Aydın 2027",
-    title: ["Bir fikirle gel.", "Çalışan bir ürünle çık."],
+    /** [0] and [2] form the heading; [1] is the struck-through line (hidden from screen readers). */
+    title: ["Bir fikirle gel.", "Bir yapılacaklar listesiyle çık.", "Çalışan bir ürünle çık."],
     lead: "Üniversite öğrencileri için 28 saatlik ürün geliştirme maratonu.",
     when: "17-18 Nisan 2027",
     where: "Aydın Adnan Menderes Üniversitesi",
+    countdown: {
+      label: "Açılış törenine kalan süre",
+      units: { d: "g", h: "s", m: "d" },
+      live: "Şu an sürüyor",
+      done: "2028'de görüşürüz",
+    },
+  },
+  /** Team card (client component): plain strings only, {role} and {n} are filled in there. */
+  team: {
+    label: "TAKIMINI KUR",
+    roles: "Rol ekle",
+    you: "Sen",
+    empty: "Boş koltuk",
+    remove: "{role} rolünü çıkar",
+    count: "{n} / 5 kişi",
+    status: {
+      low: "Takımlar 3-5 kişi. Eksik kalırsa Cumartesi sabahı eşleştiriyoruz.",
+      ready: "Takımın hazır. İstersen bir kişi daha ekleyebilirsin.",
+      full: "Tam kadro. 28 saate hazırsınız.",
+    },
+    tips: {
+      design: "Bir tasarımcı demo gününde fark yaratır.",
+      product: "Ürünü düşünen biri, 28 saati doğru işe harcamanızı sağlar.",
+    },
+    noTeam: "Takımım yok",
   },
   event: {
     title: "Etkinlik",
@@ -228,7 +236,6 @@ const en: Dict = {
     schedule: "Schedule",
     sponsors: "Sponsors",
     faq: "FAQ",
-    join: "Join",
     menu: "Menu",
     close: "Close",
     switchTo: "Türkçe",
@@ -240,36 +247,44 @@ const en: Dict = {
     closed: "Applications closed",
     sponsor: "Become a sponsor",
     opensIn: (label: string) => `Applications open in ${label} and close on 31 March 2027 at 23:59.`,
-    /** Header and Hacker Pass button, by application status. */
+    /** Header and team card button, by application status. */
     join: { upcoming: "Applications open in January", open: "Apply", closed: "Applications closed" },
     /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
     joinShort: { upcoming: "Jan 2027", open: "Apply", closed: "Closed" },
     joinShortSr: { upcoming: "Applications open", open: "", closed: "Applications" },
   },
-  countdown: {
-    label: "Until the opening ceremony",
-    days: "d",
-    hours: "h",
-    minutes: "min",
-    live: "The event is happening now",
-    done: "Hackathon Aydın 2027 has ended",
-  },
   loader: "HACKATHON AYDIN 2027",
-  pass: {
-    label: "HACKER PASS · 2027",
-    countdownLabel: "Time until the opening ceremony",
-    units: { d: "DAYS", h: "HRS", m: "MIN", s: "SEC" },
-    facts: ["3rd edition", "28 hours", "100+ students (target)"],
-    live: "Happening now",
-    done: "See you in 2028",
-    stamp: "17-18.04.2027 · ADÜ",
-  },
   hero: {
     eyebrow: "Hackathon Aydın 2027",
-    title: ["Come with an idea.", "Leave with a working product."],
+    /** [0] and [2] form the heading; [1] is the struck-through line (hidden from screen readers). */
+    title: ["Come with an idea.", "Leave with a to-do list.", "Leave with a working product."],
     lead: "A 28-hour product building marathon for university students.",
     when: "17-18 April 2027",
     where: "Aydın Adnan Menderes University",
+    countdown: {
+      label: "Time until the opening ceremony",
+      units: { d: "d", h: "h", m: "m" },
+      live: "Happening now",
+      done: "See you in 2028",
+    },
+  },
+  team: {
+    label: "BUILD YOUR TEAM",
+    roles: "Add a role",
+    you: "You",
+    empty: "Empty seat",
+    remove: "Remove {role}",
+    count: "{n} / 5 people",
+    status: {
+      low: "Teams are 3-5 people. Short on people? We match you on Saturday morning.",
+      ready: "Your team is ready. Room for one more.",
+      full: "Full squad. Ready for 28 hours.",
+    },
+    tips: {
+      design: "A designer makes the difference on demo day.",
+      product: "Someone thinking about the product keeps 28 hours pointed at the right problem.",
+    },
+    noTeam: "I don't have a team",
   },
   event: {
     title: "The event",
