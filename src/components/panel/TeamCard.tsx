@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { createTeam, joinTeam, leaveTeam, setWantsMatch, type ActionResult } from "@/app/[lang]/panel/actions";
+import { createTeam, joinTeam, leaveTeam, setWantsMatch, type ActionResult } from "@/app/[lang]/(app)/panel/actions";
 import { panelDict } from "@/content/panel";
 import type { Locale } from "@/lib/i18n";
 import { describedBy, Field, inputCls, Notice } from "./fields";

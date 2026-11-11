@@ -16,6 +16,7 @@ export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; la
               .filter((i) => i.day === day)
               .map((i) => {
                 const strong = KEY_POINTS.includes(i.key);
+                const rest = i.kind === "break";
                 return (
                   <li
                     key={i.key}
@@ -24,8 +25,9 @@ export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; la
                     }`}
                   >
                     <time className={`font-mono text-[14px] tabular-nums ${strong ? "text-accent" : "text-muted"}`}>{i.time}</time>
-                    <span className="text-[16px]">
+                    <span className={`flex flex-wrap items-baseline gap-x-2 text-[16px] ${rest ? "text-muted" : ""}`}>
                       {i[lang]}
+                      {rest && <span className="font-mono text-[11px] tracking-[0.08em] text-muted">{d.break}</span>}
                     </span>
                   </li>
                 );

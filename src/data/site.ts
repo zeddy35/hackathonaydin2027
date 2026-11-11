@@ -1,5 +1,8 @@
 import type { SiteConfig } from "./types";
 
+/** The one place for the public contact address. Swap it here when the domain e-mail exists. */
+export const contactEmail = "zerdendereli@gmail.com";
+
 /**
  * Defaults. When Supabase is configured, the admin panel (İçerik) overrides
  * application status, dates and MLH flags from the `settings` table.
@@ -26,6 +29,6 @@ export const site: SiteConfig = {
     badgeHref: "",
     badgeImage: "",
   },
-  contact: { email: "zerdendereli@gmail.com" },
+  contact: { email: contactEmail },
   social: { instagram: "https://www.instagram.com/hackathonaydin2027/" },
 };

@@ -2,7 +2,9 @@ import Link from "next/link";
 import type { SiteConfig } from "@/data/types";
 import type { PrimaryAction } from "@/lib/cta";
 import type { Dict } from "@/lib/dict";
-import HackerPass from "./HackerPass";
+import KickoffChip from "./KickoffChip";
+import RedPen from "./RedPen";
+import TeamBuilder from "./TeamBuilder";
 
 export default function Hero({
   d,
@@ -10,16 +12,18 @@ export default function Hero({
   site,
   partnersHref,
   opensLabel,
+  roles,
+  noTeamHref,
 }: {
   d: Dict;
   action: PrimaryAction;
   site: SiteConfig;
   partnersHref: string;
   opensLabel: string;
+  roles: { key: string; label: string }[];
+  noTeamHref: string;
 }) {
   const h = d.hero;
-  // "Apply" only when it leads to the form; otherwise the pass points to the join section.
-  const passLink = action.status === "open" ? { href: action.href, label: d.cta.apply } : { href: "#join", label: d.nav.join };
 
   return (
     <section
@@ -30,21 +34,28 @@ export default function Hero({
       <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0 -z-10" />
       <div className="wrap grid items-center gap-6 py-6 sm:py-8 lg:grid-cols-12 lg:gap-8 lg:py-12">
         <div className="grid min-w-0 gap-4 sm:gap-6 lg:col-span-7 lg:gap-8">
-          <h1 id="hero-h" className="display text-[clamp(28px,9vw,56px)] leading-[1.03] md:text-[72px] lg:text-[76px] xl:text-[88px]">
+          {/* Accessible name is lines 1 and 3 only; the struck line is visual. */}
+          <h1 id="hero-h" className="display text-[clamp(36px,11vw,56px)] leading-[1.02] md:text-[72px] lg:text-[68px] xl:text-[80px]">
             <span className="ha-line">
               <span style={{ ["--i" as string]: 0 }}>{h.title[0]}</span>
             </span>
-            <span className="ha-line text-accent">
-              <span style={{ ["--i" as string]: 1 }}>{h.title[1]}</span>
+            <span aria-hidden="true" className="ha-line ha-l2 text-[0.62em] leading-[1.15] text-muted">
+              <span style={{ ["--i" as string]: 1 }}>
+                <RedPen text={h.title[1]} />
+              </span>
+            </span>
+            <span className="ha-line ha-l3 text-accent">
+              <span>{h.title[2]}</span>
             </span>
           </h1>
           <p className="max-w-[44ch] text-[16px] leading-[1.45] text-ink sm:text-[19px] md:text-[21px] md:leading-[1.5]">{h.lead}</p>
 
-          <p className="flex flex-col gap-1 font-mono text-[13px] text-ink sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:text-[14px]">
+          <div className="flex flex-col gap-2 font-mono text-[13px] text-ink sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:text-[14px]">
             <span>{h.when}</span>
             <span aria-hidden="true" className="hidden text-muted sm:inline">·</span>
             <span>{h.where}</span>
-          </p>
+            <KickoffChip t={h.countdown} start={site.event.kickoff} end={site.event.end} />
+          </div>
 
           <div className="grid gap-3 sm:gap-4">
             <div className="flex flex-wrap gap-3">
@@ -69,7 +80,7 @@ export default function Hero({
         </div>
 
         <div className="min-w-0 lg:col-span-5">
-          <HackerPass t={d.pass} start={site.event.kickoff} end={site.event.end} linkHref={passLink.href} linkLabel={passLink.label} />
+          <TeamBuilder t={d.team} roles={roles} actionHref={action.href} actionLabel={action.join} noTeamHref={noTeamHref} />
         </div>
       </div>
     </section>

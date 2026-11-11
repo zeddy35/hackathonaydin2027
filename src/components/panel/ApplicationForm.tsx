@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
-import { saveApplication } from "@/app/[lang]/panel/actions";
+import { saveApplication } from "@/app/[lang]/(app)/panel/actions";
 import { panelDict } from "@/content/panel";
 import {
   CV_MAX_BYTES,

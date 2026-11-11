@@ -10,7 +10,9 @@ import Sponsors from "@/components/Sponsors";
 import { getPeople, getSchedule, getSiteConfig, getSponsors } from "@/data";
 import { primaryAction } from "@/lib/cta";
 import { MAPS_URL, getDict, isLocale } from "@/lib/dict";
+import { ROLES } from "@/lib/application";
 import { pagePath } from "@/lib/routes";
+import { panelDict } from "@/content/panel";
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -27,13 +29,25 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const partnersHref = pagePath(lang, "partners");
   const packagesHref = `${partnersHref}#${lang === "tr" ? "paketler" : "packages"}`;
   const closing = d.closing[action.status];
+  // Numbered sections ("01 / 07"). Judges and mentors only count when shown.
+  const hasPeople = judges.length + mentors.length > 0;
+  const order = ["event", "how", "past", "schedule", ...(hasPeople ? ["people"] : []), "sponsors", "venue", "faq"];
+  const num = (id: string) => ({ n: order.indexOf(id) + 1, total: order.length });
 
   return (
     <>
-      <Hero d={d} action={action} site={site} partnersHref={partnersHref} opensLabel={site.application.opensLabel[lang]} />
+      <Hero
+        d={d}
+        action={action}
+        site={site}
+        partnersHref={partnersHref}
+        opensLabel={site.application.opensLabel[lang]}
+        roles={ROLES.filter((r) => r !== "other").map((key) => ({ key, label: panelDict[lang].form.options.roles[key] }))}
+        noTeamHref={`${pagePath(lang, "guide")}#${lang === "tr" ? "basvuru" : "apply"}`}
+      />
 
       {/* 2. Event summary */}
-      <Section id="event" title={d.event.title}>
+      <Section id="event" {...num("event")} title={d.event.title}>
         <p className="max-w-[60ch] text-[19px] leading-[1.6]">{d.event.text}</p>
         <ul className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-rule pt-8 md:grid-cols-4">
           {d.event.facts.map((f) => (
@@ -46,10 +60,21 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </li>
           ))}
         </ul>
+        <div className="grid gap-4">
+          <h3 className="text-[18px] font-semibold">{d.event.whyTitle}</h3>
+          <ul className="grid gap-3 sm:grid-cols-2 sm:gap-x-8">
+            {d.event.why.map((w) => (
+              <li key={w} className="grid grid-cols-[12px_minmax(0,1fr)] items-baseline gap-3 text-[17px]">
+                <span aria-hidden="true" className="h-1.5 w-1.5 translate-y-[-2px] bg-accent" />
+                {w}
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       {/* 3. How to join */}
-      <Section id="how" title={d.how.title}>
+      <Section id="how" {...num("how")} title={d.how.title}>
         <ol className="grid gap-8 md:grid-cols-2 xl:grid-cols-4 xl:gap-6">
           {d.how.steps.map((s, i) => (
             <li key={s.h} className="grid content-start gap-2 border-t border-ink pt-4">
@@ -64,7 +89,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </Section>
 
       {/* 4. Past editions */}
-      <Section id="past" title={d.past.title}>
+      <Section id="past" {...num("past")} title={d.past.title}>
         {d.past.editions.map((e) => (
           <article key={e.year} aria-labelledby={`y${e.year}`} className="grid gap-6 border-b border-rule pb-12 last:border-b-0 last:pb-0">
             <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
@@ -76,19 +101,27 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {e.students} {d.past.students} · {e.teams} {d.past.teams}
               </span>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {e.photos.map((p) => (
-                <figure key={p.src} className="m-0 grid content-start gap-2">
+            {/* Bento: first photo large (2x2), the other four fill the rest. Every tile crops with
+                object-cover, so mixed portrait/landscape originals still form a tidy grid. */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4 md:grid-rows-[repeat(2,minmax(0,1fr))]">
+              {e.photos.map((p, i) => (
+                <figure
+                  key={p.src}
+                  className={`group/ph relative m-0 overflow-hidden rounded-md bg-rule ${
+                    i === 0 ? "col-span-2 aspect-[4/3] md:row-span-2 md:aspect-auto" : "aspect-square md:aspect-[4/3]"
+                  }`}
+                >
                   <Image
                     src={p.src}
                     alt={p.alt}
-                    width={p.w}
-                    height={p.h}
-                    sizes={`(min-width: 640px) min(${Math.min(p.w, 560)}px, 45vw), min(${Math.min(p.w, 480)}px, 100vw)`}
-                    style={{ objectPosition: p.pos, maxWidth: `${Math.min(p.w, 560)}px` }}
-                    className="h-auto w-full rounded-md bg-rule"
+                    fill
+                    sizes={i === 0 ? "(min-width: 1200px) 520px, (min-width: 768px) 45vw, 100vw" : "(min-width: 1200px) 260px, (min-width: 768px) 22vw, 50vw"}
+                    style={{ objectPosition: p.pos }}
+                    className="object-cover transition-transform duration-500 ease-out group-hover/ph:scale-[1.03]"
                   />
-                  <figcaption className="text-[14px] text-muted">{p.caption}</figcaption>
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent px-3 pb-2 pt-8 font-mono text-[12px] leading-tight text-white">
+                    {p.caption}
+                  </figcaption>
                 </figure>
               ))}
             </div>
@@ -97,26 +130,26 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </Section>
 
       {/* 5. Schedule */}
-      <Section id="schedule" title={d.schedule.title} aside={<span className="tag w-fit">{d.schedule.draft}</span>}>
+      <Section id="schedule" {...num("schedule")} title={d.schedule.title} aside={<span className="tag w-fit">{d.schedule.draft}</span>}>
         <Schedule items={schedule} lang={lang} d={d.schedule} />
         <p className="max-w-[60ch] text-[15px] text-muted">{d.schedule.note}</p>
       </Section>
 
       {/* Judges and mentors: only when someone is published. */}
-      {judges.length + mentors.length > 0 && (
-        <Section id="people" title={d.people.title}>
+      {hasPeople && (
+        <Section id="people" {...num("people")} title={d.people.title}>
           <People people={judges} title={d.people.judges} />
           <People people={mentors} title={d.people.mentors} />
         </Section>
       )}
 
       {/* 6. Sponsors */}
-      <Section id="sponsors" title={d.sponsors.title}>
+      <Section id="sponsors" {...num("sponsors")} title={d.sponsors.title}>
         <Sponsors sponsors={sponsors} d={d} partnersHref={partnersHref} packagesHref={packagesHref} email={site.contact.email} />
       </Section>
 
       {/* 7. Venue */}
-      <Section id="venue" title={d.venue.title}>
+      <Section id="venue" {...num("venue")} title={d.venue.title}>
         <div className="grid gap-2">
           <p className="text-[20px] font-medium leading-snug">{d.venue.place}</p>
           <p className="text-muted">{d.venue.placeNote}</p>
@@ -136,7 +169,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </Section>
 
       {/* 8. FAQ */}
-      <Section id="faq" title={d.faq.title}>
+      <Section id="faq" {...num("faq")} title={d.faq.title}>
         <Faq items={d.faq.items} />
       </Section>
 

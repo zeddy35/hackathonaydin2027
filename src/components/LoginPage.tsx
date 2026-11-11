@@ -24,7 +24,7 @@ export default async function LoginPage({
     searchParams.error && searchParams.error in t.errors ? (searchParams.error as AuthErrorCode) : null;
 
   return (
-    <div className="wrap grid justify-items-center py-16 md:py-24">
+    <div className="wrap grid flex-1 place-items-center py-12 md:py-16">
       <div className="grid w-full max-w-[420px] gap-8">
         <header className="grid gap-3">
           <h1 className="text-[36px] font-semibold leading-tight tracking-[-0.02em]">{t.login.title}</h1>

@@ -17,9 +17,9 @@ npm run test:db        # migration'lar + RLS ve uçtan uca SQL testleri (PGlite,
 ## Yapı
 
 - `src/middleware.ts`: dil seçimi (cookie → ülke → tarayıcı dili) ve `/` → `/tr|/en` yönlendirmesi.
-- `src/app/[lang]/layout.tsx`: header, footer, metadata. `src/app/[lang]/page.tsx`: ana sayfa (9 bölüm).
-- `src/app/[lang]/[slug]/page.tsx`: yardımcı sayfalar. Slug eşlemesi `src/lib/routes.ts` (`rehber/guide`, `kurallar/rules`, `partner/partners`, `gizlilik/privacy`). Diğer dilin slug'ı doğru olana yönlendirilir.
-- `src/app/[lang]/panel/`: katılımcı paneli (başvuru, onay, QR, takım, teslim) ve server action'ları. `src/app/[lang]/giris|login`: giriş.
+- `src/app/[lang]/(site)/`: herkese açık site. `layout.tsx` header, footer, açılış animasyonu, metadata; `page.tsx` ana sayfa (9 bölüm).
+- `src/app/[lang]/(site)/[slug]/page.tsx`: yardımcı sayfalar. Slug eşlemesi `src/lib/routes.ts` (`rehber/guide`, `kurallar/rules`, `partner/partners`, `gizlilik/privacy`). Diğer dilin slug'ı doğru olana yönlendirilir.
+- `src/app/[lang]/(app)/`: ayrı kök layout, site header/footer'ı yok (sadece logo). `panel/`: katılımcı paneli (başvuru, onay, QR, takım, teslim) ve server action'ları. `giris|login`: giriş. URL'ler değişmedi (`/tr/panel`, `/tr/giris`).
 - `src/app/admin/`: yönetim paneli (TR). Her sayfa `requireRole`, her action `assertRole` (`src/lib/auth.ts`) ile rolü sunucuda kontrol eder. Kılavuz: `docs/admin-kilavuzu.md`.
 - `supabase/migrations/`: şema, RLS, tetikleyiciler. `supabase/tests/`: SQL testleri. `supabase/seed.dev.sql`: sadece yerel sahte veri.
 - `src/emails/`: e-posta şablonları (TR/EN). `src/lib/email.ts`: Resend; anahtar yoksa gönderim atlanır ve loglanır.
@@ -35,7 +35,8 @@ Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
 - Sponsorlar ve jüri/mentorlar (yayında olmayan görünmez; jüri/mentor boşsa bölüm render edilmez).
 - MLH bayrakları: `mlh_enabled` (form alanları), `mlh_badge` (header rozeti). Onay gelmeden açılmaz.
 - Başvuru son tarihi (31 Mart 2027 23:59): `/admin/icerik`. Değişirse `dict.ts` ve `guide.ts` metinlerindeki tarihi de güncelle.
-- Program taslağı: `src/data/schedule.ts`.
+- Program taslağı: `src/data/schedule.ts` (yemek/gece kalemleri `kind: "break"`).
+- İletişim e-postası: `src/data/site.ts` → `contactEmail`.
 
 ## Kurallar
 
@@ -44,7 +45,7 @@ Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
 - Em dash (—) kullanma.
 - Her görünür metin iki dilde olmalı (admin paneli hariç: sadece Türkçe).
 - Sahte sponsor, jüri, ödül, proje veya "Official MLH Event" / "Powered by OpenAI" yok.
-- Fotoğraflar `public/img/` altında; `stage.jpg`, `winners.jpg`, `builder.jpg` 480 px, büyütme.
+- Fotoğraflar `public/img/` altında (`2025-*.jpg`, `2026-*.jpg`, 1600 px, EXIF silinmiş; `og.jpg` 1200x630). Listesi ve altyazıları `dict.ts` → `past`. Yeni fotoğrafı EXIF'siz ve döndürülmüş kaydet (sharp `.rotate()`), konum bilgisi repoya girmesin.
 - İçerik animasyona bağlı olmasın (opacity 0'da bekleyen içerik yok); `prefers-reduced-motion` desteklenir.
 - `.env.local` commit'lenmez. `SUPABASE_SERVICE_ROLE_KEY` sadece sunucuda (`src/lib/supabase/admin.ts`, `server-only`).
 - Yetki kontrolü veritabanında (RLS + tetikleyiciler) ve sunucuda; arayüzde gizlemek yetmez. Yeni tablo eklersen RLS'i aç ve `supabase/tests/`'e test ekle.
