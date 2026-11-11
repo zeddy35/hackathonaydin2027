@@ -71,9 +71,10 @@ export type ScheduleKey =
   | "hackStart"
   | "lunch"
   | "dinner"
-  | "tournament"
+  | "games"
   | "snack"
   | "breakfast"
+  | "lunchSun"
   | "submit"
   | "finalistDemos"
   | "finalistsAnnounced"
@@ -89,4 +90,6 @@ export type ScheduleItem = {
   draft: boolean;
   /** Meals and night activities: shown muted with a "break" tag, apart from the build milestones. */
   kind?: "break";
+  /** Late-night slot: a small moon mark next to the text. */
+  night?: boolean;
 };

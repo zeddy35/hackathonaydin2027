@@ -15,12 +15,12 @@ export const site: SiteConfig = {
     deadline: "2027-03-31T23:59:00+03:00",
   },
   event: {
-    kickoff: "2027-04-17T10:00:00+03:00",
-    end: "2027-04-18T20:15:00+03:00",
+    kickoff: "2027-04-17T11:00:00+03:00",
+    end: "2027-04-18T18:15:00+03:00",
   },
   deadlines: {
-    hackStart: "2027-04-17T11:00:00+03:00",
-    submission: "2027-04-18T15:00:00+03:00",
+    hackStart: "2027-04-17T12:00:00+03:00",
+    submission: "2027-04-18T12:00:00+03:00",
     confirm: null,
   },
   mlh: {

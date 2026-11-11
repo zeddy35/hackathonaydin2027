@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Faq from "@/components/Faq";
+import FoodReviews from "@/components/FoodReviews";
 import Hero from "@/components/Hero";
 import People from "@/components/People";
 import Schedule from "@/components/Schedule";
 import Section from "@/components/Section";
 import Sponsors from "@/components/Sponsors";
 import { getPeople, getSchedule, getSiteConfig, getSponsors } from "@/data";
+import { foodReviews } from "@/data/food-reviews";
 import { primaryAction } from "@/lib/cta";
 import { MAPS_URL, getDict, isLocale } from "@/lib/dict";
 import { ROLES } from "@/lib/application";
@@ -133,6 +135,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Section id="schedule" {...num("schedule")} title={d.schedule.title} aside={<span className="tag w-fit">{d.schedule.draft}</span>}>
         <Schedule items={schedule} lang={lang} d={d.schedule} />
         <p className="max-w-[60ch] text-[15px] text-muted">{d.schedule.note}</p>
+        <FoodReviews reviews={foodReviews} lang={lang} t={d.schedule.food} />
       </Section>
 
       {/* Judges and mentors: only when someone is published. */}

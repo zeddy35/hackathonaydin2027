@@ -25,9 +25,9 @@ export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; la
                     }`}
                   >
                     <time className={`font-mono text-[14px] tabular-nums ${strong ? "text-accent" : "text-muted"}`}>{i.time}</time>
-                    <span className={`flex flex-wrap items-baseline gap-x-2 text-[16px] ${rest ? "text-muted" : ""}`}>
-                      {i[lang]}
-                      {rest && <span className="font-mono text-[11px] tracking-[0.08em] text-muted">{d.break}</span>}
+                    <span className={`text-[16px] ${rest ? "text-muted" : ""}`}>
+                      {i.night && <Moon />}
+                      {rest ? <WithTag text={i[lang]} tag={d.break} /> : i[lang]}
                     </span>
                   </li>
                 );
@@ -36,5 +36,28 @@ export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; la
         </div>
       ))}
     </div>
+  );
+}
+
+/** Keeps the tag on the same line as the last word, so it never sits alone on a line. */
+function WithTag({ text, tag }: { text: string; tag: string }) {
+  const cut = text.lastIndexOf(" ");
+  return (
+    <>
+      {cut > 0 ? `${text.slice(0, cut)} ` : ""}
+      <span className="whitespace-nowrap">
+        {cut > 0 ? text.slice(cut + 1) : text}
+        <span className="ml-2 font-mono text-[11px] tracking-[0.08em] text-muted">{tag}</span>
+      </span>
+    </>
+  );
+}
+
+/** Small moon for late-night slots. Decoration only. */
+function Moon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="mr-1.5 inline-block h-3.5 w-3.5 -translate-y-px align-[-1px] text-accent" fill="currentColor">
+      <path d="M10.6 1.2A6.5 6.5 0 1 0 14.8 11a5.5 5.5 0 0 1-4.2-9.8Z" />
+    </svg>
   );
 }

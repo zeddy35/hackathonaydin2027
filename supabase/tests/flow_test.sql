@@ -63,6 +63,11 @@ end $$;
 grant execute on all functions in schema tests to anon, authenticated;
 
 
+-- Default build window: 24 hours, Saturday 12:00 to Sunday 12:00 (decision 11 Nov 2026) --
+select tests.count($q$select count(*) from public.settings where key = 'hack_start' and value = '"2027-04-17T12:00:00+03:00"'::jsonb$q$, 1, 'default build start is Saturday 12:00');
+select tests.count($q$select count(*) from public.settings where key = 'submission_deadline' and value = '"2027-04-18T12:00:00+03:00"'::jsonb$q$, 1, 'default submission deadline is Sunday 12:00');
+select tests.count($q$select (extract(epoch from public.setting_time('submission_deadline') - public.setting_time('hack_start')) / 3600)::int$q$, 24, 'build window is 24 hours');
+
 -- Fixtures: 25 applicants, 3 judges, 1 admin, 1 owner ------------------------
 
 insert into auth.users (id, email)

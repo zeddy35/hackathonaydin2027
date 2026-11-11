@@ -35,7 +35,8 @@ Hepsi admin panelinden (`/admin/icerik`), koda dokunmadan:
 - Sponsorlar ve jüri/mentorlar (yayında olmayan görünmez; jüri/mentor boşsa bölüm render edilmez).
 - MLH bayrakları: `mlh_enabled` (form alanları), `mlh_badge` (header rozeti). Onay gelmeden açılmaz.
 - Başvuru son tarihi (31 Mart 2027 23:59): `/admin/icerik`. Değişirse `dict.ts` ve `guide.ts` metinlerindeki tarihi de güncelle.
-- Program taslağı: `src/data/schedule.ts` (yemek/gece kalemleri `kind: "break"`).
+- Program taslağı: `src/data/schedule.ts` (yemek/gece kalemleri `kind: "break"`, gece kalemleri `night: true`). Geliştirme 24 saat (Cmt 12:00 - Paz 12:00), final sunumları Paz 16:00-18:15.
+- Yemek yorumları: `src/data/food-reviews.ts`. Sadece gerçek alıntı ve izinle, `published: true`; yayınlanmış yorum yoksa blok görünmez.
 - İletişim e-postası: `src/data/site.ts` → `contactEmail`.
 
 ## Kurallar

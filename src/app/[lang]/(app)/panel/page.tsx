@@ -50,8 +50,8 @@ export default async function PanelPage({ params }: { params: Promise<{ lang: st
   const opensLabel = (st.applications_open_label as { tr?: string; en?: string } | undefined)?.[lang] ?? (lang === "tr" ? "Ocak 2027" : "January 2027");
   const mlhEnabled = st.mlh_enabled === true;
   const confirmDeadline = typeof st.confirm_deadline === "string" ? st.confirm_deadline : null;
-  const hackStart = typeof st.hack_start === "string" ? st.hack_start : "2027-04-17T11:00:00+03:00";
-  const deadline = typeof st.submission_deadline === "string" ? st.submission_deadline : "2027-04-18T15:00:00+03:00";
+  const hackStart = typeof st.hack_start === "string" ? st.hack_start : "2027-04-17T12:00:00+03:00";
+  const deadline = typeof st.submission_deadline === "string" ? st.submission_deadline : "2027-04-18T12:00:00+03:00";
   const now = Date.now();
 
   const { data: app } = await supabase
