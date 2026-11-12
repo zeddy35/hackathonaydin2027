@@ -6,7 +6,18 @@ import BuildRuler from "./BuildRuler";
 /** Milestones shown with emphasis. */
 const KEY_POINTS: ScheduleKey[] = ["hackStart", "submit", "finals"];
 
-export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; lang: Locale; d: Dict["schedule"] }) {
+export default function Schedule({
+  items,
+  lang,
+  d,
+  credits = {},
+}: {
+  items: ScheduleItem[];
+  lang: Locale;
+  d: Dict["schedule"];
+  /** Sponsor name per programme line, for lines a sponsor has taken on. */
+  credits?: Partial<Record<ScheduleKey, string>>;
+}) {
   return (
     <div className="grid gap-10">
       <BuildRuler items={items} lang={lang} t={{ build: d.build, hour: d.hour, days: d.days }} />
@@ -31,6 +42,7 @@ export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; la
                       <span className={`text-[17px] ${rest ? "text-muted" : ""} ${strong ? "text-[19px]" : ""}`}>
                         {i.night && <Moon />}
                         {rest ? <WithTag text={i[lang]} tag={d.break} /> : i[lang]}
+                        {credits[i.key] && <span className="ml-2 whitespace-nowrap text-[14px] font-normal text-accent-ink">{d.by.replace("{name}", credits[i.key]!)}</span>}
                       </span>
                     </li>
                   );

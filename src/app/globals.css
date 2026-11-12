@@ -235,9 +235,15 @@ html.ha-loader body { overflow: hidden; }
   inset: 0;
   display: grid;
   place-items: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.2em;
+  padding: 0 16px;
+  text-align: center;
+  font-family: var(--display-font);
+  font-weight: var(--display-weight);
+  /* One line on wide screens; on phones it wraps to two, like the hero name. */
+  font-size: clamp(56px, 9vw, 140px);
+  line-height: 0.95;
+  letter-spacing: var(--display-tracking);
+  text-transform: uppercase;
   color: var(--on-accent);
   animation: ha-fade 270ms ease-out 500ms both;
 }

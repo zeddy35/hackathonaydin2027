@@ -142,6 +142,8 @@ const tr = {
     note: "Geliştirme Cumartesi 12:00 ile Pazar 12:00 arası, toplam 24 saat. Saatler Türkiye saatiyle (UTC+3).",
     days: { sat: "Cumartesi, 17 Nisan", sun: "Pazar, 18 Nisan" },
     break: "MOLA",
+    /** After a programme line that a sponsor has taken on (src/data/sponsor-items.ts). */
+    by: "{name} desteğiyle",
     build: "24 saat geliştirme",
     /** Ruler readout: which build hour the pointer is on. */
     hour: "{n}. saat",
@@ -161,11 +163,18 @@ const tr = {
     title: "Sponsorlar",
     empty: "2027 sponsorlarımız yakında açıklanacak.",
     emptyLead: "Hackathon Aydın'a destek olmak istersen partner sayfasına göz at ya da bize yaz.",
-    compare: "Sponsorluk paketlerini karşılaştır",
-    /** Package cards shown while no sponsor is published. The contents come from `packages` below. */
-    packagesTitle: "Sponsorluk paketleri",
-    packageTag: "Paket",
-    details: "Detaylar",
+    compare: "Sponsorluk paketlerini gör",
+    /** "Take on one item" cards. The items themselves are in src/data/sponsor-items.ts. */
+    items: {
+      title: "Bir kalemi üstlen",
+      lead: "Paket seçmek zorunda değilsin. Etkinliğin bir parçasını üstlen, o parça senin adınla anılsın.",
+      credit: "Üstlendiğin kalemde adın kalem kartında, programda ilgili satırda ve sahnede anılır.",
+      open: "Açık",
+      takenBy: "Üstlenen",
+      inSchedule: "Taslak programda",
+      other: "Aklında başka bir kalem ya da ayni destek mi var?",
+      otherCta: "Bize yaz",
+    },
     tiers: {
       title: "Ana sponsor",
       gold: "Altın sponsorlar",
@@ -373,6 +382,7 @@ const en: Dict = {
     note: "Building runs from Saturday 12:00 to Sunday 12:00, 24 hours in total. Times are Türkiye time (UTC+3).",
     days: { sat: "Saturday, 17 April", sun: "Sunday, 18 April" },
     break: "BREAK",
+    by: "supported by {name}",
     build: "24 hours of building",
     hour: "Hour {n}",
     food: {
@@ -391,10 +401,17 @@ const en: Dict = {
     title: "Sponsors",
     empty: "Our 2027 sponsors will be announced soon.",
     emptyLead: "If you would like to support Hackathon Aydın, see the partner page or write to us.",
-    compare: "Compare sponsorship packages",
-    packagesTitle: "Sponsorship packages",
-    packageTag: "Package",
-    details: "Details",
+    compare: "See sponsorship packages",
+    items: {
+      title: "Take on one item",
+      lead: "You do not have to pick a package. Take on one part of the event and it carries your name.",
+      credit: "Your name goes on the item card, on the matching line of the programme, and is mentioned on stage.",
+      open: "Open",
+      takenBy: "Taken on by",
+      inSchedule: "In the draft programme",
+      other: "Have another item or in-kind support in mind?",
+      otherCta: "Write to us",
+    },
     tiers: {
       title: "Title sponsor",
       gold: "Gold sponsors",

@@ -11,6 +11,7 @@ import Sponsors from "@/components/Sponsors";
 import TeamBuilder from "@/components/TeamBuilder";
 import { getPeople, getSchedule, getSiteConfig, getSponsors } from "@/data";
 import { foodReviews } from "@/data/food-reviews";
+import { scheduleCredits } from "@/data/sponsor-items";
 import { primaryAction } from "@/lib/cta";
 import { MAPS_URL, getDict, isLocale } from "@/lib/dict";
 import { ROLES } from "@/lib/application";
@@ -154,7 +155,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
       {/* 5. Schedule */}
       <Section id="schedule" {...num("schedule")} title={d.schedule.title} aside={<span className="tag w-fit">{d.schedule.draft}</span>}>
-        <Schedule items={schedule} lang={lang} d={d.schedule} />
+        <Schedule items={schedule} lang={lang} d={d.schedule} credits={scheduleCredits()} />
         <p className="max-w-[60ch] font-mono text-[13px] text-muted">{d.schedule.note}</p>
         <FoodReviews reviews={foodReviews} lang={lang} t={d.schedule.food} />
       </Section>

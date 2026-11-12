@@ -4,7 +4,7 @@ import type { DocPage } from "./types";
 export const partners: Record<Locale, DocPage> = {
   tr: {
     title: "Partner bilgileri",
-    description: "Hackathon Aydın 2027'ye sponsor veya partner olarak destek olmak isteyen kurumlar için etkinlik özeti, geçmiş veriler ve sponsorluk paketleri.",
+    description: "Hackathon Aydın 2027'ye sponsor veya partner olarak destek olmak isteyen kurumlar için etkinlik özeti, geçmiş veriler, üstlenilebilecek kalemler ve sponsorluk paketleri.",
     eyebrow: "Sponsorlar ve partnerler için",
     lead: "Hackathon Aydın 2027, üniversite öğrencileri için 24 saatlik ürün geliştirme maratonu. 17-18 Nisan 2027, Aydın Adnan Menderes Üniversitesi Tıp Fakültesi.",
     sections: [
@@ -24,11 +24,6 @@ export const partners: Record<Locale, DocPage> = {
         ],
       },
       {
-        id: "organizator",
-        h: "Organizatör",
-        blocks: [{ p: "TEKNOFEST Kulübü ADÜ, Aydın Adnan Menderes Üniversitesi öğrenci kulübü." }],
-      },
-      {
         id: "kitle",
         h: "Hedef kitle",
         blocks: [{ p: "Ürün geliştirmek isteyen üniversite öğrencileri: yazılım, tasarım ve ürün tarafında çalışan takımlar." }],
@@ -46,13 +41,17 @@ export const partners: Record<Locale, DocPage> = {
         ],
       },
       {
+        id: "kalemler",
+        h: "Bir kalemi üstlen",
+        blocks: [{ p: "Paket seçmek zorunda değilsin. Etkinliğin bir parçasını üstlen, o parça senin adınla anılsın." }, { items: true }],
+      },
+      {
         id: "destek",
-        h: "Destek seçenekleri",
+        h: "Diğer destek yolları",
         blocks: [
           {
             ul: [
-              "Nakdi sponsorluk: aşağıdaki paketler.",
-              "Ayni destek: yemek, içecek, ekipman veya ödül.",
+              "Ayni destek: içecek, atıştırmalık, ekipman veya ödül.",
               "Teknoloji desteği: API kredisi, araç ve yazılım lisansı.",
               "Atölye, mentorluk ve jüri katkısı.",
               "Topluluk ortaklığı: duyuru ve katılımcı erişimi.",
@@ -63,18 +62,23 @@ export const partners: Record<Locale, DocPage> = {
       {
         id: "paketler",
         h: "Sponsorluk paketleri",
-        blocks: [{ packages: true }],
+        blocks: [{ p: "Daha geniş bir görünürlük isteyen kurumlar için. Paketlerin dışında bir iş birliği de konuşulabilir." }, { packages: true }],
+      },
+      {
+        id: "organizator",
+        h: "Organizatör",
+        blocks: [{ p: "TEKNOFEST Kulübü ADÜ, Aydın Adnan Menderes Üniversitesi öğrenci kulübü." }],
       },
       {
         id: "iletisim",
         h: "İletişim",
-        blocks: [{ p: "Paketler veya özel bir iş birliği için bize yaz." }, { email: true }],
+        blocks: [{ p: "Bir kalem, bir paket veya özel bir iş birliği için bize yaz." }, { email: true }],
       },
     ],
   },
   en: {
     title: "Partner information",
-    description: "Event summary, past numbers and sponsorship packages for organizations that want to support Hackathon Aydın 2027.",
+    description: "Event summary, past numbers, items to take on and sponsorship packages for organizations that want to support Hackathon Aydın 2027.",
     eyebrow: "For sponsors and partners",
     lead: "Hackathon Aydın 2027 is a 24-hour product building marathon for university students. 17-18 April 2027, Faculty of Medicine, Aydın Adnan Menderes University, Türkiye.",
     sections: [
@@ -94,11 +98,6 @@ export const partners: Record<Locale, DocPage> = {
         ],
       },
       {
-        id: "organizer",
-        h: "Organizer",
-        blocks: [{ p: "TEKNOFEST Club ADÜ, a student club at Aydın Adnan Menderes University." }],
-      },
-      {
         id: "audience",
         h: "Audience",
         blocks: [{ p: "University students who want to build products: teams working across software, design and product." }],
@@ -114,13 +113,17 @@ export const partners: Record<Locale, DocPage> = {
         blocks: [{ ul: ["100+ students (target)"] }],
       },
       {
+        id: "items",
+        h: "Take on one item",
+        blocks: [{ p: "You do not have to pick a package. Take on one part of the event and it carries your name." }, { items: true }],
+      },
+      {
         id: "support",
-        h: "Ways to support",
+        h: "Other ways to support",
         blocks: [
           {
             ul: [
-              "Cash sponsorship: the packages below.",
-              "In-kind support: food, drinks, equipment or prizes.",
+              "In-kind support: drinks, snacks, equipment or prizes.",
               "Technology support: API credits, tools and software licenses.",
               "Workshops, mentoring and judging.",
               "Community partnership: announcements and outreach to participants.",
@@ -131,12 +134,17 @@ export const partners: Record<Locale, DocPage> = {
       {
         id: "packages",
         h: "Sponsorship packages",
-        blocks: [{ packages: true }],
+        blocks: [{ p: "For organizations that want wider visibility. A partnership outside the packages can also be discussed." }, { packages: true }],
+      },
+      {
+        id: "organizer",
+        h: "Organizer",
+        blocks: [{ p: "TEKNOFEST Club ADÜ, a student club at Aydın Adnan Menderes University." }],
       },
       {
         id: "contact",
         h: "Contact",
-        blocks: [{ p: "Write to us about the packages or a custom partnership." }, { email: true }],
+        blocks: [{ p: "Write to us about an item, a package or a custom partnership." }, { email: true }],
       },
     ],
   },

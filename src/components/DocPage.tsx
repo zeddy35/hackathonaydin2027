@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import CopyEmail from "./CopyEmail";
 import DocNav from "./DocNav";
 import Packages from "./Packages";
+import SponsorItems from "./SponsorItems";
 
 function History({ d }: { d: Dict }) {
   return (
@@ -81,6 +82,7 @@ function renderBlock(b: Block, i: number, ctx: { lang: Locale; d: Dict; email: s
       </div>
     );
   if ("packages" in b) return <Packages key={i} lang={ctx.lang} />;
+  if ("items" in b) return <SponsorItems key={i} lang={ctx.lang} d={ctx.d} contactHref={`#${ctx.lang === "tr" ? "iletisim" : "contact"}`} />;
   if ("history" in b) return <History key={i} d={ctx.d} />;
   return null;
 }

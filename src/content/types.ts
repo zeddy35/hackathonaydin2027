@@ -6,6 +6,7 @@ export type Block =
   | { links: { label: string; href: string }[] }
   | { email: true }
   | { packages: true }
+  | { items: true }
   | { history: true };
 
 export type DocSection = { id: string; h: string; blocks: Block[] };

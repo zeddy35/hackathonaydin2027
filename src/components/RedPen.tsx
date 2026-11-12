@@ -13,14 +13,28 @@ function stroke(w: number, h: number, k: number) {
   const x0 = -over;
   const span = w + over * 2;
   const base = h * (k % 2 ? 0.6 : 0.56);
-  const rise = h * 0.13;
-  const amp = h * 0.07 * (k % 2 ? -1 : 1);
-  const pts = [
-    [0, 0],
-    [0.27, -amp],
-    [0.62, amp * 0.8],
-    [1, -amp * 0.4],
-  ].map(([t, dy]) => [x0 + span * t, base - rise * (t - 0.5) + dy]);
+  const rise = h * 0.16;
+  const amp = h * 0.1 * (k % 2 ? -1 : 1);
+  // A long line (desktop) gets more, uneven waves, the way a quick hand stroke wanders;
+  // a short one keeps a single dip and rise so it does not turn into a zigzag.
+  const marks =
+    w > 380
+      ? [
+          [0, 0.3],
+          [0.13, -0.9],
+          [0.31, 0.75],
+          [0.5, -0.55],
+          [0.68, 1],
+          [0.86, -0.7],
+          [1, 0.2],
+        ]
+      : [
+          [0, 0],
+          [0.27, -0.9],
+          [0.62, 0.8],
+          [1, -0.4],
+        ];
+  const pts = marks.map(([t, dy]) => [x0 + span * t, base - rise * (t - 0.5) + dy * amp]);
   // Catmull-Rom through the points, written as cubic Béziers.
   let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
   for (let i = 0; i < pts.length - 1; i++) {
