@@ -3,8 +3,8 @@ import type { SiteConfig } from "@/data/types";
 import type { PrimaryAction } from "@/lib/cta";
 import type { Dict } from "@/lib/dict";
 import Countdown from "./Countdown";
-import HeroGlow from "./HeroGlow";
 import Marquee from "./Marquee";
+import RedPen from "./RedPen";
 
 export default function Hero({
   d,
@@ -22,7 +22,7 @@ export default function Hero({
   return (
     <section id="top" aria-labelledby="hero-h" className="relative isolate flex min-h-[calc(100dvh-var(--header-h))] flex-col [overflow-x:clip]">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <HeroGlow />
+        <div className="hero-glow" />
         <div className="halftone absolute inset-0" />
       </div>
 
@@ -41,12 +41,13 @@ export default function Hero({
 
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="grid min-w-0 gap-6 lg:col-span-7">
-            <p className="max-w-[26ch] text-[clamp(22px,2.5vw,34px)] font-semibold leading-[1.15] tracking-[-0.02em]">
-              {h.title[0]}{" "}
-              <span aria-hidden="true" className="text-muted line-through decoration-accent decoration-[0.09em]">
-                {h.title[1]}
-              </span>{" "}
-              <span className="text-amber">{h.title[2]}</span>
+            {/* Three lines. The middle one is struck out with a red pen and hidden from screen readers. */}
+            <p className="grid gap-1 text-[clamp(24px,3vw,40px)] font-semibold leading-[1.15] tracking-[-0.02em]">
+              <span className="block">{h.title[0]}</span>
+              <span aria-hidden="true" className="block w-fit max-w-full text-muted">
+                <RedPen>{h.title[1]}</RedPen>
+              </span>
+              <span className="block">{h.title[2]}</span>
             </p>
             <div className="grid gap-3">
               <div className="flex flex-wrap gap-3">
@@ -80,7 +81,7 @@ export default function Hero({
       </div>
 
       {/* Ticker band, tilted, wider than the screen so the ends never show. */}
-      <div className="relative -mx-[3vw] mb-6 -rotate-[1.4deg] bg-accent py-2.5 text-on-accent shadow-[0_18px_40px_-18px_rgb(255_90_43/0.55)] sm:py-3">
+      <div className="relative -mx-[3vw] mb-6 -rotate-[1.4deg] bg-accent py-2.5 text-on-accent shadow-[0_18px_40px_-18px_var(--accent-deep)] sm:py-3">
         <Marquee items={h.ticker} className="poster text-[22px] leading-none sm:text-[30px]" />
       </div>
     </section>

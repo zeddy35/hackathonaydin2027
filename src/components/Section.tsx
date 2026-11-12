@@ -26,7 +26,7 @@ export default function Section({
       <div className="grid gap-10 border-t border-rule py-20 md:gap-14 md:py-28">
         <div className="grid gap-4">
           <p aria-hidden="true" className="flex items-center gap-3 font-mono text-[12px] tracking-[0.14em] text-muted">
-            <span className="text-accent">{pad(n)}</span>
+            <span className="text-accent-ink">{pad(n)}</span>
             <span className="h-px w-10 bg-rule" />
             <span>{pad(total)}</span>
           </p>

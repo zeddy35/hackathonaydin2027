@@ -11,7 +11,7 @@ import ThemeToggle from "./ThemeToggle";
 const SECTIONS = ["event", "schedule", "sponsors", "faq"] as const;
 type SectionId = (typeof SECTIONS)[number];
 
-export type HeaderLabels = Record<SectionId | "label" | "join" | "joinShort" | "joinShortSr" | "menu" | "close" | "switchTo" | "home" | "themeLight" | "themeDark", string>;
+export type HeaderLabels = Record<SectionId | "label" | "join" | "joinShort" | "menu" | "close" | "switchTo" | "home" | "themeLight" | "themeDark", string>;
 
 /** Past this many pixels the bar turns into a floating capsule. It never hides. */
 const COMPACT_AT = 24;
@@ -186,10 +186,7 @@ export default function Header({
     <Link href={joinHref} onClick={() => open && close(false)} className={`btn btn-primary group/join active:scale-[0.97] ${extra}`}>
       {short && labels.joinShort !== labels.join ? (
         <>
-          <span className="lg:hidden">
-            {labels.joinShortSr && <span className="sr-only">{labels.joinShortSr} </span>}
-            {labels.joinShort}
-          </span>
+          <span className="lg:hidden">{labels.joinShort}</span>
           <span className="max-lg:hidden">{labels.join}</span>
         </>
       ) : (
@@ -210,10 +207,17 @@ export default function Header({
             : `h-[var(--header-h)] w-full max-w-[1200px] rounded-none border border-transparent px-[max(16px,env(safe-area-inset-left))] md:px-8 ${open ? "bg-bg" : "bg-bg/0"}`
         }`}
       >
-        <Link href={`/${lang}`} className={`group/logo -mx-1 flex min-h-11 min-w-0 shrink items-center rounded-full px-1 transition-opacity duration-300 max-[430px]:[&_.logo-year]:hidden ${
-            isHome && !compact && !open ? "invisible opacity-0" : "opacity-100"
+        {/* Phones always show the short logo. From md up the full wordmark stays hidden on the
+            home page until you scroll, because the hero already shows the name at full size. */}
+        <Link href={`/${lang}`} className={`group/logo -mx-1 flex min-h-11 min-w-0 shrink items-center rounded-full px-1 transition-opacity duration-300 ${
+            isHome && !compact && !open ? "md:invisible md:opacity-0" : "opacity-100"
           }`}>
-          <Logo />
+          <span className="md:hidden">
+            <Logo short />
+          </span>
+          <span className="max-md:hidden">
+            <Logo />
+          </span>
           <span className="sr-only">, {labels.home}</span>
         </Link>
 
@@ -240,7 +244,7 @@ export default function Header({
                   onFocus={() => setHovered(id)}
                   onBlur={() => setHovered(null)}
                   className={`relative inline-flex min-h-11 items-center rounded-full px-3 text-[15px] transition-colors lg:px-4 ${
-                    active === id ? "text-accent" : "text-muted hover:text-ink"
+                    active === id ? "text-accent-ink" : "text-muted hover:text-ink"
                   }`}
                 >
                   {labels[id]}

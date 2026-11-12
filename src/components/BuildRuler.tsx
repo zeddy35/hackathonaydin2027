@@ -62,13 +62,13 @@ export default function BuildRuler({
   return (
     <div className="reveal grid gap-6">
       <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
-        <p className="poster text-[clamp(34px,6.4vw,84px)] text-amber">{t.build}</p>
+        <p className="poster text-[clamp(34px,6.4vw,84px)] text-ink">{t.build}</p>
         <div aria-hidden="true" className="grid min-h-[96px] content-end gap-1.5 md:justify-items-end md:text-right">
           <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="poster text-[56px] leading-[0.85] tabular-nums text-ink md:text-[72px]">{clock(active)}</span>
             <span className="font-mono text-[12px] uppercase tracking-[0.1em] text-muted sm:text-[13px]">
               {day}
-              {nth && <span className="text-accent"> · {nth}</span>}
+              {nth && <span className="text-accent-ink"> · {nth}</span>}
             </span>
           </p>
           <p className="min-h-[26px] text-[17px] font-medium text-ink">{what || " "}</p>
@@ -95,9 +95,11 @@ export default function BuildRuler({
             const on = h >= a && h < b;
             const act = h === active;
             const size = on ? (act ? "h-full" : "h-[80%]") : act ? "h-1/2" : "h-1/4";
-            const fill = act ? "bg-ink" : on ? "bg-accent" : "bg-ink/25";
+            const fill = act ? "bg-ink" : on ? "" : "bg-ink/25";
+            // The build hours run from the brand red to the main red, one step per hour.
+            const tone = on && !act ? { background: `color-mix(in srgb, var(--accent) ${Math.round(((h - a) / Math.max(1, b - a - 1)) * 100)}%, var(--accent-deep))` } : undefined;
             return (
-              <span key={h} className={`relative transition-[height,background-color] duration-150 ease-out ${size} ${fill}`}>
+              <span key={h} style={tone} className={`relative transition-[height,background-color] duration-150 ease-out ${size} ${fill}`}>
                 {at(h).length > 0 && (
                   <span className={`absolute left-1/2 top-1.5 h-1.5 w-1.5 -translate-x-1/2 rounded-full ${act || !on ? "bg-accent" : "bg-on-accent"}`} />
                 )}

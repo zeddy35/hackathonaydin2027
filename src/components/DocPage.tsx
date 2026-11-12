@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import CopyEmail from "./CopyEmail";
 import DocNav from "./DocNav";
 import Packages from "./Packages";
+import SponsorItems from "./SponsorItems";
 
 function History({ d }: { d: Dict }) {
   return (
@@ -81,6 +82,7 @@ function renderBlock(b: Block, i: number, ctx: { lang: Locale; d: Dict; email: s
       </div>
     );
   if ("packages" in b) return <Packages key={i} lang={ctx.lang} />;
+  if ("items" in b) return <SponsorItems key={i} lang={ctx.lang} d={ctx.d} contactHref={`#${ctx.lang === "tr" ? "iletisim" : "contact"}`} />;
   if ("history" in b) return <History key={i} d={ctx.d} />;
   return null;
 }
@@ -89,7 +91,7 @@ export default function DocPage({ doc, lang, d, email }: { doc: Doc; lang: Local
   return (
     <article className="wrap pb-24">
       <header className="grid gap-5 border-b border-rule pb-10 pt-12 md:pb-14 md:pt-20">
-        <p className="label text-accent">{doc.eyebrow}</p>
+        <p className="label text-accent-ink">{doc.eyebrow}</p>
         <h1 className="poster text-[clamp(44px,8vw,104px)]">{doc.title}</h1>
         <p className="max-w-[60ch] text-[19px] leading-[1.55] text-muted">{doc.lead}</p>
         {doc.banner && (

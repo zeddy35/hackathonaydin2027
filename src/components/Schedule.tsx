@@ -6,7 +6,18 @@ import BuildRuler from "./BuildRuler";
 /** Milestones shown with emphasis. */
 const KEY_POINTS: ScheduleKey[] = ["hackStart", "submit", "finals"];
 
-export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; lang: Locale; d: Dict["schedule"] }) {
+export default function Schedule({
+  items,
+  lang,
+  d,
+  credits = {},
+}: {
+  items: ScheduleItem[];
+  lang: Locale;
+  d: Dict["schedule"];
+  /** Sponsor name per programme line, for lines a sponsor has taken on. */
+  credits?: Partial<Record<ScheduleKey, string>>;
+}) {
   return (
     <div className="grid gap-10">
       <BuildRuler items={items} lang={lang} t={{ build: d.build, hour: d.hour, days: d.days }} />
@@ -27,10 +38,11 @@ export default function Schedule({ items, lang, d }: { items: ScheduleItem[]; la
                         strong ? "font-semibold" : ""
                       }`}
                     >
-                      <time className={`font-mono text-[15px] tabular-nums ${strong ? "text-accent" : "text-muted"}`}>{i.time}</time>
+                      <time className={`font-mono text-[15px] tabular-nums ${strong ? "text-accent-ink" : "text-muted"}`}>{i.time}</time>
                       <span className={`text-[17px] ${rest ? "text-muted" : ""} ${strong ? "text-[19px]" : ""}`}>
                         {i.night && <Moon />}
                         {rest ? <WithTag text={i[lang]} tag={d.break} /> : i[lang]}
+                        {credits[i.key] && <span className="ml-2 whitespace-nowrap text-[14px] font-normal text-accent-ink">{d.by.replace("{name}", credits[i.key]!)}</span>}
                       </span>
                     </li>
                   );
@@ -60,7 +72,7 @@ function WithTag({ text, tag }: { text: string; tag: string }) {
 /** Small moon for late-night slots. Decoration only. */
 function Moon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 16 16" className="mr-1.5 inline-block h-3.5 w-3.5 -translate-y-px align-[-1px] text-amber" fill="currentColor">
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="mr-1.5 inline-block h-3.5 w-3.5 -translate-y-px align-[-1px] text-muted" fill="currentColor">
       <path d="M10.6 1.2A6.5 6.5 0 1 0 14.8 11a5.5 5.5 0 0 1-4.2-9.8Z" />
     </svg>
   );

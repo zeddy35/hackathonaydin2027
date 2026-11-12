@@ -30,6 +30,10 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 - [ ] Yemek yorumları: gerçek alıntılar ve kişilerden yazılı/mesajla kullanım izni; `src/data/food-reviews.ts`'e `published: true` ile ekle. Yayınlanmış yorum yokken blok sitede görünmez. İngilizce çeviriyi (`quote.en`) sadece kişi kendisi verdiyse ekle.
 - [ ] Domain e-postası (ör. iletisim@ alan adı) açılacak. Açılınca `src/data/site.ts` → `contactEmail` tek satır.
 - [ ] Sponsorluk paketleri için indirilebilir dosya (PDF) hazırlanırsa partner sayfasına indirme butonu eklenebilir.
+- [ ] **Yeni palet (12 Kasım 2026):** Site koyu zemin + kan kırmızısına geçti (turuncu kaldırıldı; renkler `CLAUDE.md` → "Tasarım kimliği"). Instagram, afiş, sponsor dosyası ve design system yeni palete göre güncellenecek.
+- [x] **Sponsorluk yönü (12 Kasım 2026):** Paket tablosu yerine "bir kalemi üstlen" öne çıktı. Sponsora açık kalemler: kategori ödülleri, gece mini oyun turnuvası, kahve barı, gece yarısı atıştırmalığı, dinlenme alanı, sahne ve canlı yayın, tişört. Sponsorun adı kalem kartında, programda ilgili satırda ve sahnede anılır. Kalemlerde fiyat yok. Öğle, akşam ve kahvaltı sponsor kalemi olarak gösterilmez. Liste: `src/data/sponsor-items.ts`.
+- [ ] Kalemler ile paketler çakışıyor mu? Paketlerde de "Tişört" ve "Adınızla ödül" hakkı var; bir kalemi üstlenen ile paket sponsoru aynı anda olursa kimin adının nerede geçeceği karara bağlanmalı. Bir kalemi birden fazla sponsor üstlenebilir mi?
+- [ ] Aydın otogarından ve şehir merkezinden ulaşım bilgisi (sitede "yakında" yazıyor; gelince `src/lib/dict.ts` → `venue.travel`).
 
 ## Önerilen jüri ölçütleri (onay bekliyor)
 

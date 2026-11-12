@@ -36,9 +36,8 @@ const tr = {
     opensIn: (label: string) => `Başvurular ${label}'da açılacak, 31 Mart 2027 23:59'da kapanacak.`,
     /** Header and team card button, by application status. */
     join: { upcoming: "Başvurular Ocak'ta", open: "Başvur", closed: "Başvurular kapandı" },
-    /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
-    joinShort: { upcoming: "Ocak 2027", open: "Başvur", closed: "Kapandı" },
-    joinShortSr: { upcoming: "Başvurular", open: "", closed: "Başvurular" },
+    /** Header under 1024 px. */
+    joinShort: { upcoming: "Ocak'ta başvur", open: "Başvur", closed: "Başvurular kapandı" },
   },
   loader: "HACKATHON AYDIN 2027",
   hero: {
@@ -143,6 +142,8 @@ const tr = {
     note: "Geliştirme Cumartesi 12:00 ile Pazar 12:00 arası, toplam 24 saat. Saatler Türkiye saatiyle (UTC+3).",
     days: { sat: "Cumartesi, 17 Nisan", sun: "Pazar, 18 Nisan" },
     break: "MOLA",
+    /** After a programme line that a sponsor has taken on (src/data/sponsor-items.ts). */
+    by: "{name} desteğiyle",
     build: "24 saat geliştirme",
     /** Ruler readout: which build hour the pointer is on. */
     hour: "{n}. saat",
@@ -162,7 +163,18 @@ const tr = {
     title: "Sponsorlar",
     empty: "2027 sponsorlarımız yakında açıklanacak.",
     emptyLead: "Hackathon Aydın'a destek olmak istersen partner sayfasına göz at ya da bize yaz.",
-    compare: "Sponsorluk paketlerini karşılaştır",
+    compare: "Sponsorluk paketlerini gör",
+    /** "Take on one item" cards. The items themselves are in src/data/sponsor-items.ts. */
+    items: {
+      title: "Bir kalemi üstlen",
+      lead: "Paket seçmek zorunda değilsin. Etkinliğin bir parçasını üstlen, o parça senin adınla anılsın.",
+      credit: "Üstlendiğin kalemde adın kalem kartında, programda ilgili satırda ve sahnede anılır.",
+      open: "Açık",
+      takenBy: "Üstlenen",
+      inSchedule: "Taslak programda",
+      other: "Aklında başka bir kalem ya da ayni destek mi var?",
+      otherCta: "Bize yaz",
+    },
     tiers: {
       title: "Ana sponsor",
       gold: "Altın sponsorlar",
@@ -181,8 +193,9 @@ const tr = {
     items: [
       { h: "Gece", p: "Mekân gece boyunca açık. Armut koltuklu bir dinlenme alanı olacak." },
       { h: "Yemek", p: "Katılım ücretsiz. Etkinlik boyunca yemek ve içecek dahil." },
-      { h: "Ulaşım ve erişilebilirlik", p: "Ayrıntılar yakında." },
     ],
+    /** Third card; it also holds the map button. No directions until they are confirmed. */
+    travel: { h: "Ulaşım ve erişilebilirlik", p: "Aydın otogarından ve şehir merkezinden ulaşım bilgisi ile erişilebilirlik ayrıntıları yakında." },
   },
   faq: {
     title: "Sıkça sorulanlar",
@@ -266,9 +279,8 @@ const en: Dict = {
     opensIn: (label: string) => `Applications open in ${label} and close on 31 March 2027 at 23:59.`,
     /** Header and team card button, by application status. */
     join: { upcoming: "Applications open in January", open: "Apply", closed: "Applications closed" },
-    /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
-    joinShort: { upcoming: "Jan 2027", open: "Apply", closed: "Closed" },
-    joinShortSr: { upcoming: "Applications open", open: "", closed: "Applications" },
+    /** Header under 1024 px. */
+    joinShort: { upcoming: "Apply in Jan", open: "Apply", closed: "Applications closed" },
   },
   loader: "HACKATHON AYDIN 2027",
   hero: {
@@ -370,6 +382,7 @@ const en: Dict = {
     note: "Building runs from Saturday 12:00 to Sunday 12:00, 24 hours in total. Times are Türkiye time (UTC+3).",
     days: { sat: "Saturday, 17 April", sun: "Sunday, 18 April" },
     break: "BREAK",
+    by: "supported by {name}",
     build: "24 hours of building",
     hour: "Hour {n}",
     food: {
@@ -388,7 +401,17 @@ const en: Dict = {
     title: "Sponsors",
     empty: "Our 2027 sponsors will be announced soon.",
     emptyLead: "If you would like to support Hackathon Aydın, see the partner page or write to us.",
-    compare: "Compare sponsorship packages",
+    compare: "See sponsorship packages",
+    items: {
+      title: "Take on one item",
+      lead: "You do not have to pick a package. Take on one part of the event and it carries your name.",
+      credit: "Your name goes on the item card, on the matching line of the programme, and is mentioned on stage.",
+      open: "Open",
+      takenBy: "Taken on by",
+      inSchedule: "In the draft programme",
+      other: "Have another item or in-kind support in mind?",
+      otherCta: "Write to us",
+    },
     tiers: {
       title: "Title sponsor",
       gold: "Gold sponsors",
@@ -407,8 +430,8 @@ const en: Dict = {
     items: [
       { h: "Overnight", p: "The venue stays open all night. There will be a rest area with bean bags." },
       { h: "Food", p: "Participation is free. Food and drinks are included throughout the event." },
-      { h: "Travel and accessibility", p: "Details coming soon." },
     ],
+    travel: { h: "Travel and accessibility", p: "Directions from Aydın bus terminal and the city centre, and accessibility details, are coming soon." },
   },
   faq: {
     title: "FAQ",

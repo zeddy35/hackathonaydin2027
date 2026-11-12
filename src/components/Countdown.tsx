@@ -44,7 +44,7 @@ export default function Countdown({ t, start, end }: { t: Dict["hero"]["countdow
         {t.label}
       </p>
       {state === "live" || state === "done" ? (
-        <p aria-hidden="true" className="poster text-[clamp(40px,6vw,72px)] text-amber">
+        <p aria-hidden="true" className="poster text-[clamp(40px,6vw,72px)] text-accent">
           {state === "live" ? t.live : t.done}
         </p>
       ) : (

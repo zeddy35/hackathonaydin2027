@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Sponsor, SponsorTier } from "@/data/types";
 import type { Dict } from "@/lib/dict";
+import type { Locale } from "@/lib/i18n";
 import CopyEmail from "./CopyEmail";
+import SponsorItems from "./SponsorItems";
 
 const ORDER: SponsorTier[] = ["title", "gold", "silver", "inkind", "tech", "community"];
 
@@ -57,12 +59,14 @@ function Logo({ s, tier, newTab }: { s: Sponsor; tier: SponsorTier; newTab: stri
 
 export default function Sponsors({
   sponsors,
+  lang,
   d,
   partnersHref,
   packagesHref,
   email,
 }: {
   sponsors: Sponsor[];
+  lang: Locale;
   d: Dict;
   partnersHref: string;
   packagesHref: string;
@@ -72,18 +76,22 @@ export default function Sponsors({
 
   if (sponsors.length === 0) {
     return (
-      <div className="grid gap-6">
-        <p className="max-w-[52ch] text-[20px] font-medium leading-snug">{t.empty}</p>
-        <p className="max-w-[58ch] text-muted">{t.emptyLead}</p>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Link href={partnersHref} className="btn btn-primary">
-            {d.cta.sponsor}
-          </Link>
-          <CopyEmail email={email} copy={d.footer.copy} copied={d.footer.copied} />
+      <div className="grid gap-10">
+        <div className="grid gap-6">
+          <p className="max-w-[52ch] text-[20px] font-medium leading-snug">{t.empty}</p>
+          <p className="max-w-[58ch] text-muted">{t.emptyLead}</p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Link href={partnersHref} className="btn btn-primary">
+              {d.cta.sponsor}
+            </Link>
+            <CopyEmail email={email} copy={d.footer.copy} copied={d.footer.copied} />
+          </div>
         </div>
-        <Link href={packagesHref} className="link inline-flex min-h-11 w-fit items-center text-[15px]">
-          {t.compare}
-        </Link>
+        <div className="grid gap-4">
+          <h3 className="poster text-[28px] text-ink md:text-[36px]">{t.items.title}</h3>
+          <p className="max-w-[58ch] text-muted">{t.items.lead}</p>
+          <SponsorItems lang={lang} d={d} contactHref={`${partnersHref}#${lang === "tr" ? "iletisim" : "contact"}`} packagesHref={packagesHref} wide />
+        </div>
       </div>
     );
   }

@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0C0A09",
+  // Same value as --bg of html.night in globals.css.
+  themeColor: "#0E0C0C",
   viewportFit: "cover",
 };
 
@@ -46,8 +47,8 @@ export default async function RootLayout({
   return (
     <html lang={lang} className="site night" suppressHydrationWarning>
       <head>
-        {/* Decides before first paint whether the opening loader runs (see Loader.tsx). */}
         {/* Saved light/dark choice, applied before first paint (see ThemeToggle.tsx). */}
+        {/* Decides before first paint whether the opening loader runs (see Loader.tsx). */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: LOADER_SCRIPT }} />
       </head>
@@ -69,7 +70,6 @@ export default async function RootLayout({
             faq: d.nav.faq,
             join: action.join,
             joinShort: d.cta.joinShort[action.status],
-            joinShortSr: d.cta.joinShortSr[action.status],
             menu: d.nav.menu,
             close: d.nav.close,
             switchTo: d.nav.switchTo,

@@ -1,69 +1,39 @@
 import { packages } from "@/lib/dict";
 import type { Locale } from "@/lib/i18n";
 
-/** Package comparison: a table from md up, one list per package on mobile. */
+/**
+ * Sponsorship packages, one card each, listing only what that package includes (with the
+ * size or duration when there is one). No side-by-side comparison and no quota row: the
+ * first row of the data (the quota) is kept in dict.ts but not shown.
+ */
 export default function Packages({ lang }: { lang: Locale }) {
   const { head, rows, included } = packages[lang];
-  const cell = (c: string) =>
-    c === "●" ? (
-      <>
-        <span aria-hidden="true" className="text-accent">●</span>
-        <span className="sr-only">{included}</span>
-      </>
-    ) : c === "" ? (
-      <span aria-hidden="true" className="text-rule">·</span>
-    ) : (
-      c
-    );
+  const rights = rows.slice(1);
 
   return (
-    <div>
-      <div className="hidden overflow-hidden rounded-lg border border-rule bg-surface md:block">
-        <table className="w-full border-collapse text-[15px]">
-          <thead>
-            <tr className="border-b border-rule">
-              <td className="px-5 py-4" />
-              {head.map((h) => (
-                <th key={h} scope="col" className="px-5 py-4 text-left font-semibold">
-                  {h}
-                </th>
+    <ul className="grid gap-3 sm:grid-cols-2">
+      {head.map((h, col) => (
+        <li key={h} className="grid content-start gap-4 rounded-2xl border border-rule bg-surface p-5">
+          <h3 className="poster text-[30px] text-ink">{h}</h3>
+          <ul className="grid gap-2.5 text-[15px]">
+            {rights
+              .filter((r) => r[col + 1] !== "")
+              .map((r) => (
+                <li key={r[0]} className="flex items-start gap-2.5">
+                  <span aria-hidden="true" className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent text-on-accent">
+                    <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3.5 8.5l3 3 6-7" />
+                    </svg>
+                  </span>
+                  <span className="text-ink">
+                    {r[0]}
+                    {r[col + 1] === "●" ? <span className="sr-only">: {included}</span> : <span className="text-muted">: {r[col + 1]}</span>}
+                  </span>
+                </li>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map(([name, ...vals]) => (
-              <tr key={name} className="border-b border-rule last:border-b-0">
-                <th scope="row" className="px-5 py-3 text-left font-normal text-muted">
-                  {name}
-                </th>
-                {vals.map((v, i) => (
-                  <td key={i} className="px-5 py-3">
-                    {cell(v)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="grid gap-4 md:hidden">
-        {head.map((h, col) => (
-          <section key={h} className="rounded-lg border border-rule bg-surface p-5" aria-label={h}>
-            <h3 className="text-[18px] font-semibold">{h}</h3>
-            <ul className="mt-3 grid gap-2 text-[15px]">
-              {rows
-                .filter((r) => r[col + 1] !== "")
-                .map((r) => (
-                  <li key={r[0]} className="flex justify-between gap-4 border-t border-rule pt-2">
-                    <span className="text-muted">{r[0]}</span>
-                    <span className="text-right">{r[col + 1] === "●" ? included : r[col + 1]}</span>
-                  </li>
-                ))}
-            </ul>
-          </section>
-        ))}
-      </div>
-    </div>
+          </ul>
+        </li>
+      ))}
+    </ul>
   );
 }

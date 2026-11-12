@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Hackathon Aydın 2027 design tokens. Single light theme. */
+/* Hackathon Aydın 2027 design tokens. This first block is the light look of the panel, login and admin. */
 :root {
   --bg: #fafaf8;
   --surface: #ffffff;
@@ -8,40 +8,54 @@
   --ink-muted: #626262;
   --rule: #e5e5e1;
   --accent: #8a0303;
+  --accent-hover: #6f0202;
+  --accent-deep: #6f0202;
+  --accent-ink: #8a0303;
   --on-accent: #ffffff;
   --accent-tint: #f6ecea;
   --header-h: 72px;
   /* Hero grid cell. The loader squares use the same size so they line up with it. */
   --grid: 48px;
   --grid-line: rgb(23 23 23 / 0.045);
-  --accent-hover: #6f0202;
-  --amber: #b45309;
   --display-font: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --display-weight: 500;
   --display-tracking: -0.02em;
   color-scheme: light;
 }
 
-/* Public site (html.site, plus night or day for the colours; set in the (site) layout). Warm black, bone
- * white, signal orange and amber; Anton for poster type. The panel, login and admin
- * keep the light tokens above. */
+/* Public site (html.site, plus night or day for the colours; set in the (site) layout).
+ * Near-black, warm white and a single accent colour: blood red.
+ *
+ *   --bg          page                      --accent       main red: buttons, "AYDIN", ticker, numbers
+ *   --surface     cards, navbar capsule     --accent-deep  brand red: details, hover shadow, gradients
+ *   --rule        borders, dividers         --accent-ink   red for small text (4.5:1 on --bg and --surface)
+ *   --ink         text                      --accent-tint  active nav, tags
+ *   --ink-muted   secondary text            --on-accent    text on red
+ *
+ * Contrast (WCAG): --on-accent on --accent 4.96, --accent-ink on --bg 5.49 and on --surface 5.15,
+ * --ink-muted on --bg 7.71 and on --surface 7.24. --accent itself is 3.93 on --bg, so it is
+ * only used for large type and fills; small red text uses --accent-ink. */
 html.night {
-  --bg: #0c0a09;
-  --surface: #15110f;
-  --ink: #f4ecdc;
-  --ink-muted: #a89e8f;
-  --rule: #2e2723;
-  --accent: #ff5a2b;
-  --accent-hover: #ff7d54;
-  --on-accent: #130805;
-  --accent-tint: #2b140d;
-  --amber: #ffb52e;
-  --ink-rgb: 244 236 220;
+  --bg: #0e0c0c;
+  --surface: #171414;
+  --ink: #f5f1ea;
+  --ink-muted: #a8a29a;
+  --rule: #2a2424;
+  --accent: #d7263d;
+  --accent-hover: #c41e35;
+  --accent-deep: #8a0303;
+  --accent-ink: #ef4d62;
+  --on-accent: #ffffff;
+  --accent-tint: rgb(215 38 61 / 0.14);
+  /* The pen stroke in the hero. The brand red is too dark to read on the night page. */
+  --pen: var(--accent);
+  /* Buttons on the red closing block: always dark with light text. */
+  --inverse-bg: var(--bg);
+  --inverse-fg: var(--ink);
+  --ink-rgb: 245 241 234;
   --shadow: rgb(0 0 0 / 0.7);
-  --glow-a: rgb(255 181 46 / 0.17);
-  --glow-b: rgb(255 90 43 / 0.2);
-  --glow-c: rgb(255 90 43 / 0.08);
-  --grid-line: rgb(244 236 220 / 0.05);
+  --glow: 18%;
+  --grid-line: rgb(245 241 234 / 0.05);
   --display-font: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
   --display-weight: 400;
   --display-tracking: 0.005em;
@@ -49,24 +63,27 @@ html.night {
 }
 
 /* Light variant of the same look (ThemeToggle.tsx swaps night for day on <html>).
- * Accent and amber are deepened so they keep 4.5:1 as text on the paper colour. */
+ * The red is one step deeper so it keeps 4.5:1 as text on the paper colour:
+ * --on-accent on --accent 5.86, --accent-ink on --bg 5.70, --ink-muted on --bg 6.13. */
 html.day {
-  --bg: #f4ecdc;
-  --surface: #fbf6ea;
-  --ink: #17110d;
-  --ink-muted: #675c4f;
-  --rule: #d8ccb6;
-  --accent: #c4300a;
-  --accent-hover: #a82606;
-  --on-accent: #fff7ea;
-  --accent-tint: #f3d9c9;
-  --amber: #96500a;
-  --ink-rgb: 23 17 13;
-  --shadow: rgb(23 17 13 / 0.28);
-  --glow-a: rgb(255 181 46 / 0.4);
-  --glow-b: rgb(255 90 43 / 0.26);
-  --glow-c: rgb(255 90 43 / 0.12);
-  --grid-line: rgb(23 17 13 / 0.05);
+  --bg: #f5f1ea;
+  --surface: #fffdf9;
+  --ink: #0e0c0c;
+  --ink-muted: #5f5953;
+  --rule: #dcd5cb;
+  --accent: #c41e35;
+  --accent-hover: #a8182c;
+  --accent-deep: #8a0303;
+  --accent-ink: #b81e33;
+  --on-accent: #ffffff;
+  --accent-tint: rgb(196 30 53 / 0.12);
+  --pen: var(--accent-deep);
+  --inverse-bg: var(--ink);
+  --inverse-fg: var(--bg);
+  --ink-rgb: 14 12 12;
+  --shadow: rgb(14 12 12 / 0.28);
+  --glow: 10%;
+  --grid-line: rgb(14 12 12 / 0.05);
   --display-font: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
   --display-weight: 400;
   --display-tracking: 0.005em;
@@ -83,7 +100,8 @@ html.day body::before { filter: invert(1); opacity: 0.09; }
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-accent-tint: var(--accent-tint);
-  --color-amber: var(--amber);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-ink: var(--accent-ink);
   --font-display: var(--display-font);
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -217,9 +235,15 @@ html.ha-loader body { overflow: hidden; }
   inset: 0;
   display: grid;
   place-items: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.2em;
+  padding: 0 16px;
+  text-align: center;
+  font-family: var(--display-font);
+  font-weight: var(--display-weight);
+  /* One line on wide screens; on phones it wraps to two, like the hero name. */
+  font-size: clamp(56px, 9vw, 140px);
+  line-height: 0.95;
+  letter-spacing: var(--display-tracking);
+  text-transform: uppercase;
   color: var(--on-accent);
   animation: ha-fade 270ms ease-out 500ms both;
 }
@@ -260,15 +284,15 @@ html.site .btn {
   text-transform: uppercase;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
 }
-html.site .btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--amber); }
+html.site .btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--accent-deep); }
 html.site .btn-secondary { background: transparent; border-color: rgb(var(--ink-rgb) / 0.28); }
 html.site .btn-secondary:hover { border-color: var(--ink); background: rgb(var(--ink-rgb) / 0.06); }
-/* On the orange closing block. */
-html.site .btn-ink { background: var(--bg); color: var(--ink); }
-html.site .btn-ink:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 rgb(19 8 5 / 0.85); }
+/* On the accent closing block. */
+html.site .btn-ink { background: var(--inverse-bg); color: var(--inverse-fg); }
+html.site .btn-ink:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--accent-deep); }
 html.site .btn-on-accent { border: 1px solid color-mix(in srgb, var(--on-accent) 50%, transparent); color: var(--on-accent); }
 html.site .btn-on-accent:hover { background: color-mix(in srgb, var(--on-accent) 12%, transparent); border-color: var(--on-accent); }
-html.site .tag { border-color: color-mix(in srgb, var(--amber) 45%, transparent); color: var(--amber); background: transparent; }
+html.site .tag { border-color: color-mix(in srgb, var(--accent) 55%, transparent); color: var(--ink); background: var(--accent-tint); }
 html.site .link { text-decoration-color: rgb(var(--ink-rgb) / 0.3); }
 
 /* Film grain over the whole page. Fixed, decorative, never intercepts input. */
@@ -282,20 +306,44 @@ html.site body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Hero backdrop: two warm lights (one follows the pointer, see HeroGlow.tsx) and a halftone corner. */
+/* Hero backdrop: a faint, static wash of the brand red in two corners and a halftone corner. */
 .hero-glow {
   position: absolute;
   inset: -72px 0 0 0;
   background:
-    radial-gradient(520px circle at var(--mx, 72%) var(--my, 38%), var(--glow-a), transparent 68%),
-    radial-gradient(900px circle at 88% 0%, var(--glow-b), transparent 62%),
-    radial-gradient(700px circle at 0% 100%, var(--glow-c), transparent 60%);
+    radial-gradient(900px circle at 88% 0%, color-mix(in srgb, var(--accent-deep) var(--glow), transparent), transparent 62%),
+    radial-gradient(700px circle at 0% 100%, color-mix(in srgb, var(--accent-deep) calc(var(--glow) / 2), transparent), transparent 60%);
 }
 .halftone {
   background-image: radial-gradient(circle at center, rgb(var(--ink-rgb) / 0.2) 1.3px, transparent 1.7px);
   background-size: 14px 14px;
   mask-image: linear-gradient(118deg, transparent 42%, #000 100%);
 }
+/* The same dots in black, for the red closing block. */
+.halftone-on-accent {
+  background-image: radial-gradient(circle at center, rgb(0 0 0 / 0.22) 1.3px, transparent 1.7px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(240deg, #000, transparent 55%);
+}
+
+/* Red pen stroke over the second hero line (RedPen.tsx). Without JavaScript the line keeps a
+ * plain line-through; once the strokes are measured and drawn as SVG, the line-through goes.
+ * The strokes draw left to right after the hero entrance (html.ha-go); with reduced motion
+ * they are simply there. */
+.pen { position: relative; text-decoration: line-through; text-decoration-color: var(--pen); text-decoration-thickness: 0.09em; }
+.pen.pen-ready, html.ha-anim .pen { text-decoration: none; }
+.pen-stroke { position: absolute; overflow: visible; pointer-events: none; }
+.pen-stroke path {
+  fill: none;
+  stroke: var(--pen);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: ha-pen 600ms ease-out both;
+  animation-delay: calc(650ms + var(--n, 0) * 520ms);
+}
+html.ha-anim:not(.ha-go) .pen-stroke path { animation-play-state: paused; }
+@keyframes ha-pen { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 
 /* Ticker band. Four identical rows; the track moves one row width and loops. */
 .marquee-track { animation: ha-marquee var(--marquee-dur, 36s) linear infinite; }
@@ -303,7 +351,8 @@ html.site body::before {
 @keyframes ha-marquee { to { transform: translateX(-25%); } }
 
 /* Scroll reveal. Pure CSS, tied to scroll position, so nothing waits on JavaScript and
- * content is never fully hidden: it starts dimmed and a little lower. Browsers without
+ * content is never hidden or dimmed (dimming drops text below the contrast minimum while
+ * it enters): it only starts a little lower, or to the left. Browsers without
  * scroll-driven animations simply show the final state. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
@@ -320,15 +369,15 @@ html.site body::before {
     }
   }
 }
-@keyframes ha-reveal { from { opacity: 0.3; transform: translateY(36px); } }
-@keyframes ha-reveal-x { from { opacity: 0.3; transform: translateX(-6vw); } }
+@keyframes ha-reveal { from { transform: translateY(36px); } }
+@keyframes ha-reveal-x { from { transform: translateX(-6vw); } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .marquee-track { animation: none !important; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   .ha-loader-root { display: none !important; }
-  .ha-pulse, .ha-row { animation: none !important; }
+  .ha-pulse, .ha-row, .pen-stroke path { animation: none !important; }
 }
 
 /* Admin: let wide tables scroll inside their box instead of widening the page. */
