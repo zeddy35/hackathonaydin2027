@@ -23,11 +23,34 @@ npm run test:db        # migration'lar + RLS ve uçtan uca SQL testleri (PGlite,
 - `src/app/admin/`: yönetim paneli (TR). Her sayfa `requireRole`, her action `assertRole` (`src/lib/auth.ts`) ile rolü sunucuda kontrol eder. Kılavuz: `docs/admin-kilavuzu.md`.
 - `supabase/migrations/`: şema, RLS, tetikleyiciler. `supabase/tests/`: SQL testleri. `supabase/seed.dev.sql`: sadece yerel sahte veri.
 - `src/emails/`: e-posta şablonları (TR/EN). `src/lib/email.ts`: Resend; anahtar yoksa gönderim atlanır ve loglanır.
-- Site tasarımı: Anton (`.poster`, büyük harf başlıklar), Inter, JetBrains Mono. Renkler `html.night` token'larında (sıcak siyah, kemik beyazı, turuncu `--accent`, `--amber`). Hero: `Hero.tsx` + `Countdown.tsx` + `HeroGlow.tsx` + `Marquee.tsx`; program çubuğu `Schedule.tsx` içinde. Kaydırma animasyonları saf CSS (`.reveal`, `.reveal-x`), içerik hiçbir zaman tamamen gizlenmez.
+- Site tasarımı: koyu tema, tek vurgu rengi kan kırmızısı. Renkler `globals.css` içinde `html.night` (varsayılan) ve `html.day` token'larında; bileşenlerde sabit renk kodu yok. Ayrıntı aşağıda, "Tasarım kimliği".
+- Hero: `Hero.tsx` + `RedPen.tsx` (ikinci satırın üstündeki kırmızı kalem çizgisi) + `Countdown.tsx` + `Marquee.tsx`; program çubuğu `BuildRuler.tsx` (`Schedule.tsx` içinde). Kaydırma animasyonları saf CSS (`.reveal`, `.reveal-x`), içerik hiçbir zaman tamamen gizlenmez.
 - `src/lib/dict.ts`: ortak ve ana sayfa metinleri, sponsorluk paketleri. `src/content/*.ts`: yardımcı sayfa metinleri.
 - `src/data/`: içerik getter'ları (`src/data/index.ts`). Ayarlar, sponsorlar ve jüri/mentorlar Supabase'den okunur (`revalidateTag("content")` ile yenilenir). `site.ts`, `sponsors.ts`, `people.ts` veritabanı yokken kullanılan varsayılanlar; `schedule.ts` hâlâ dosyada.
 - `src/lib/seo.ts`: canonical/hreflang. Site adresi `NEXT_PUBLIC_SITE_URL`, yoksa `https://hackathonaydin.vercel.app`.
 - `docs/organizator-notlari.md`: eksik bilgiler, kararlar, MLH/OpenAI hazırlığı.
+
+## Tasarım kimliği
+
+Koyu tema (`html.night`). Değerler `src/app/globals.css` içinde; Tailwind sınıfları `@theme inline` ile bu token'lara bağlı (`bg-bg`, `bg-surface`, `text-ink`, `text-muted`, `border-rule`, `bg-accent`, `text-accent-ink`, `bg-accent-deep`, `bg-accent-tint`, `text-on-accent`).
+
+| Token | Değer | Kullanım |
+| --- | --- | --- |
+| `--bg` | `#0E0C0C` | Sayfa zemini |
+| `--surface` | `#171414` | Kartlar, navbar kapsülü |
+| `--rule` | `#2A2424` | Kenarlıklar, ayraçlar |
+| `--ink` | `#F5F1EA` | Ana metin |
+| `--ink-muted` | `#A8A29A` | İkincil metin |
+| `--accent` | `#D7263D` | Ana kırmızı: butonlar, "AYDIN", kayan bant, büyük sayılar |
+| `--accent-deep` | `#8A0303` | Marka kırmızısı: detaylar, hover gölgesi, program çubuğu gradyanı |
+| `--accent-ink` | `#EF4D62` | Küçük kırmızı metin (koyu zeminde 4.5:1 için) |
+| `--accent-tint` | `rgb(215 38 61 / 0.14)` | Aktif nav zemini, rozetler |
+| `--on-accent` | `#FFFFFF` | Kırmızı zemin üstündeki metin |
+
+- Fontlar: Anton (`.poster`, büyük harf condensed başlıklar), Inter (gövde), JetBrains Mono (etiket, buton, sayaç).
+- Kırmızı dışında vurgu rengi yok. Turuncu, amber, sarı ve Claude benzeri turuncu/terrakota tonlarından kaçın (admin panelindeki durum rozetleri hariç).
+- `--accent` koyu zeminde 3.93:1; sadece büyük yazı ve dolgu için. Küçük kırmızı metin `text-accent-ink`.
+- Açık varyant (`html.day`, `ThemeToggle.tsx`) aynı token adlarını kullanır. Palet değişirse `src/app/icon.svg` ve `(site)/layout.tsx` içindeki `themeColor` da güncellenir.
 
 ## Sık güncellenenler
 

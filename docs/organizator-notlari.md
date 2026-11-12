@@ -30,6 +30,8 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 - [ ] Yemek yorumları: gerçek alıntılar ve kişilerden yazılı/mesajla kullanım izni; `src/data/food-reviews.ts`'e `published: true` ile ekle. Yayınlanmış yorum yokken blok sitede görünmez. İngilizce çeviriyi (`quote.en`) sadece kişi kendisi verdiyse ekle.
 - [ ] Domain e-postası (ör. iletisim@ alan adı) açılacak. Açılınca `src/data/site.ts` → `contactEmail` tek satır.
 - [ ] Sponsorluk paketleri için indirilebilir dosya (PDF) hazırlanırsa partner sayfasına indirme butonu eklenebilir.
+- [ ] **Yeni palet (12 Kasım 2026):** Site koyu zemin + kan kırmızısına geçti (turuncu kaldırıldı; renkler `CLAUDE.md` → "Tasarım kimliği"). Instagram, afiş, sponsor dosyası ve design system yeni palete göre güncellenecek.
+- [ ] Aydın otogarından ve şehir merkezinden ulaşım bilgisi (sitede "yakında" yazıyor; gelince `src/lib/dict.ts` → `venue.travel`).
 
 ## Önerilen jüri ölçütleri (onay bekliyor)
 

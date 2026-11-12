@@ -66,11 +66,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           ))}
         </ul>
         <div className="reveal grid gap-5 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-10">
-          <h3 className="poster text-[28px] text-amber md:text-[36px]">{d.event.whyTitle}</h3>
+          <h3 className="poster text-[28px] text-ink md:text-[36px]">{d.event.whyTitle}</h3>
           <ul className="grid border-t border-rule">
             {d.event.why.map((w, i) => (
               <li key={w} className="grid grid-cols-[40px_minmax(0,1fr)] items-baseline gap-3 border-b border-rule py-4 text-[18px] md:text-[20px]">
-                <span aria-hidden="true" className="font-mono text-[13px] text-accent">
+                <span aria-hidden="true" className="font-mono text-[13px] text-accent-ink">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 {w}
@@ -89,7 +89,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 <span aria-hidden="true" className="poster outline-text pointer-events-none absolute -right-1 -top-3 text-[110px] opacity-30 lg:-bottom-8 lg:right-3 lg:top-auto lg:text-[230px]">
                   {i + 1}
                 </span>
-                <span className="font-mono text-[13px] text-accent" aria-hidden="true">
+                <span className="font-mono text-[13px] text-accent-ink" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="poster text-[26px] md:text-[30px]">{s.h}</h3>
@@ -118,9 +118,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {e.year}
               </h3>
               <div className="grid gap-1 pb-1">
-                <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-accent">{e.label}</span>
+                <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-accent-ink">{e.label}</span>
                 <span className="poster text-[24px] md:text-[32px]">
-                  {e.students} {d.past.students} <span className="text-amber">/</span> {e.teams} {d.past.teams}
+                  {e.students} {d.past.students} <span className="text-accent">/</span> {e.teams} {d.past.teams}
                 </span>
               </div>
             </div>
@@ -169,7 +169,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
       {/* 6. Sponsors */}
       <Section id="sponsors" {...num("sponsors")} title={d.sponsors.title}>
-        <Sponsors sponsors={sponsors} d={d} partnersHref={partnersHref} packagesHref={packagesHref} email={site.contact.email} />
+        <Sponsors sponsors={sponsors} lang={lang} d={d} partnersHref={partnersHref} packagesHref={packagesHref} email={site.contact.email} />
       </Section>
 
       {/* 7. Venue */}
@@ -177,18 +177,24 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className="reveal grid gap-3">
           <p className="max-w-[24ch] text-[clamp(24px,3.4vw,44px)] font-semibold leading-[1.15] tracking-[-0.02em]">{d.venue.place}</p>
           <p className="text-muted">{d.venue.placeNote}</p>
-          <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-2 w-fit">
-            {d.venue.map}
-            <span aria-hidden="true">↗</span>
-          </a>
         </div>
         <dl className="grid gap-4 md:grid-cols-3">
           {d.venue.items.map((it) => (
             <div key={it.h} className="reveal grid content-start gap-2 rounded-2xl border border-rule bg-surface p-6">
-              <dt className="poster text-[24px] text-amber">{it.h}</dt>
+              <dt className="poster text-[24px] text-ink">{it.h}</dt>
               <dd className="text-[16px] text-muted">{it.p}</dd>
             </div>
           ))}
+          <div className="reveal grid content-start gap-2 rounded-2xl border border-rule bg-surface p-6">
+            <dt className="poster text-[24px] text-ink">{d.venue.travel.h}</dt>
+            <dd className="grid gap-4 text-[16px] text-muted">
+              {d.venue.travel.p}
+              <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary w-fit text-ink">
+                {d.venue.map}
+                <span aria-hidden="true">↗</span>
+              </a>
+            </dd>
+          </div>
         </dl>
       </Section>
 
@@ -197,9 +203,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <Faq items={d.faq.items} />
       </Section>
 
-      {/* 9. Closing: full-width orange block */}
+      {/* 9. Closing: full-width accent block */}
       <section id="join" aria-labelledby="closing-h" className="relative isolate mt-8 overflow-hidden bg-accent text-on-accent">
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgb(19_8_5/0.22)_1.3px,transparent_1.7px)] bg-[length:14px_14px] [mask-image:linear-gradient(240deg,#000,transparent_55%)]" />
+        <div aria-hidden="true" className="halftone-on-accent absolute inset-0 -z-10" />
         <div className="wrap grid gap-8 py-20 md:py-28">
           <h2 id="closing-h" className="poster reveal-x max-w-[12ch] text-[clamp(52px,11vw,168px)]">
             {closing.h}

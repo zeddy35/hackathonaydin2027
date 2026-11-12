@@ -74,11 +74,11 @@ export default function TeamBuilder({
   const tip = count >= 3 ? (!filled.includes("design") ? t.tips.design : !filled.includes("product") ? t.tips.product : null) : null;
   const label = (key: Role | null) => roles.find((r) => r.key === key)?.label ?? "";
 
-  /** One line of the roster. Filled lines are buttons that clear the seat. */
+  /** One line of the roster. Filled lines are buttons that clear the seat; the action is read after the visible text. */
   const seat = (i: number) => {
     const role = i === 0 ? team.you : team.mates[i - 1];
     const no = (
-      <span aria-hidden="true" className={`font-mono text-[12px] tabular-nums ${role || i === 0 ? "text-accent" : "text-muted"}`}>
+      <span aria-hidden="true" className={`font-mono text-[12px] tabular-nums ${role || i === 0 ? "text-accent-ink" : "text-muted"}`}>
         {String(i + 1).padStart(2, "0")}
       </span>
     );
@@ -91,14 +91,14 @@ export default function TeamBuilder({
             type="button"
             disabled={team.you === null}
             onClick={() => save({ ...team, you: null })}
-            aria-label={role ? `${t.you}, ${label(role)}. ${t.remove.replace("{role}", label(role))}` : t.you}
             className={`${row} group/s ${role ? "ha-row" : ""} disabled:cursor-default`}
           >
             {no}
             <span className="poster flex flex-wrap items-baseline gap-x-2.5 text-[24px] leading-none sm:text-[28px]">
-              <span className="text-amber">{t.you}</span>
+              <span className="text-accent">{t.you}</span>
               {role && <span className="text-ink">{label(role)}</span>}
             </span>
+            {role && <span className="sr-only">. {t.remove.replace("{role}", label(role))}</span>}
             {role && <Cross />}
           </button>
         </li>
@@ -115,9 +115,10 @@ export default function TeamBuilder({
     }
     return (
       <li key={`s${i}-${pops[i]}`}>
-        <button type="button" onClick={() => removeMate(i - 1)} aria-label={t.remove.replace("{role}", label(role))} className={`${row} ha-row group/s`}>
+        <button type="button" onClick={() => removeMate(i - 1)} className={`${row} ha-row group/s`}>
           {no}
           <span className="poster text-[24px] leading-none text-ink sm:text-[28px]">{label(role)}</span>
+          <span className="sr-only">. {t.remove.replace("{role}", label(role))}</span>
           <Cross />
         </button>
       </li>
@@ -129,7 +130,7 @@ export default function TeamBuilder({
       <div className="flex items-end justify-between gap-4">
         <p className="poster text-[30px] text-ink md:text-[36px]">{t.label}</p>
         <p aria-hidden="true" className="poster text-[44px] leading-[0.8] md:text-[56px]">
-          <span className={full ? "text-amber" : "text-accent"}>{count}</span>
+          <span className={full ? "text-ink" : "text-accent"}>{count}</span>
           <span className="outline-text">/{SEATS}</span>
         </p>
       </div>

@@ -29,7 +29,7 @@ export default function DocNav({ title, sections }: { title: string; sections: D
             <a
               href={`#${s.id}`}
               aria-current={active === s.id ? "location" : undefined}
-              className={`block py-1 transition-colors ${active === s.id ? "font-medium text-accent" : "text-muted hover:text-ink"}`}
+              className={`block py-1 transition-colors ${active === s.id ? "font-medium text-accent-ink" : "text-muted hover:text-ink"}`}
             >
               {s.h}
             </a>

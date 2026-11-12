@@ -89,7 +89,7 @@ export default function DocPage({ doc, lang, d, email }: { doc: Doc; lang: Local
   return (
     <article className="wrap pb-24">
       <header className="grid gap-5 border-b border-rule pb-10 pt-12 md:pb-14 md:pt-20">
-        <p className="label text-accent">{doc.eyebrow}</p>
+        <p className="label text-accent-ink">{doc.eyebrow}</p>
         <h1 className="poster text-[clamp(44px,8vw,104px)]">{doc.title}</h1>
         <p className="max-w-[60ch] text-[19px] leading-[1.55] text-muted">{doc.lead}</p>
         {doc.banner && (

@@ -36,9 +36,8 @@ const tr = {
     opensIn: (label: string) => `Başvurular ${label}'da açılacak, 31 Mart 2027 23:59'da kapanacak.`,
     /** Header and team card button, by application status. */
     join: { upcoming: "Başvurular Ocak'ta", open: "Başvur", closed: "Başvurular kapandı" },
-    /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
-    joinShort: { upcoming: "Ocak 2027", open: "Başvur", closed: "Kapandı" },
-    joinShortSr: { upcoming: "Başvurular", open: "", closed: "Başvurular" },
+    /** Header under 1024 px. */
+    joinShort: { upcoming: "Ocak'ta başvur", open: "Başvur", closed: "Başvurular kapandı" },
   },
   loader: "HACKATHON AYDIN 2027",
   hero: {
@@ -163,6 +162,10 @@ const tr = {
     empty: "2027 sponsorlarımız yakında açıklanacak.",
     emptyLead: "Hackathon Aydın'a destek olmak istersen partner sayfasına göz at ya da bize yaz.",
     compare: "Sponsorluk paketlerini karşılaştır",
+    /** Package cards shown while no sponsor is published. The contents come from `packages` below. */
+    packagesTitle: "Sponsorluk paketleri",
+    packageTag: "Paket",
+    details: "Detaylar",
     tiers: {
       title: "Ana sponsor",
       gold: "Altın sponsorlar",
@@ -181,8 +184,9 @@ const tr = {
     items: [
       { h: "Gece", p: "Mekân gece boyunca açık. Armut koltuklu bir dinlenme alanı olacak." },
       { h: "Yemek", p: "Katılım ücretsiz. Etkinlik boyunca yemek ve içecek dahil." },
-      { h: "Ulaşım ve erişilebilirlik", p: "Ayrıntılar yakında." },
     ],
+    /** Third card; it also holds the map button. No directions until they are confirmed. */
+    travel: { h: "Ulaşım ve erişilebilirlik", p: "Aydın otogarından ve şehir merkezinden ulaşım bilgisi ile erişilebilirlik ayrıntıları yakında." },
   },
   faq: {
     title: "Sıkça sorulanlar",
@@ -266,9 +270,8 @@ const en: Dict = {
     opensIn: (label: string) => `Applications open in ${label} and close on 31 March 2027 at 23:59.`,
     /** Header and team card button, by application status. */
     join: { upcoming: "Applications open in January", open: "Apply", closed: "Applications closed" },
-    /** Header under 1024 px. `joinShortSr` is read before it by screen readers. */
-    joinShort: { upcoming: "Jan 2027", open: "Apply", closed: "Closed" },
-    joinShortSr: { upcoming: "Applications open", open: "", closed: "Applications" },
+    /** Header under 1024 px. */
+    joinShort: { upcoming: "Apply in Jan", open: "Apply", closed: "Applications closed" },
   },
   loader: "HACKATHON AYDIN 2027",
   hero: {
@@ -389,6 +392,9 @@ const en: Dict = {
     empty: "Our 2027 sponsors will be announced soon.",
     emptyLead: "If you would like to support Hackathon Aydın, see the partner page or write to us.",
     compare: "Compare sponsorship packages",
+    packagesTitle: "Sponsorship packages",
+    packageTag: "Package",
+    details: "Details",
     tiers: {
       title: "Title sponsor",
       gold: "Gold sponsors",
@@ -407,8 +413,8 @@ const en: Dict = {
     items: [
       { h: "Overnight", p: "The venue stays open all night. There will be a rest area with bean bags." },
       { h: "Food", p: "Participation is free. Food and drinks are included throughout the event." },
-      { h: "Travel and accessibility", p: "Details coming soon." },
     ],
+    travel: { h: "Travel and accessibility", p: "Directions from Aydın bus terminal and the city centre, and accessibility details, are coming soon." },
   },
   faq: {
     title: "FAQ",
