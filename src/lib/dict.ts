@@ -12,7 +12,7 @@ const tr = {
   meta: {
     title: "Hackathon Aydın 2027",
     description:
-      "Üniversite öğrencileri için 28 saatlik ürün geliştirme maratonu. 17-18 Nisan 2027, Aydın Adnan Menderes Üniversitesi.",
+      "Üniversite öğrencileri için 24 saatlik ürün geliştirme maratonu. 17-18 Nisan 2027, Aydın Adnan Menderes Üniversitesi.",
   },
   skip: "İçeriğe geç",
   nav: {
@@ -25,6 +25,8 @@ const tr = {
     close: "Kapat",
     switchTo: "English",
     home: "Ana sayfa",
+    themeLight: "Açık temaya geç",
+    themeDark: "Koyu temaya geç",
   },
   cta: {
     info: "Katılım bilgileri",
@@ -41,14 +43,18 @@ const tr = {
   loader: "HACKATHON AYDIN 2027",
   hero: {
     eyebrow: "Hackathon Aydın 2027",
-    /** [0] and [2] form the heading; [1] is the struck-through line (hidden from screen readers). */
+    edition: "3. edisyon",
+    /** Ticker band under the hero. Verified facts only. */
+    ticker: ["24 saat", "3-5 kişilik takımlar", "Ücretsiz", "17-18 Nisan 2027", "Aydın", "Yemek ve içecek dahil"],
+    /** The slogan under the name; [1] is the struck-through line (hidden from screen readers). */
     title: ["Bir fikirle gel.", "Bir yapılacaklar listesiyle çık.", "Çalışan bir ürünle çık."],
-    lead: "Üniversite öğrencileri için 28 saatlik ürün geliştirme maratonu.",
+    lead: "Üniversite öğrencileri için 24 saatlik ürün geliştirme maratonu.",
     when: "17-18 Nisan 2027",
     where: "Aydın Adnan Menderes Üniversitesi",
     countdown: {
       label: "Açılış törenine kalan süre",
       units: { d: "g", h: "s", m: "d" },
+      cells: { d: "Gün", h: "Saat", m: "Dakika", s: "Saniye" },
       live: "Şu an sürüyor",
       done: "2028'de görüşürüz",
     },
@@ -64,26 +70,26 @@ const tr = {
     status: {
       low: "Takımlar 3-5 kişi. Eksik kalırsa Cumartesi sabahı eşleştiriyoruz.",
       ready: "Takımın hazır. İstersen bir kişi daha ekleyebilirsin.",
-      full: "Tam kadro. 28 saate hazırsınız.",
+      full: "Tam kadro. 24 saate hazırsınız.",
     },
     tips: {
       design: "Bir tasarımcı demo gününde fark yaratır.",
-      product: "Ürünü düşünen biri, 28 saati doğru işe harcamanızı sağlar.",
+      product: "Ürünü düşünen biri, 24 saati doğru işe harcamanızı sağlar.",
     },
     noTeam: "Takımım yok",
   },
   event: {
     title: "Etkinlik",
-    text: "Hackathon Aydın, TEKNOFEST Kulübü ADÜ'nün düzenlediği öğrenci hackathonu. 2027 üçüncü edisyonu. Takımlar 28 saat boyunca bir fikri çalışan bir ürüne dönüştürür. Tema açılış töreninde açıklanır.",
+    text: "Hackathon Aydın, TEKNOFEST Kulübü ADÜ'nün düzenlediği öğrenci hackathonu. 2027 üçüncü edisyonu. Takımlar 24 saat boyunca bir fikri çalışan bir ürüne dönüştürür. Tema açılış töreninde açıklanır.",
     facts: [
-      { value: "28 saat", label: "geliştirme süresi" },
+      { value: "24 saat", label: "geliştirme süresi" },
       { value: "3-5 kişi", label: "takım başına" },
       { value: "Ücretsiz", label: "yemek ve içecek dahil" },
       { value: "100+", label: "öğrenci", note: "hedeflenen" },
     ],
     whyTitle: "Neden katılmalısın?",
     why: [
-      "28 saatte fikirden çalışan ürüne",
+      "24 saatte fikirden çalışan ürüne",
       "Masalarda demo, finalde sahne ve online jüri",
       "Gece boyunca açık mekân, armut koltuklu dinlenme alanı",
       "Yemek ve içecek dahil, ücretsiz",
@@ -94,7 +100,7 @@ const tr = {
     steps: [
       { h: "Başvuru", p: "Başvurular Ocak 2027'de bu sitede açılacak, 31 Mart 2027 23:59'da kapanacak." },
       { h: "Takım oluşturma", p: "Takımlar 3-5 kişi. Tek başvuranları Cumartesi sabahı takımlarla eşleştiriyoruz." },
-      { h: "28 saat geliştirme", p: "Cumartesi 11:00'de başlar, Pazar 15:00'te teslimle biter." },
+      { h: "24 saat geliştirme", p: "Cumartesi 12:00'de başlar, Pazar 12:00'de teslimle biter." },
       { h: "Proje sunumu", p: "Tüm takımlar masasında demo yapar. Jüri finale 10 takım seçer." },
     ],
   },
@@ -134,9 +140,18 @@ const tr = {
   schedule: {
     title: "Program",
     draft: "Taslak program",
-    note: "Geliştirme süresi Cumartesi 11:00 ile Pazar 15:00 arası, toplam 28 saat. Saatler Türkiye saatiyle.",
+    note: "Geliştirme Cumartesi 12:00 ile Pazar 12:00 arası, toplam 24 saat. Saatler Türkiye saatiyle (UTC+3).",
     days: { sat: "Cumartesi, 17 Nisan", sun: "Pazar, 18 Nisan" },
     break: "MOLA",
+    build: "24 saat geliştirme",
+    /** Ruler readout: which build hour the pointer is on. */
+    hour: "{n}. saat",
+    food: {
+      title: "Kimse aç kalmadı",
+      lead: "Yemek ve içecek dahil. Öğle, akşam, gece yarısı, kahvaltı ve Pazar öğle yemeği.",
+      fromTr: "Türkçeden",
+      rating: "{n} üzerinden 5",
+    },
   },
   people: {
     title: "Jüri ve mentorlar",
@@ -227,7 +242,7 @@ const en: Dict = {
   meta: {
     title: "Hackathon Aydın 2027",
     description:
-      "A 28-hour product building marathon for university students. 17-18 April 2027, Aydın Adnan Menderes University.",
+      "A 24-hour product building marathon for university students. 17-18 April 2027, Aydın Adnan Menderes University.",
   },
   skip: "Skip to content",
   nav: {
@@ -240,6 +255,8 @@ const en: Dict = {
     close: "Close",
     switchTo: "Türkçe",
     home: "Home",
+    themeLight: "Switch to light theme",
+    themeDark: "Switch to dark theme",
   },
   cta: {
     info: "How to join",
@@ -256,14 +273,16 @@ const en: Dict = {
   loader: "HACKATHON AYDIN 2027",
   hero: {
     eyebrow: "Hackathon Aydın 2027",
-    /** [0] and [2] form the heading; [1] is the struck-through line (hidden from screen readers). */
+    edition: "3rd edition",
+    ticker: ["24 hours", "Teams of 3-5", "Free", "17-18 April 2027", "Aydın", "Food and drinks included"],
     title: ["Come with an idea.", "Leave with a to-do list.", "Leave with a working product."],
-    lead: "A 28-hour product building marathon for university students.",
+    lead: "A 24-hour product building marathon for university students.",
     when: "17-18 April 2027",
     where: "Aydın Adnan Menderes University",
     countdown: {
       label: "Time until the opening ceremony",
       units: { d: "d", h: "h", m: "m" },
+      cells: { d: "Days", h: "Hours", m: "Min", s: "Sec" },
       live: "Happening now",
       done: "See you in 2028",
     },
@@ -278,26 +297,26 @@ const en: Dict = {
     status: {
       low: "Teams are 3-5 people. Short on people? We match you on Saturday morning.",
       ready: "Your team is ready. Room for one more.",
-      full: "Full squad. Ready for 28 hours.",
+      full: "Full squad. Ready for 24 hours.",
     },
     tips: {
       design: "A designer makes the difference on demo day.",
-      product: "Someone thinking about the product keeps 28 hours pointed at the right problem.",
+      product: "Someone thinking about the product keeps 24 hours pointed at the right problem.",
     },
     noTeam: "I don't have a team",
   },
   event: {
     title: "The event",
-    text: "Hackathon Aydın is a student hackathon run by TEKNOFEST Club ADÜ. 2027 is the third edition. Teams spend 28 hours turning an idea into a working product. The theme is announced at the opening ceremony.",
+    text: "Hackathon Aydın is a student hackathon run by TEKNOFEST Club ADÜ. 2027 is the third edition. Teams spend 24 hours turning an idea into a working product. The theme is announced at the opening ceremony.",
     facts: [
-      { value: "28 hours", label: "of building" },
+      { value: "24 hours", label: "of building" },
       { value: "3-5", label: "people per team" },
       { value: "Free", label: "food and drinks included" },
       { value: "100+", label: "students", note: "target" },
     ],
     whyTitle: "Why join?",
     why: [
-      "From idea to working product in 28 hours",
+      "From idea to working product in 24 hours",
       "Demos at the tables, then the stage and an online jury for the final",
       "The venue stays open all night, with a bean bag rest area",
       "Food and drinks included, free of charge",
@@ -308,7 +327,7 @@ const en: Dict = {
     steps: [
       { h: "Apply", p: "Applications open on this site in January 2027 and close on 31 March 2027 at 23:59." },
       { h: "Form a team", p: "Teams have 3 to 5 people. If you apply alone, we match you with a team on Saturday morning." },
-      { h: "Build for 28 hours", p: "Starts Saturday 11:00, ends with submissions on Sunday 15:00." },
+      { h: "Build for 24 hours", p: "Starts Saturday 12:00, ends with submissions on Sunday 12:00." },
       { h: "Present", p: "Every team demos at their table. The jury picks 10 teams for the final stage." },
     ],
   },
@@ -348,9 +367,17 @@ const en: Dict = {
   schedule: {
     title: "Schedule",
     draft: "Draft schedule",
-    note: "Building runs from Saturday 11:00 to Sunday 15:00, 28 hours in total. Times are Türkiye time (UTC+3).",
+    note: "Building runs from Saturday 12:00 to Sunday 12:00, 24 hours in total. Times are Türkiye time (UTC+3).",
     days: { sat: "Saturday, 17 April", sun: "Sunday, 18 April" },
     break: "BREAK",
+    build: "24 hours of building",
+    hour: "Hour {n}",
+    food: {
+      title: "Nobody went hungry",
+      lead: "Food and drinks included. Lunch, dinner, a midnight snack, breakfast and Sunday lunch.",
+      fromTr: "from Turkish",
+      rating: "{n} out of 5",
+    },
   },
   people: {
     title: "Judges and mentors",

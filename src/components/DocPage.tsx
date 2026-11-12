@@ -89,8 +89,8 @@ export default function DocPage({ doc, lang, d, email }: { doc: Doc; lang: Local
   return (
     <article className="wrap pb-24">
       <header className="grid gap-5 border-b border-rule pb-10 pt-12 md:pb-14 md:pt-20">
-        <p className="label">{doc.eyebrow}</p>
-        <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.025em] md:text-[56px]">{doc.title}</h1>
+        <p className="label text-accent">{doc.eyebrow}</p>
+        <h1 className="poster text-[clamp(44px,8vw,104px)]">{doc.title}</h1>
         <p className="max-w-[60ch] text-[19px] leading-[1.55] text-muted">{doc.lead}</p>
         {doc.banner && (
           <p role="note" className="max-w-[64ch] rounded-lg border border-accent/25 bg-accent-tint px-4 py-3 text-[15px] text-ink">

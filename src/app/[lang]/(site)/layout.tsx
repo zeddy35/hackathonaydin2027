@@ -5,6 +5,7 @@ import "../../globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Loader, { LOADER_SCRIPT } from "@/components/Loader";
+import { THEME_SCRIPT } from "@/components/ThemeToggle";
 import { getSiteConfig } from "@/data";
 import { primaryAction } from "@/lib/cta";
 import { getDict, isLocale, locales } from "@/lib/dict";
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 }
 
 export const viewport: Viewport = {
-  themeColor: "#FAFAF8",
+  themeColor: "#0C0A09",
   viewportFit: "cover",
 };
 
@@ -43,16 +44,18 @@ export default async function RootLayout({
   const mlh = site.mlh.badge && site.mlh.badgeImage && site.mlh.badgeHref ? { href: site.mlh.badgeHref, image: site.mlh.badgeImage } : null;
 
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang={lang} className="site night" suppressHydrationWarning>
       <head>
         {/* Decides before first paint whether the opening loader runs (see Loader.tsx). */}
+        {/* Saved light/dark choice, applied before first paint (see ThemeToggle.tsx). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: LOADER_SCRIPT }} />
       </head>
       <body>
         <Loader word={d.loader} />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-3 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-3 focus:text-bg"
         >
           {d.skip}
         </a>
@@ -71,6 +74,8 @@ export default async function RootLayout({
             close: d.nav.close,
             switchTo: d.nav.switchTo,
             home: d.nav.home,
+            themeLight: d.nav.themeLight,
+            themeDark: d.nav.themeDark,
           }}
           joinHref={action.href}
           mlh={mlh}

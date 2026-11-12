@@ -25,7 +25,9 @@ Bu dosya repo ile birlikte herkese açık. Tema, bütçe, telefon numarası veya
 - [ ] Domain. Alınınca Vercel'de `NEXT_PUBLIC_SITE_URL` ayarla.
 - [x] 2025 ve 2026 fotoğraflarının orijinalleri geldi (11 Kasım 2026). `public/img/2025-1..5.jpg` ve `2026-1..5.jpg`, uzun kenar 1600 px, EXIF/konum bilgisi silinmiş. Altyazılar ve alt metinler `src/lib/dict.ts` → `past`. Fotoğraf değiştirmek: dosyayı aynı adla değiştir veya `dict.ts`'teki `src`'yi güncelle.
 - [ ] Fotoğraflarda görünen kişilerin sitede yer almaya izni (özellikle yakın plan portreler: `2025-3.jpg`, `2026-4.jpg`, `2026-5.jpg`).
-- [ ] Program taslağı: şu kalemler "taslak" olarak eklendi, saatleri onaylanmalı: Cmt 13:00 öğle yemeği, Cmt 19:00 akşam yemeği, Cmt 23:00 gece mini oyun turnuvası, Paz 02:00 gece atıştırmalığı, Paz 08:00 kahvaltı (`src/data/schedule.ts`). Pazar öğle yemeği, atölye ve mentorluk saatleri hâlâ yok.
+- [x] **Geliştirme süresi:** 24 saat, Cumartesi 12:00 - Pazar 12:00 (karar: 11 Kasım 2026). Varsayılanlar `settings.hack_start` / `settings.submission_deadline` (migration `20261111120000_build_24h.sql`; admin panelinden değiştirilmiş değerlere dokunmaz), `src/data/site.ts` ve site metinleri güncellendi.
+- [ ] Program taslağı (`src/data/schedule.ts`, sitede "Taslak program"): Cmt 09:30 kayıt, 11:00 açılış, 12:00 geliştirme, 13:30 öğle, 19:00 akşam, 23:00 gece mini oyunları; Paz 00:00 gece yarısı atıştırmalığı, 08:00 kahvaltı, 12:00 teslim, 12:30 öğle, 13:30 finalist seçimi, 15:30 finalistler, 16:00 final sunumları, 18:15 ödüller. Atölye ve mentorluk saatleri hâlâ yok.
+- [ ] Yemek yorumları: gerçek alıntılar ve kişilerden yazılı/mesajla kullanım izni; `src/data/food-reviews.ts`'e `published: true` ile ekle. Yayınlanmış yorum yokken blok sitede görünmez. İngilizce çeviriyi (`quote.en`) sadece kişi kendisi verdiyse ekle.
 - [ ] Domain e-postası (ör. iletisim@ alan adı) açılacak. Açılınca `src/data/site.ts` → `contactEmail` tek satır.
 - [ ] Sponsorluk paketleri için indirilebilir dosya (PDF) hazırlanırsa partner sayfasına indirme butonu eklenebilir.
 
@@ -35,7 +37,7 @@ Admin panelinde (Puanlama → Ölçütler) değiştirilebilir. Her ölçüt 1-10
 
 | Ölçüt | Önerilen ağırlık | Ne bakılır |
 | --- | --- | --- |
-| Teknik uygulama | %20 | Çalışıyor mu, 28 saatte ne kadar zor bir iş yapılmış? |
+| Teknik uygulama | %20 | Çalışıyor mu, 24 saatte ne kadar zor bir iş yapılmış? |
 | Etki ve problem | %20 | Problem gerçek mi, çözüm kime ne kazandırıyor? |
 | Yenilik | %20 | Fikir ya da yaklaşım yeni mi? |
 | Demo ve sunum | %20 | Canlı demo, net anlatım, süreye uyum |
@@ -52,7 +54,7 @@ Kaynak: <https://github.com/MLH/mlh-policies/blob/main/member-event-guidelines.m
 
 - [ ] **Bölgesel uygunluk:** MLH'nin desteklediği bölgeler Kuzey Amerika, Birleşik Krallık + AB + "seçili diğer Avrupa ülkeleri" ve Asya-Pasifik'in bir kısmı. Türkiye açıkça listelenmiyor; bölge dışı ülkeler onaya tabi. Başvurmadan önce league@mlh.io adresine yazıp teyit et.
 - [ ] **İngilizce:** İngilizce web sitesi şart (var: `/en`), etkinlik içi duyuruların İngilizce de yapılması gerekiyor.
-- [ ] **Süre:** 24-48 saat, hafta sonu. Etkinlik Cumartesi 08:30 - Pazar 20:15, uygun.
+- [ ] **Süre:** 24-48 saat, hafta sonu. Geliştirme 24 saat (Cmt 12:00 - Paz 12:00), etkinlik Cumartesi 09:30 - Pazar 18:15 ödüller; uygun.
 - [ ] **Jüri ve ödüller son gün tamamlanmalı.** Final jürisi online olsa da değerlendirme ve ödül töreni Pazar akşamı bitmeli. Programda öyle; online jürinin aynı akşam puan vermesi garanti edilmeli.
 - [ ] **Gece:** Mekân gece açık kalmalı veya konaklama sağlanmalı. Mekân gece açık, uygun.
 - [ ] **Yemek:** Öğün planı ve maliyet kırılımı istenir. Etkinlik öğün saatlerini kapsıyor (Cmt öğle ve akşam, Paz kahvaltı ve öğle, gece atıştırmalık).

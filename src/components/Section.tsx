@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * Home page section: heading column on the left on desktop, content on the right.
- * On desktop the heading block sticks below the navbar while the content scrolls.
+ * Home page section: a counter, a poster-size title that slides in as it enters
+ * the screen, then the content below at full width.
  */
 export default function Section({
   id,
@@ -22,18 +22,22 @@ export default function Section({
 }) {
   const pad = (x: number) => String(x).padStart(2, "0");
   return (
-    <section id={id} aria-labelledby={`${id}-h`} className="wrap">
-      <div className="grid gap-8 border-t border-rule py-16 md:py-24 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-16">
-        <div className="grid content-start gap-3 self-start lg:sticky lg:top-[calc(var(--header-h)+24px)]">
-          <p aria-hidden="true" className="font-mono text-[12px] tracking-[0.06em] text-muted">
-            {pad(n)} / {pad(total)}
+    <section id={id} aria-labelledby={`${id}-h`} className="wrap [overflow-x:clip]">
+      <div className="grid gap-10 border-t border-rule py-20 md:gap-14 md:py-28">
+        <div className="grid gap-4">
+          <p aria-hidden="true" className="flex items-center gap-3 font-mono text-[12px] tracking-[0.14em] text-muted">
+            <span className="text-accent">{pad(n)}</span>
+            <span className="h-px w-10 bg-rule" />
+            <span>{pad(total)}</span>
           </p>
-          <h2 id={`${id}-h`} className="display text-[32px] leading-[1.08] md:text-[44px]">
-            {title}
-          </h2>
-          {aside}
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+            <h2 id={`${id}-h`} className="poster reveal-x max-w-[14ch] text-[clamp(44px,9vw,124px)] leading-[0.98]">
+              {title}
+            </h2>
+            {aside}
+          </div>
         </div>
-        <div className="grid min-w-0 content-start gap-10">{children}</div>
+        <div className="grid min-w-0 content-start gap-12">{children}</div>
       </div>
     </section>
   );

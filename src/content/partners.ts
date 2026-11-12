@@ -6,7 +6,7 @@ export const partners: Record<Locale, DocPage> = {
     title: "Partner bilgileri",
     description: "Hackathon Aydın 2027'ye sponsor veya partner olarak destek olmak isteyen kurumlar için etkinlik özeti, geçmiş veriler ve sponsorluk paketleri.",
     eyebrow: "Sponsorlar ve partnerler için",
-    lead: "Hackathon Aydın 2027, üniversite öğrencileri için 28 saatlik ürün geliştirme maratonu. 17-18 Nisan 2027, Aydın Adnan Menderes Üniversitesi Tıp Fakültesi.",
+    lead: "Hackathon Aydın 2027, üniversite öğrencileri için 24 saatlik ürün geliştirme maratonu. 17-18 Nisan 2027, Aydın Adnan Menderes Üniversitesi Tıp Fakültesi.",
     sections: [
       {
         id: "ozet",
@@ -15,7 +15,7 @@ export const partners: Record<Locale, DocPage> = {
           {
             ul: [
               "Üçüncü edisyon. Tarih: 17-18 Nisan 2027 (Cumartesi-Pazar).",
-              "28 saat geliştirme, 3-5 kişilik takımlar.",
+              "24 saat geliştirme, 3-5 kişilik takımlar.",
               "Katılım ücretsiz, yemek ve içecek dahil, mekân gece boyunca açık.",
               "Tema açılış töreninde açıklanır.",
               "Finalde akademisyenler ve sektörden kuruculardan oluşan jüri.",
@@ -76,7 +76,7 @@ export const partners: Record<Locale, DocPage> = {
     title: "Partner information",
     description: "Event summary, past numbers and sponsorship packages for organizations that want to support Hackathon Aydın 2027.",
     eyebrow: "For sponsors and partners",
-    lead: "Hackathon Aydın 2027 is a 28-hour product building marathon for university students. 17-18 April 2027, Faculty of Medicine, Aydın Adnan Menderes University, Türkiye.",
+    lead: "Hackathon Aydın 2027 is a 24-hour product building marathon for university students. 17-18 April 2027, Faculty of Medicine, Aydın Adnan Menderes University, Türkiye.",
     sections: [
       {
         id: "summary",
@@ -85,7 +85,7 @@ export const partners: Record<Locale, DocPage> = {
           {
             ul: [
               "Third edition. Dates: 17-18 April 2027 (Saturday to Sunday).",
-              "28 hours of building, teams of 3 to 5.",
+              "24 hours of building, teams of 3 to 5.",
               "Free to attend, food and drinks included, venue open overnight.",
               "The theme is announced at the opening ceremony.",
               "Finals judged by academics and startup founders.",

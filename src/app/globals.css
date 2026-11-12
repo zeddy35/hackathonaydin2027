@@ -14,8 +14,65 @@
   /* Hero grid cell. The loader squares use the same size so they line up with it. */
   --grid: 48px;
   --grid-line: rgb(23 23 23 / 0.045);
+  --accent-hover: #6f0202;
+  --amber: #b45309;
+  --display-font: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --display-weight: 500;
+  --display-tracking: -0.02em;
   color-scheme: light;
 }
+
+/* Public site (html.site, plus night or day for the colours; set in the (site) layout). Warm black, bone
+ * white, signal orange and amber; Anton for poster type. The panel, login and admin
+ * keep the light tokens above. */
+html.night {
+  --bg: #0c0a09;
+  --surface: #15110f;
+  --ink: #f4ecdc;
+  --ink-muted: #a89e8f;
+  --rule: #2e2723;
+  --accent: #ff5a2b;
+  --accent-hover: #ff7d54;
+  --on-accent: #130805;
+  --accent-tint: #2b140d;
+  --amber: #ffb52e;
+  --ink-rgb: 244 236 220;
+  --shadow: rgb(0 0 0 / 0.7);
+  --glow-a: rgb(255 181 46 / 0.17);
+  --glow-b: rgb(255 90 43 / 0.2);
+  --glow-c: rgb(255 90 43 / 0.08);
+  --grid-line: rgb(244 236 220 / 0.05);
+  --display-font: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  --display-weight: 400;
+  --display-tracking: 0.005em;
+  color-scheme: dark;
+}
+
+/* Light variant of the same look (ThemeToggle.tsx swaps night for day on <html>).
+ * Accent and amber are deepened so they keep 4.5:1 as text on the paper colour. */
+html.day {
+  --bg: #f4ecdc;
+  --surface: #fbf6ea;
+  --ink: #17110d;
+  --ink-muted: #675c4f;
+  --rule: #d8ccb6;
+  --accent: #c4300a;
+  --accent-hover: #a82606;
+  --on-accent: #fff7ea;
+  --accent-tint: #f3d9c9;
+  --amber: #96500a;
+  --ink-rgb: 23 17 13;
+  --shadow: rgb(23 17 13 / 0.28);
+  --glow-a: rgb(255 181 46 / 0.4);
+  --glow-b: rgb(255 90 43 / 0.26);
+  --glow-c: rgb(255 90 43 / 0.12);
+  --grid-line: rgb(23 17 13 / 0.05);
+  --display-font: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  --display-weight: 400;
+  --display-tracking: 0.005em;
+  color-scheme: light;
+}
+html.day body::before { filter: invert(1); opacity: 0.09; }
 
 @theme inline {
   --color-bg: var(--bg);
@@ -26,7 +83,8 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-accent-tint: var(--accent-tint);
-  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --color-amber: var(--amber);
+  --font-display: var(--display-font);
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
@@ -74,10 +132,22 @@
     color: var(--ink-muted);
   }
   .display {
-    font-family: var(--font-display);
-    font-weight: 500;
+    font-family: var(--display-font);
+    font-weight: var(--display-weight);
     font-optical-sizing: auto;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--display-tracking);
+  }
+  /* Poster type: condensed, upper case, tight. Upper-casing follows <html lang>, so Turkish i becomes İ. */
+  .poster {
+    font-family: var(--display-font);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    text-transform: uppercase;
+    line-height: 0.92;
+  }
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 0.018em var(--ink);
   }
   .btn {
     display: inline-flex;
@@ -93,7 +163,7 @@
     transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
   }
   .btn-primary { background: var(--accent); color: var(--on-accent); }
-  .btn-primary:hover { background: #6f0202; }
+  .btn-primary:hover { background: var(--accent-hover); }
   .btn-secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--rule); }
   .btn-secondary:hover { border-color: var(--ink); }
   .link {
@@ -169,36 +239,96 @@ html.ha-anim:not(.ha-go) .ha-card-enter { opacity: 0; transform: translateY(24px
 @keyframes ha-rise { from { opacity: 0; transform: translateY(16px); } }
 .ha-card-enter { transition: opacity 600ms ease-out 200ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
 
-/* Red pen line (RedPen.tsx). Final state is the default: line drawn, line 2 faded,
- * line 3 visible. Only the text fades, the pen stays full red. The draw-in only runs while html.ha-anim is set (JS on, motion ok):
- * pen starts 800 ms after html.ha-go, takes 600 ms, then line 2 fades and line 3 rises. */
-.ha-l2 { color: rgb(98 98 98 / 0.55); }
-.ha-pen-host:not([data-ready]) { text-decoration: line-through var(--accent) 0.08em; }
-html.ha-anim .ha-pen-host:not([data-ready]) { text-decoration: none; }
-.ha-pen path { stroke: var(--accent); stroke-dasharray: 1; stroke-dashoffset: 0; }
-html.ha-anim:not(.ha-go) .ha-l2 { color: var(--ink-muted); }
-html.ha-anim:not(.ha-go) .ha-pen path { stroke-dashoffset: 1; }
-html.ha-anim:not(.ha-go) .ha-l3 > span { transform: translateY(130%); }
-html.ha-anim.ha-go .ha-pen path { animation: ha-draw var(--pdur, 600ms) ease-out calc(800ms + var(--pd, 0ms)) both; }
-html.ha-anim.ha-go .ha-l2 { animation: ha-dim 300ms ease-out 1400ms both; }
-html.ha-anim.ha-go .ha-l3 > span { animation: ha-up 700ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms both; }
-@keyframes ha-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@keyframes ha-dim { from { color: var(--ink-muted); } to { color: rgb(98 98 98 / 0.55); } }
-@keyframes ha-up { from { transform: translateY(130%); } to { transform: none; } }
-
-/* Countdown chip: slow pulse on the red dot. */
+/* Countdown: slow pulse on the dot. */
 .ha-pulse { animation: ha-pulse 2.4s ease-in-out infinite; }
 @keyframes ha-pulse { 50% { opacity: 0.25; } }
 
-/* Team card: a seat pops in when it fills. */
-.ha-seat { animation: ha-pop 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-@keyframes ha-pop { from { scale: 0.8; } }
+/* Team roster: a line slides in when its seat fills. */
+.ha-row { animation: ha-row 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes ha-row { from { opacity: 0.3; transform: translateX(-14px); } }
+
+/* ---------------------------------------------------------------------------
+ * Night look: components that only the public site uses.
+ * ------------------------------------------------------------------------- */
+html.site .btn {
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+html.site .btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--amber); }
+html.site .btn-secondary { background: transparent; border-color: rgb(var(--ink-rgb) / 0.28); }
+html.site .btn-secondary:hover { border-color: var(--ink); background: rgb(var(--ink-rgb) / 0.06); }
+/* On the orange closing block. */
+html.site .btn-ink { background: var(--bg); color: var(--ink); }
+html.site .btn-ink:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 rgb(19 8 5 / 0.85); }
+html.site .btn-on-accent { border: 1px solid color-mix(in srgb, var(--on-accent) 50%, transparent); color: var(--on-accent); }
+html.site .btn-on-accent:hover { background: color-mix(in srgb, var(--on-accent) 12%, transparent); border-color: var(--on-accent); }
+html.site .tag { border-color: color-mix(in srgb, var(--amber) 45%, transparent); color: var(--amber); background: transparent; }
+html.site .link { text-decoration-color: rgb(var(--ink-rgb) / 0.3); }
+
+/* Film grain over the whole page. Fixed, decorative, never intercepts input. */
+html.site body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hero backdrop: two warm lights (one follows the pointer, see HeroGlow.tsx) and a halftone corner. */
+.hero-glow {
+  position: absolute;
+  inset: -72px 0 0 0;
+  background:
+    radial-gradient(520px circle at var(--mx, 72%) var(--my, 38%), var(--glow-a), transparent 68%),
+    radial-gradient(900px circle at 88% 0%, var(--glow-b), transparent 62%),
+    radial-gradient(700px circle at 0% 100%, var(--glow-c), transparent 60%);
+}
+.halftone {
+  background-image: radial-gradient(circle at center, rgb(var(--ink-rgb) / 0.2) 1.3px, transparent 1.7px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(118deg, transparent 42%, #000 100%);
+}
+
+/* Ticker band. Four identical rows; the track moves one row width and loops. */
+.marquee-track { animation: ha-marquee var(--marquee-dur, 36s) linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes ha-marquee { to { transform: translateX(-25%); } }
+
+/* Scroll reveal. Pure CSS, tied to scroll position, so nothing waits on JavaScript and
+ * content is never fully hidden: it starts dimmed and a little lower. Browsers without
+ * scroll-driven animations simply show the final state. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    html.site .reveal {
+      animation: ha-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+    /* Section titles slide in from the left as they enter. */
+    html.site .reveal-x {
+      animation: ha-reveal-x linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+@keyframes ha-reveal { from { opacity: 0.3; transform: translateY(36px); } }
+@keyframes ha-reveal-x { from { opacity: 0.3; transform: translateX(-6vw); } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .marquee-track { animation: none !important; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   .ha-loader-root { display: none !important; }
-  .ha-pulse, .ha-seat { animation: none !important; }
+  .ha-pulse, .ha-row { animation: none !important; }
 }
 
 /* Admin: let wide tables scroll inside their box instead of widening the page. */

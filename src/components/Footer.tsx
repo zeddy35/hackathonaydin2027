@@ -29,7 +29,7 @@ export default function Footer({
   ];
 
   return (
-    <footer className="border-t border-rule bg-surface">
+    <footer className="overflow-hidden border-t border-rule bg-bg">
       <div className="wrap grid gap-10 py-14 pb-[max(56px,env(safe-area-inset-bottom))] md:grid-cols-[1.2fr_1fr_1fr]">
         <div className="grid content-start gap-3">
           <Logo />
@@ -64,6 +64,10 @@ export default function Footer({
           </ul>
         </div>
       </div>
+      {/* Oversized wordmark, cut off by the bottom edge. Decoration only. */}
+      <p aria-hidden="true" className="poster outline-text pointer-events-none -mb-[0.16em] select-none whitespace-nowrap text-center text-[14.3vw] leading-[0.8] opacity-40">
+        Hackathon Aydın
+      </p>
     </footer>
   );
 }

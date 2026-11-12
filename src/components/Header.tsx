@@ -6,11 +6,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import type { Locale } from "@/lib/i18n";
 import { alternatesFor, resolveSlug } from "@/lib/routes";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 
 const SECTIONS = ["event", "schedule", "sponsors", "faq"] as const;
 type SectionId = (typeof SECTIONS)[number];
 
-export type HeaderLabels = Record<SectionId | "label" | "join" | "joinShort" | "joinShortSr" | "menu" | "close" | "switchTo" | "home", string>;
+export type HeaderLabels = Record<SectionId | "label" | "join" | "joinShort" | "joinShortSr" | "menu" | "close" | "switchTo" | "home" | "themeLight" | "themeDark", string>;
 
 /** Past this many pixels the bar turns into a floating capsule. It never hides. */
 const COMPACT_AT = 24;
@@ -205,11 +206,13 @@ export default function Header({
       <div
         className={`relative mx-auto flex items-center gap-2 transition-[max-width,margin,padding,height,background-color,border-color,box-shadow,border-radius] duration-300 ease-out md:gap-4 ${
           capsule
-            ? "mt-4 h-14 w-[calc(100%-16px)] max-w-[1080px] rounded-full border border-rule bg-bg/80 px-2 shadow-[0_8px_24px_-12px_rgb(23_23_23/0.18)] backdrop-blur-md sm:px-3 md:px-4"
+            ? "mt-4 h-14 w-[calc(100%-16px)] max-w-[1080px] rounded-full border border-rule bg-bg/80 px-2 shadow-[0_12px_32px_-12px_var(--shadow)] backdrop-blur-md sm:px-3 md:px-4"
             : `h-[var(--header-h)] w-full max-w-[1200px] rounded-none border border-transparent px-[max(16px,env(safe-area-inset-left))] md:px-8 ${open ? "bg-bg" : "bg-bg/0"}`
         }`}
       >
-        <Link href={`/${lang}`} className="group/logo -mx-1 flex min-h-11 min-w-0 shrink items-center rounded-full px-1 max-[359px]:[&_.logo-year]:hidden">
+        <Link href={`/${lang}`} className={`group/logo -mx-1 flex min-h-11 min-w-0 shrink items-center rounded-full px-1 transition-opacity duration-300 max-[430px]:[&_.logo-year]:hidden ${
+            isHome && !compact && !open ? "invisible opacity-0" : "opacity-100"
+          }`}>
           <Logo />
           <span className="sr-only">, {labels.home}</span>
         </Link>
@@ -249,6 +252,9 @@ export default function Header({
 
         <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2 md:ml-0">
           <span className="hidden md:inline-flex">{langSwitch()}</span>
+          <span className="hidden md:inline-flex">
+            <ThemeToggle toLight={labels.themeLight} toDark={labels.themeDark} />
+          </span>
           {joinButton("min-h-11 rounded-full px-3 py-2 text-[14px] sm:px-4 md:text-[15px]", true)}
           <button
             ref={menuBtn}
@@ -301,7 +307,7 @@ export default function Header({
                     });
                   }}
                   aria-current={active === id ? "location" : undefined}
-                  className={`display flex min-h-16 items-center text-[40px] leading-none ${active === id ? "text-accent" : "text-ink"}`}
+                  className={`poster flex min-h-16 items-center text-[44px] leading-none ${active === id ? "text-accent" : "text-ink"}`}
                 >
                   {labels[id]}
                 </a>
@@ -310,6 +316,7 @@ export default function Header({
           </ul>
           <div className="flex flex-wrap items-center justify-between gap-4">
             {langSwitch()}
+            <ThemeToggle toLight={labels.themeLight} toDark={labels.themeDark} />
             {joinButton("min-h-12 flex-1 rounded-full")}
           </div>
         </nav>

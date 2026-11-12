@@ -26,7 +26,7 @@ export const rules: Record<Locale, DocPage> = {
         id: "sure",
         h: "Geliştirme süresi",
         blocks: [
-          { p: "Geliştirme Cumartesi 11:00'de başlar ve Pazar 15:00'te biter. Toplam 28 saat. Saatler Türkiye saatiyle." },
+          { p: "Geliştirme Cumartesi 12:00'de başlar ve Pazar 12:00'de biter. Toplam 24 saat. Saatler Türkiye saatiyle." },
           { p: "Tema açılış töreninde açıklanır." },
         ],
       },
@@ -49,7 +49,7 @@ export const rules: Record<Locale, DocPage> = {
         blocks: [
           {
             ul: [
-              "Teslim Pazar 15:00'te kapanır.",
+              "Teslim Pazar 12:00'de kapanır.",
               "README dosyasında kullanılan AI araçları belirtilir.",
             ],
           },
@@ -112,7 +112,7 @@ export const rules: Record<Locale, DocPage> = {
         id: "window",
         h: "Building window",
         blocks: [
-          { p: "Building starts Saturday 11:00 and ends Sunday 15:00. 28 hours in total, Türkiye time (UTC+3)." },
+          { p: "Building starts Saturday 12:00 and ends Sunday 12:00. 24 hours in total, Türkiye time (UTC+3)." },
           { p: "The theme is announced at the opening ceremony." },
         ],
       },
@@ -135,7 +135,7 @@ export const rules: Record<Locale, DocPage> = {
         blocks: [
           {
             ul: [
-              "Submissions close Sunday 15:00.",
+              "Submissions close Sunday 12:00.",
               "The README lists the AI tools used.",
             ],
           },
