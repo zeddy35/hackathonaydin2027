@@ -1,6 +1,6 @@
 # Hackathon Aydın 2027 sitesi
 
-Next.js 15 (App Router) + TypeScript + Tailwind CSS 4. TR/EN, tek açık tema. Repo herkese açık.
+Next.js 15 (App Router) + TypeScript + Tailwind CSS 4. TR/EN. Herkese açık site koyu "night" görünümünde (`html.night`, `globals.css`); panel, giriş ve admin açık renk token'larında. Repo herkese açık.
 
 ## Komutlar
 
@@ -23,6 +23,7 @@ npm run test:db        # migration'lar + RLS ve uçtan uca SQL testleri (PGlite,
 - `src/app/admin/`: yönetim paneli (TR). Her sayfa `requireRole`, her action `assertRole` (`src/lib/auth.ts`) ile rolü sunucuda kontrol eder. Kılavuz: `docs/admin-kilavuzu.md`.
 - `supabase/migrations/`: şema, RLS, tetikleyiciler. `supabase/tests/`: SQL testleri. `supabase/seed.dev.sql`: sadece yerel sahte veri.
 - `src/emails/`: e-posta şablonları (TR/EN). `src/lib/email.ts`: Resend; anahtar yoksa gönderim atlanır ve loglanır.
+- Site tasarımı: Anton (`.poster`, büyük harf başlıklar), Inter, JetBrains Mono. Renkler `html.night` token'larında (sıcak siyah, kemik beyazı, turuncu `--accent`, `--amber`). Hero: `Hero.tsx` + `Countdown.tsx` + `HeroGlow.tsx` + `Marquee.tsx`; program çubuğu `Schedule.tsx` içinde. Kaydırma animasyonları saf CSS (`.reveal`, `.reveal-x`), içerik hiçbir zaman tamamen gizlenmez.
 - `src/lib/dict.ts`: ortak ve ana sayfa metinleri, sponsorluk paketleri. `src/content/*.ts`: yardımcı sayfa metinleri.
 - `src/data/`: içerik getter'ları (`src/data/index.ts`). Ayarlar, sponsorlar ve jüri/mentorlar Supabase'den okunur (`revalidateTag("content")` ile yenilenir). `site.ts`, `sponsors.ts`, `people.ts` veritabanı yokken kullanılan varsayılanlar; `schedule.ts` hâlâ dosyada.
 - `src/lib/seo.ts`: canonical/hreflang. Site adresi `NEXT_PUBLIC_SITE_URL`, yoksa `https://hackathonaydin.vercel.app`.

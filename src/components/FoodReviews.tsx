@@ -21,7 +21,7 @@ export default function FoodReviews({ reviews, lang, t }: { reviews: FoodReview[
             <li key={`${r.author}-${r.quote.tr.slice(0, 24)}`} className="grid content-between gap-4 rounded-xl border border-rule bg-surface p-5">
               <figure className="m-0 grid gap-4">
                 {r.rating && <Stars n={r.rating} label={t.rating.replace("{n}", String(r.rating))} />}
-                <blockquote lang={translated ? "en" : "tr"} className="m-0 font-display text-[19px] italic leading-[1.45]">
+                <blockquote lang={translated ? "en" : "tr"} className="m-0 text-[19px] font-medium leading-[1.45]">
                   “{translated ? r.quote.en : r.quote.tr}”
                 </blockquote>
                 <figcaption className="flex flex-wrap items-baseline gap-x-2 font-mono text-[13px] text-muted">

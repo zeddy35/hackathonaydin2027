@@ -25,6 +25,8 @@ const tr = {
     close: "Kapat",
     switchTo: "English",
     home: "Ana sayfa",
+    themeLight: "Açık temaya geç",
+    themeDark: "Koyu temaya geç",
   },
   cta: {
     info: "Katılım bilgileri",
@@ -41,7 +43,10 @@ const tr = {
   loader: "HACKATHON AYDIN 2027",
   hero: {
     eyebrow: "Hackathon Aydın 2027",
-    /** [0] and [2] form the heading; [1] is the struck-through line (hidden from screen readers). */
+    edition: "3. edisyon",
+    /** Ticker band under the hero. Verified facts only. */
+    ticker: ["24 saat", "3-5 kişilik takımlar", "Ücretsiz", "17-18 Nisan 2027", "Aydın", "Yemek ve içecek dahil"],
+    /** The slogan under the name; [1] is the struck-through line (hidden from screen readers). */
     title: ["Bir fikirle gel.", "Bir yapılacaklar listesiyle çık.", "Çalışan bir ürünle çık."],
     lead: "Üniversite öğrencileri için 24 saatlik ürün geliştirme maratonu.",
     when: "17-18 Nisan 2027",
@@ -49,6 +54,7 @@ const tr = {
     countdown: {
       label: "Açılış törenine kalan süre",
       units: { d: "g", h: "s", m: "d" },
+      cells: { d: "Gün", h: "Saat", m: "Dakika", s: "Saniye" },
       live: "Şu an sürüyor",
       done: "2028'de görüşürüz",
     },
@@ -137,6 +143,9 @@ const tr = {
     note: "Geliştirme Cumartesi 12:00 ile Pazar 12:00 arası, toplam 24 saat. Saatler Türkiye saatiyle (UTC+3).",
     days: { sat: "Cumartesi, 17 Nisan", sun: "Pazar, 18 Nisan" },
     break: "MOLA",
+    build: "24 saat geliştirme",
+    /** Ruler readout: which build hour the pointer is on. */
+    hour: "{n}. saat",
     food: {
       title: "Kimse aç kalmadı",
       lead: "Yemek ve içecek dahil. Öğle, akşam, gece yarısı, kahvaltı ve Pazar öğle yemeği.",
@@ -246,6 +255,8 @@ const en: Dict = {
     close: "Close",
     switchTo: "Türkçe",
     home: "Home",
+    themeLight: "Switch to light theme",
+    themeDark: "Switch to dark theme",
   },
   cta: {
     info: "How to join",
@@ -262,7 +273,8 @@ const en: Dict = {
   loader: "HACKATHON AYDIN 2027",
   hero: {
     eyebrow: "Hackathon Aydın 2027",
-    /** [0] and [2] form the heading; [1] is the struck-through line (hidden from screen readers). */
+    edition: "3rd edition",
+    ticker: ["24 hours", "Teams of 3-5", "Free", "17-18 April 2027", "Aydın", "Food and drinks included"],
     title: ["Come with an idea.", "Leave with a to-do list.", "Leave with a working product."],
     lead: "A 24-hour product building marathon for university students.",
     when: "17-18 April 2027",
@@ -270,6 +282,7 @@ const en: Dict = {
     countdown: {
       label: "Time until the opening ceremony",
       units: { d: "d", h: "h", m: "m" },
+      cells: { d: "Days", h: "Hours", m: "Min", s: "Sec" },
       live: "Happening now",
       done: "See you in 2028",
     },
@@ -357,6 +370,8 @@ const en: Dict = {
     note: "Building runs from Saturday 12:00 to Sunday 12:00, 24 hours in total. Times are Türkiye time (UTC+3).",
     days: { sat: "Saturday, 17 April", sun: "Sunday, 18 April" },
     break: "BREAK",
+    build: "24 hours of building",
+    hour: "Hour {n}",
     food: {
       title: "Nobody went hungry",
       lead: "Food and drinks included. Lunch, dinner, a midnight snack, breakfast and Sunday lunch.",
